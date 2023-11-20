@@ -12,10 +12,10 @@ Impact Engine Framework
 - Wang, Derek
 
 # Background Reading
-[Green Software Foundation](https://github.com/Green-Software-Foundation)
-[Green Software Foundation Documentation](https://github.com/Green-Software-Foundation/if-docs/tree/master/docs)
-[Software Carbon Intensity Specification](https://github.com/Green-Software-Foundation/sci/blob/main/Software_Carbon_Intensity/Software_Carbon_Intensity_Specification.md)
-[Green Software for Practitioners](https://training.linuxfoundation.org/training/green-software-for-practitioners-lfc131/)
+[Green Software Foundation](https://github.com/Green-Software-Foundation) <br/>
+[Green Software Foundation Documentation](https://github.com/Green-Software-Foundation/if-docs/tree/master/docs) <br/>
+[Software Carbon Intensity Specification](https://github.com/Green-Software-Foundation/sci/blob/main/Software_Carbon_Intensity/Software_Carbon_Intensity_Specification.md) <br/>
+[Green Software for Practitioners](https://training.linuxfoundation.org/training/green-software-for-practitioners-lfc131/) <br/>
 
 # Project Brief
 **Staff:**
