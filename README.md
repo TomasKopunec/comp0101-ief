@@ -57,3 +57,5 @@ These must have an open-source repository and documentation to facilitate commun
 - The project aligns with the goals of the Green Software Foundation to reduce the carbon emissions of software.
 - Collaboration with the broader open-source community will be essential to ensure the framework's adaptability and effectiveness.
 - All contributions to the project will be made under an open-source license to foster transparency and community involvement.
+
+##The final report is shared in the microsoft teams channel of the project team
