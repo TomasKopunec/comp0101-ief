@@ -3,6 +3,9 @@ from datetime import datetime, timedelta
 from itertools import product
 import ruamel.yaml
 from ruamel.yaml.comments import CommentedMap, CommentedSeq
+import json
+
+
 
 # def replace_timestamps(data, timestamps_list, regions_list):
 #     if isinstance(data, list):
@@ -117,6 +120,10 @@ region_combinations = generate_combinations(regions)
 all_combinations = list(product(timestamp_combinations, region_combinations))
 
 # print("All Combinations:")
+# print(all_combinations)
+with open('data.json', 'w') as file:
+    json.dump(all_combinations, file)
+
 write_list_elements_with_indexes_to_file(all_combinations,"combos.txt")
 
 yaml_file_path = 'template.yaml'

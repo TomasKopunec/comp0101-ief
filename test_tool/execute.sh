@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Set the source directory relative to the script location
+python3 "create_combos.py"
 source_dir="inputs"
 
 # Set the destination directory relative to the script location
@@ -40,3 +41,5 @@ for file in "$source_dir"/*; do
         # echo "$command"
     fi
 done
+
+python3 "select_best.py"
