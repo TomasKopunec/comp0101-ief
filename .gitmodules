@@ -1,0 +1,6 @@
+[submodule "Code/if-unofficial-models"]
+	path = Code/if-unofficial-models
+	url = https://github.com/Green-Software-Foundation/if-unofficial-models.git
+[submodule "Code/if"]
+	path = Code/if
+	url = https://github.com/Green-Software-Foundation/if.git
