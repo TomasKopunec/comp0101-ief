@@ -7,25 +7,27 @@ def load_yaml_from_file(file_path):
         yaml_data = yaml.safe_load(file)
     return yaml_data
 
-def load_timestamps_from_file(file_path):
-    with open(file_path, 'r') as file:
-        timestamps_data = yaml.safe_load(file)
-    return timestamps_data.get('timestamps', [])
+def generate_yaml_files(template_yaml, potential_timestamps):
+    output_files = []
 
-def find_and_replace_timestamps(data, timestamps, output_files):
+    for timestamps_list in potential_timestamps:
+        current_template = deepcopy(template_yaml)
+        replace_timestamps(current_template, timestamps_list)
+        output_files.append(current_template)
+
+    return output_files
+
+def replace_timestamps(data, timestamps_list, regions_list ):
     if isinstance(data, list):
         for i, item in enumerate(data):
-            data[i] = find_and_replace_timestamps(item, timestamps, output_files)
+            data[i] = replace_timestamps(item, timestamps_list,regions_list)
     elif isinstance(data, dict):
         for key, value in data.items():
-            data[key] = find_and_replace_timestamps(value, timestamps, output_files)
-            if key.lower() == 'timestamp' and isinstance(data[key], str) and data[key].startswith('20') and len(data[key]) == 19:
-                for timestamp in timestamps:
-                    new_data = deepcopy(data)
-                    new_data[key] = timestamp
-                    output_files.append(new_data)
-                # Break after the first instance of 'timestamp' is replaced
-                break
+            data[key] = replace_timestamps(value, timestamps_list,regions_list)
+            if key.lower() == 'timestamp' and isinstance(data[key], str) :
+                data[key] = timestamps_list.pop(0)
+            if key.lower() == 'region' and isinstance(data[key], str) :
+                data[key] = regions_list.pop(0)       
     return data
 
 def save_yaml_files(yaml_files, output_folder='output'):
@@ -38,13 +40,16 @@ def save_yaml_files(yaml_files, output_folder='output'):
 
 def main():
     template_yaml_file = "template.yaml"
-    timestamps_file = "timestamps.yaml"
+
+    # List of lists with potential timestamps
+    potential_timestamps = [
+        ['2023-07-09T02:00', '2023-07-16T03:00', '2023-07-17T03:00', '2023-07-17T04:00', '2023-07-17T05:00'],
+        ['2023-07-18T04:00', '2023-07-19T05:00', '2023-07-19T06:00', '2023-07-19T07:00', '2023-07-20T06:00']
+    ]
 
     template_yaml = load_yaml_from_file(template_yaml_file)
-    potential_timestamps = load_timestamps_from_file(timestamps_file)
 
-    output_files = []
-    find_and_replace_timestamps(template_yaml, potential_timestamps, output_files)
+    output_files = generate_yaml_files(template_yaml, potential_timestamps)
     save_yaml_files(output_files)
 
 if __name__ == "__main__":

@@ -54,6 +54,7 @@ graph:
         child-1:
           inputs:
           - timestamp: 2023-07-09T02:00
+            region: north-asia
             duration: 10
             cpu-util: 50
             e-net: 0.000811
@@ -63,6 +64,7 @@ graph:
         child-2:
           inputs:
           - timestamp: 2023-07-19T05:00
+            region: west-us
             duration: 10
             cpu-util: 50
             e-net: 0.000811

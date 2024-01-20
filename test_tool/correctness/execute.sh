@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the source directory relative to the script location
-python3 "create_combos.py"
+python3 "create_combos.py" # find all possible combos of regiosna nd times
 source_dir="inputs"
 
 # Set the destination directory relative to the script location

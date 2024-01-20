@@ -1,0 +1,22 @@
+name: sci-e-demo
+description:
+tags:
+initialize:
+  models:
+    - name: fake-model
+      kind: plugin
+      verbose: false
+      model: FakeModel
+      path: "@grnsft/if-models"
+graph:
+  children:
+    child:
+      pipeline:
+        - fake-model
+      config:
+        fake-model:
+      inputs:
+        - timestamp: 2023-08-06T00:00
+          duration: 3600
+          fake-value1: 1.2
+          fake-value2: 2.3

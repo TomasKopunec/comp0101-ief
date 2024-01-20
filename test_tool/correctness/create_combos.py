@@ -119,8 +119,9 @@ region_combinations = generate_combinations(regions)
 
 all_combinations = list(product(timestamp_combinations, region_combinations))
 
-# print("All Combinations:")
-# print(all_combinations)
+print("All Combinations:")
+
+print(all_combinations)
 with open('data.json', 'w') as file:
     json.dump(all_combinations, file)
 
