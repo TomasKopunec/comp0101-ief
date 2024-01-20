@@ -6,6 +6,15 @@ This scripts automatically rebuilds the if-unofficial-models, copies them to if 
 4. Runs the `impact-engine` on the selected impl and produces an ompl file (if/dev_models/)
 5. Filters out all deprecations warnings
 
+## First Run
+Before running the actual script, you need run the build script. Simply run:
+```
+chmod +x build.sh
+build.sh
+```
+This will install all models, dependencies, and fetch submodules from other repos.
+Note: You only need to run this script one.
+
 ## Usage
 Navigate to `code` folder, where both the if and if-unofficial-models are located, and run the following:
 ```
