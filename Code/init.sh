@@ -7,11 +7,16 @@ git submodule update --recursive --remote
 echo "Done."
 
 echo "[Installing Dependencies]"
-npm install -g typescript
+npm list typescript | grep typescript || npm install -g typescript
+npm list yarn | grep yarn || npm install -g yarn
+
 cd if
 npm install
 npm install '@grnsft/if-models' '@grnsft/if-unofficial-models'
+yarn build
+
 cd ../if-unofficial-models
 npm install
+yarn build
 
 echo "Done."
