@@ -10,6 +10,8 @@ echo "Done."
 echo "[Installing Dependencies]"
 npm list typescript | grep typescript || npm install -g typescript
 npm list yarn | grep yarn || npm install -g yarn
+# When running it in a new linux environment, run.sh stuck, because missing ts-node, so I added a one more statement to init.sh
+npm list ts-node | grep ts-node || npm install -g ts-node
 
 cd if
 npm install
