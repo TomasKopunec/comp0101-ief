@@ -19,7 +19,7 @@ Note: You only need to run this script one.
 Navigate to `code` folder, where both the if and if-unofficial-models are located, and run the following:
 ```
 chmod +x run.sh
-run.sh <impl_file>
+./run.sh <impl_file>
 ```
 
 Make sure to replace `"<impl_file>"` with impl file. For instance:
