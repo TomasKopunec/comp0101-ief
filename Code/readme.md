@@ -10,7 +10,7 @@ This scripts automatically rebuilds the if-unofficial-models, copies them to if 
 Before running the actual script, you need run the initialize script. Simply run:
 ```
 chmod +x init.sh
-init.sh
+./init.sh
 ```
 This will install all models, dependencies, and fetch submodules from other repos.
 Note: You only need to run this script one.
@@ -19,7 +19,7 @@ Note: You only need to run this script one.
 Navigate to `code` folder, where both the if and if-unofficial-models are located, and run the following:
 ```
 chmod +x run.sh
-run.sh <impl_file>
+./run.sh <impl_file>
 ```
 
 Make sure to replace `"<impl_file>"` with impl file. For instance:
