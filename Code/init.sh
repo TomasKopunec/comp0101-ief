@@ -2,6 +2,7 @@
 
 # This script is used to initialize the environment for the project.
 echo "[Cloning Submodules]"
+git submodule sync
 git submodule update --init --recursive
 git submodule update --recursive --remote
 echo "Done."
