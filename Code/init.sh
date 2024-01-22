@@ -3,8 +3,8 @@
 # This script is used to initialize the environment for the project.
 echo "[Cloning Submodules]"
 git submodule update --init --recursive
-# dev_model is a fork outside of the IF repository，If run the following statement, it will delete the dev_model, so I commented it out first
-# git submodule update --recursive --remote
+# dev_model is a fork outside of the IF repository，If run the following statement, it will delete the dev_model, If you get an error telling you that you can't find dev_model, comment out the following line
+git submodule update --recursive --remote
 echo "Done."
 
 echo "[Installing Dependencies]"
