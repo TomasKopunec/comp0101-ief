@@ -1,0 +1,49 @@
+{
+    "Instance Category": {
+        "General Purpose Type": {
+            "Bps v2-series (latest generation)": [
+                {"model": "B2pts v2", "vCPUs": 2},
+                {"model": "B2pls v2", "vCPUs": 2},
+                {"model": "B2ps v2", "vCPUs": 2},
+                {"model": "B4pls v2", "vCPUs": 4},
+                {"model": "B4ps v2", "vCPUs": 4},
+                {"model": "B8pls v2", "vCPUs": 8},
+                {"model": "B8ps v2", "vCPUs": 8},
+                {"model": "B16pls v2", "vCPUs": 16},
+                {"model": "B16ps v2", "vCPUs": 16}
+            ],
+            "Bs v2-series (latest generation)": [
+                {"model": "B2ts v2", "vCPUs": 2},
+                {"model": "B2ls v2", "vCPUs": 2},
+                {"model": "B2s v2", "vCPUs": 2},
+                {"model": "B4ls v2", "vCPUs": 4},
+                {"model": "B4s v2", "vCPUs": 4},
+                {"model": "B8ls v2", "vCPUs": 8},
+                {"model": "B8s v2", "vCPUs": 8},
+                {"model": "B16ls v2", "vCPUs": 16},
+                {"model": "B16s v2", "vCPUs": 16},
+                {"model": "B32ls v2", "vCPUs": 32},
+                {"model": "B32s v2", "vCPUs": 32}
+            ]
+        },
+        "Compute Optimized Type": {
+            "Fsv2-series": [
+                {"model": "F2s v2", "vCPUs": 2},
+                {"model": "F4s v2", "vCPUs": 4},
+                {"model": "F8s v2", "vCPUs": 8},
+                {"model": "F16s v2", "vCPUs": 16},
+                {"model": "F32s v2", "vCPUs": 32},
+                {"model": "F48s v2", "vCPUs": 48},
+                {"model": "F64s v2", "vCPUs": 64},
+                {"model": "F72s v2", "vCPUs": 72}
+            ],
+            "F series": [
+                {"model": "F1", "vCPUs": 1},
+                {"model": "F2", "vCPUs": 2},
+                {"model": "F4", "vCPUs": 4},
+                {"model": "F8", "vCPUs": 8},
+                {"model": "F16", "vCPUs": 16}
+            ]
+        }
+    }
+}
