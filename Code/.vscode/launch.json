@@ -41,7 +41,7 @@
             ],
             "args": [
                 "--impl",
-                "./if-optimisation-models/examples/tester.yml"
+                "./if-optimisation-models/examples/carbon.yml"
             ]
         }
     ]

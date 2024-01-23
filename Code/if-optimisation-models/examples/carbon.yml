@@ -1,0 +1,20 @@
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  models:
+    - name: carbon-aware
+      model: CarbonAwareModel
+      path: "@grnsft/if-optimisation-models"
+graph:
+  children:
+    child:
+      pipeline:
+        - carbon-aware
+      config:
+        cloud-instance-metadata:
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          duration: 3600
+          cloud-vendor: 'azure'
+          cloud-instance-type: 'Standard_NC24s_v3'
