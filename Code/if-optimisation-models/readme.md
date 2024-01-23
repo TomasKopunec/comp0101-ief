@@ -28,6 +28,16 @@ Finally, you can run the model by using this command:
 npm run if:local -- --impl <impl_file>
 ```
 
+You can also use the script. For instance(Check the yaml under examples):
+```bash
+./run.sh tester
+```
+
+If this is the first time you run the script, you may encounter permission problems,use this:
+```bash
+chmod +x run.sh
+```
+
 Or you can use one command to install and run the model:
 ```bash
 npm run install-and-exec:local -- --impl <impl_file>
@@ -48,7 +58,10 @@ Then you can run the model by using this command:
 ```bash
 npm run if:global -- --impl <impl_file>
 ```
-
+For example:
+```bash
+npm run if:global -- --impl examples/tester.yml
+```
 And the combined command is the same as the local mode:
 ```bash
 npm run install-and-exec:global -- --impl <impl_file>
@@ -68,6 +81,10 @@ npm run install2if:dev
 Then you can run the model by using this command:
 ```bash
 npm run if:dev -- --impl <impl_file>
+```
+For example:
+```bash
+nnpm run if:dev -- --impl examples/tester.yml
 ```
 
 ## Debugging
