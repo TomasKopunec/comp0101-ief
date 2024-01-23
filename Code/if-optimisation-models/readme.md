@@ -23,6 +23,11 @@ Then, you can install the model to local by using this command:
 npm run install2if:local
 ```
 
+or
+```bash
+./install2if local
+```
+
 Finally, you can run the model by using this command: 
 ```bash
 npm run if:local -- --impl <impl_file>
@@ -40,7 +45,7 @@ npm run install-and-exec:local -- --impl <impl_file>
 ```
 
 > The default mode is also local mode, so running these commands without specifying `:local` will also work the same.
-### Approach 1 Extend: Use script (run.sh)
+### Bash Script
 ***After installing it locally, you can use the script to run it***
 
 The following statement needs to be executed before executing the script for the first time.
@@ -57,29 +62,7 @@ For instance (Check the yaml under examples):
 ```
 The impl file is in examples by default, and the omp file is in results by default.
 
-### Approach 2: Global Mode
-
-This approach is also very easy to run the models. The only additional requirements to run in global mode is you install the "grnsft/if" in global npm node_modules. This approach uses the npm link command to create a global link to the models, then invokes the global Impact Framework to run the models in this repository.
-
-Similarly, you can use this command to install the model to global:
-```bash
-npm run install2if:global
-```
-
-Then you can run the model by using this command:
-```bash
-npm run if:global -- --impl <impl_file>
-```
-For example:
-```bash
-npm run if:global -- --impl examples/tester.yml
-```
-And the combined command is the same as the local mode:
-```bash
-npm run install-and-exec:global -- --impl <impl_file>
-```
-
-### Approach 3: Dev Mode
+### Dev Mode
 
 This approach requires you to have the IF repository cloned in the parent directory of this repository, which should be there when the repository is cloned recursively. This approach uses the npm link command to create a symbolic link from the node_modules of the IF repository to this repository, then invokes the Impact Framework in the IF repository to run the models in this repository.
 
@@ -96,7 +79,7 @@ npm run if:dev -- --impl <impl_file>
 ```
 For example:
 ```bash
-nnpm run if:dev -- --impl examples/tester.yml
+npm run if:dev -- --impl examples/tester.yml
 ```
 
 ## Debugging
