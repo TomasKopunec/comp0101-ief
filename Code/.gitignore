@@ -5,3 +5,6 @@
 **/dist/
 
 .vscode/settings.json
+
+if-optimisation-models/results/*
+!if-optimisation-models/results/.gitkeep
