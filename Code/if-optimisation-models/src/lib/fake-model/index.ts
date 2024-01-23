@@ -1,8 +1,9 @@
+
 import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
 import { ModelParams } from '@grnsft/if-models/build/types/common';
 
 import * as dayjs from 'dayjs';
-
+/*fake*/
 export class FakeModel implements ModelPluginInterface {
 
     private testVal1: number = 0;
