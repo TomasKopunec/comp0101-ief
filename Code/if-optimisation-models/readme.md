@@ -13,6 +13,13 @@ The approach copies your compiled files in "build" directory to the local node_m
 
 ***So here are the steps to run the models in local mode.***
 
+To clone the if folder, run the:
+```
+git submodule update --init --recursive
+```
+
+If you get errors, remove the 'if' folder.
+
 After you clone the repository, run npm install as usual:
 ```bash
 npm install
