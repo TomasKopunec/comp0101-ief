@@ -7,7 +7,7 @@ initialize:
       kind: plugin
       verbose: false
       model: FakeModel
-      path: "@grnsft/if-models"
+      path: "@grnsft/if-optimisation-models"
 graph:
   children:
     child:
@@ -15,8 +15,12 @@ graph:
         - fake-model
       config:
         fake-model:
+          val1: 1
+          val2: "test string"
+          val3: true
+          val4: [1, 2, 3]
       inputs:
         - timestamp: 2023-08-06T00:00
           duration: 3600
-          fake-value1: 1.2
-          fake-value2: 2.3
+          num: 8
+          

@@ -1,0 +1,30 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        },
+        {
+            "type": "npm",
+            "script": "install2if:dev",
+            "path": "if-optimisation-models",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "install2if:dev",
+            "detail": "Install the model to the IF project"
+        },
+        {
+            "type": "npm",
+            "script": "optimisation-models:build",
+            "path": "if-optimisation-models",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "build",
+            "detail": "Install the model to the IF project"
+        }
+    ]
+}

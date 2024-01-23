@@ -1,0 +1,65 @@
+{
+    "Families":[
+        {
+            "name": "i3",
+            "generation": 8,
+            "models": [
+                {
+                    "model": "i3-8100",
+                    "cores": 4,
+                    "threads": 4,
+                    "clock": 3.6,
+                    "turbo": null
+                },
+                {
+                    "model": "i3-8350K",
+                    "cores": 4,
+                    "threads": 4,
+                    "clock": 4.0,
+                    "turbo": null
+                }
+            ]
+        },
+        {
+            "name": "i5",
+            "generation": 8,
+            "models": [
+                {
+                    "model": "i5-8400",
+                    "cores": 6,
+                    "threads": 6,
+                    "clock": 2.8,
+                    "turbo": 4.0
+                },
+                {
+                    "model": "i5-8600K",
+                    "cores": 6,
+                    "threads": 6,
+                    "clock": 3.6,
+                    "turbo": 4.3
+                }
+            ]
+        },
+        {
+            "name": "i7",
+            "generation": 8,
+            "models": [
+                {
+                    "model": "i7-8700",
+                    "cores": 6,
+                    "threads": 12,
+                    "clock": 3.2,
+                    "turbo": 4.6
+                },
+                {
+                    "model": "i7-8700K",
+                    "cores": 6,
+                    "threads": 12,
+                    "clock": 3.7,
+                    "turbo": 4.7
+                }
+            ]
+        }
+    ]
+
+}

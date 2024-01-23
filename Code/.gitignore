@@ -1,0 +1,7 @@
+**/node_modules/
+**/yarn.lock
+
+**/build/
+**/dist/
+
+.vscode/settings.json

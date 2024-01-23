@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "IF: Launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/if/src/index.ts",
+            "preLaunchTask": "install2if:dev",
+            "outFiles": [
+                "${workspaceFolder}/if/**/*.js"
+            ],
+            "args": [
+                "--impl",
+                "./if-optimisation-models/examples/tester.yml"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "IF: Launch (No Install)",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/if/src/index.ts",
+            "preLaunchTask": "optimisation-models:build",
+            "outFiles": [
+                "${workspaceFolder}/if/**/*.js"
+            ],
+            "args": [
+                "--impl",
+                "./if-optimisation-models/examples/tester.yml"
+            ]
+        }
+    ]
+}
