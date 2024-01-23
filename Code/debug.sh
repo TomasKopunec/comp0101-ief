@@ -1,1 +1,0 @@
-npx tsx if-unofficial-models/src/index.ts 2>&1 | grep -v 'DeprecationWarning' | grep -v 'Warning'
