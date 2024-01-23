@@ -1,6 +1,6 @@
 name: sci-e-demo
-description:
-tags:
+description: example impl
+tags: null
 initialize:
   models:
     - name: fake-model

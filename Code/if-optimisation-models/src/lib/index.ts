@@ -1,2 +1,2 @@
 export * from './right-sizing';
-export * from './test-model';
+export * from './fake-model';
