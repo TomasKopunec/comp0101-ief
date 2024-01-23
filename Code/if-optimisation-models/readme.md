@@ -23,10 +23,11 @@ Then, you can install the model to local by using this command:
 npm run install2if:local
 ```
 
-Finally, you can run the model by using this command:
+Finally, you can run the model by using this command: 
 ```bash
 npm run if:local -- --impl <impl_file>
 ```
+***It can also be executed using the run.sh script, see below***
 
 For example:
 ```bash
@@ -40,7 +41,7 @@ npm run install-and-exec:local -- --impl <impl_file>
 
 > The default mode is also local mode, so running these commands without specifying `:local` will also work the same.
 ### Approach 1 Extend: Use script (run.sh)
-***After installing it locally, you can use the script to run it.***
+***After installing it locally, you can use the script to run it***
 
 The following statement needs to be executed before executing the script for the first time.
 ```bash
@@ -50,10 +51,11 @@ The executing statement is
 ```bash
 ./run.sh <impl_file>
 ```
-For instance(Check the yaml under examples):
+For instance (Check the yaml under examples):
 ```bash
 ./run.sh tester
 ```
+The impl file is in examples by default, and the omp file is in results by default.
 
 ### Approach 2: Global Mode
 
