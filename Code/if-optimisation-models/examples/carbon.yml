@@ -3,16 +3,19 @@ description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
   models:
-    - name: carbon-aware
-      model: CarbonAwareModel
+    - name: carbon-advisor
+      model: CarbonAdvisor
       path: "@grnsft/if-optimisation-models"
 graph:
   children:
     child:
       pipeline:
-        - carbon-aware
+        - carbon-advisor
       config:
-        cloud-instance-metadata:
+        carbon-advisor:
+          allowed-locations: ['europe', 'us']
+          allowed-date-from: '2023-07-06'
+          allowed-date-to: '2023-10-06'
       inputs:
         - timestamp: 2023-07-06T00:00
           duration: 3600
