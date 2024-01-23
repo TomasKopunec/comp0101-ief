@@ -19,7 +19,7 @@
         },
         {
             "type": "npm",
-            "script": "optimisation-models:build",
+            "script": "build",
             "path": "if-optimisation-models",
             "group": "build",
             "problemMatcher": [],

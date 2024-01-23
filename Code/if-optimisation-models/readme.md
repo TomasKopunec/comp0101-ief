@@ -100,3 +100,5 @@ You can run the debug mode in VSCode debugger and it will run a impl files as sp
 However, there's one thing to notice. You only need to run the debug mode `IF: Launch` for once, since then it will create a symbolic link from the IF repository to this repository and install the models to the IF repository. Any changes you make in this repository will be reflected in the IF repository. So once you have run the `IF: Launch` debug mode, you can run the `IF: Launch (No Install)` debug mode for the rest of the time.
 
 Also feel free to change the arguments in the debug configuration to run different impl files.
+
+> Breakpoints can be set in the `if-optimisation-models` repository, no need to go to the `if/node_modules/@grnsft/if-optimisation-models` folder.

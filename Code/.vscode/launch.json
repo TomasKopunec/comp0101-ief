@@ -9,12 +9,15 @@
             "request": "launch",
             "name": "IF: Launch",
             "skipFiles": [
-                "<node_internals>/**"
+                //"<node_internals>/**"
             ],
             "program": "${workspaceFolder}/if/src/index.ts",
             "preLaunchTask": "install2if:dev",
             "outFiles": [
-                "${workspaceFolder}/if/**/*.js"
+                "${workspaceFolder}/if/**/*.js",
+                "${workspaceFolder}/if-optimisation-models/**/*.js",
+                "${workspaceFolder}/if/**/*.ts",
+                "${workspaceFolder}/if-optimisation-models/**/*.ts"
             ],
             "args": [
                 "--impl",
@@ -26,12 +29,15 @@
             "request": "launch",
             "name": "IF: Launch (No Install)",
             "skipFiles": [
-                "<node_internals>/**"
+                //"<node_internals>/**"
             ],
             "program": "${workspaceFolder}/if/src/index.ts",
-            "preLaunchTask": "optimisation-models:build",
+            "preLaunchTask": "build",
             "outFiles": [
-                "${workspaceFolder}/if/**/*.js"
+                "${workspaceFolder}/if/**/*.js",
+                "${workspaceFolder}/if-optimisation-models/**/*.js",
+                "${workspaceFolder}/if/**/*.ts",
+                "${workspaceFolder}/if-optimisation-models/**/*.ts"
             ],
             "args": [
                 "--impl",
