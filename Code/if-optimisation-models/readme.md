@@ -28,14 +28,9 @@ Finally, you can run the model by using this command:
 npm run if:local -- --impl <impl_file>
 ```
 
-You can also use the script. For instance(Check the yaml under examples):
+For example:
 ```bash
-./run.sh tester
-```
-
-If this is the first time you run the script, you may encounter permission problems,use this:
-```bash
-chmod +x run.sh
+npm run if:local -- --impl examples/tester.yml
 ```
 
 Or you can use one command to install and run the model:
@@ -44,6 +39,21 @@ npm run install-and-exec:local -- --impl <impl_file>
 ```
 
 > The default mode is also local mode, so running these commands without specifying `:local` will also work the same.
+### Approach 1 Extend: Use script (run.sh)
+***After installing it locally, you can use the script to run it.***
+
+The following statement needs to be executed before executing the script for the first time.
+```bash
+chmod +x run.sh
+```
+The executing statement is
+```bash
+./run.sh <impl_file>
+```
+For instance(Check the yaml under examples):
+```bash
+./run.sh tester
+```
 
 ### Approach 2: Global Mode
 
