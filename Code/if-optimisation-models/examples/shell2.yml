@@ -1,0 +1,22 @@
+name: shell-demo
+description: example impl invoking shell model
+tags:
+initialize:
+  models:
+    - name: imager
+      model: Visualizer
+      path: "@grnsft/if-optimisation-models"
+graph:
+  children:
+    child:
+      pipeline:
+        - imager
+      config:
+        imager:
+          command: 'python3 /home/jim/comp0101-ief/Code/if-optimisation-models/src/lib/visualizer/imager'
+      inputs:
+        - timestamp: "2023-11-02T10:35:31.820Z"
+          potential_lsocations: ["ath", "spain"]
+          duration: 3610
+          potential_locations: ["ath", "spain"]
+          potential_times: ["2023-11-02T10:35:31.820Z", "2023-11-02T10:35:31.820Z"]

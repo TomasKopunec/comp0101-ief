@@ -1,0 +1,40 @@
+#!/bin/env python3
+import sys
+import yaml
+import copy
+
+# Initialize an empty list to collect lines
+input_lines = []
+
+for line in sys.stdin:
+    # Collect the lines
+    input_lines.append(line)
+
+# Join the collected lines into a single string
+yaml_input = ''.join(input_lines)
+#print("hello")
+try:
+    # Parse the entire YAML input
+    data = yaml.safe_load(yaml_input)
+    
+    if data is not None:
+        print("Parsed YAML data:", yaml.dump(data, default_flow_style=False))
+        print(data['timestamp'])
+        data['outputs'] = []
+        for output in data:
+            print("Parsed YAML data:", yaml.dump(data, default_flow_style=False))
+            imp = copy.deepcopy(output)
+            
+
+            # Read new parameters and append them with new names
+            if 'potential_times' in imp:
+                imp['potential_times2'] = imp['potential_times']
+            if 'potential_locations' in imp:
+                imp['potential_locations2'] = imp['potential_locations']
+            print(imp)
+            data['outputs'].append(imp)
+        print(yaml.dump(data, default_flow_style=False))
+    else:
+        print("No valid YAML input provided.")
+except yaml.YAMLError as e:
+    print("Error parsing YAML:", e)
