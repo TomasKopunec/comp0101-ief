@@ -13,10 +13,9 @@ graph:
         - imager
       config:
         imager:
-          command: 'python3 /home/jim/comp0101-ief/Code/if-optimisation-models/src/lib/visualizer/imager'
+          command: 'python3 ./src/lib/visualizer/imager2'
       inputs:
         - timestamp: "2023-11-02T10:35:31.820Z"
-          potential_lsocations: ["ath", "spain"]
           duration: 3610
-          potential_locations: ["ath", "spain"]
-          potential_times: ["2023-11-02T10:35:31.820Z", "2023-11-02T10:35:31.820Z"]
+          potential_locations: ["ath", "spain","japan"]
+          potential_times: ["2023-11-02T10:35:31.820Z", "2023-12-03T10:35:31.220Z"]

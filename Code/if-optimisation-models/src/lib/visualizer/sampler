@@ -23,7 +23,7 @@ try:
   #
   #print(data)
   if data is not None:
-    data['outputs'] = []
+    
     data['energy']=1
     print(data)
     for output in data:

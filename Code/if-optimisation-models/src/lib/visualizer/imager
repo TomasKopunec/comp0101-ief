@@ -1,7 +1,30 @@
 #!/bin/env python3
 import sys
 import yaml
-import copy
+import matplotlib.pyplot as plt
+import random
+from datetime import datetime
+import os
+
+
+current_path = os.getcwd()
+
+def create_diagram(x_data, y_data, title, x_label, y_label, filename):
+    plt.figure(figsize=(10, 4))
+    plt.scatter(x_data, y_data)
+
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    # Save the plot to a file
+    plt.savefig(filename, bbox_inches='tight')
+    plt.close()  # Close the plot to avoid displaying it in the next plot
+    #print(f"Diagram saved as {filename}")
+
+# Function to assign random values
+def assign_random_values(data):
+    return [random.randint(1, 10) for _ in data]
 
 # Initialize an empty list to collect lines
 input_lines = []
@@ -12,28 +35,29 @@ for line in sys.stdin:
 
 # Join the collected lines into a single string
 yaml_input = ''.join(input_lines)
-#print("hello")
+
 try:
     # Parse the entire YAML input
-    data = yaml.safe_load(yaml_input)
+    data = yaml.safe_load(yaml_input)[0]
     
     if data is not None:
-        print("Parsed YAML data:", yaml.dump(data, default_flow_style=False))
-        print(data['timestamp'])
-        data['outputs'] = []
-        for output in data:
-            print("Parsed YAML data:", yaml.dump(data, default_flow_style=False))
-            imp = copy.deepcopy(output)
-            
+        # Extract potential_times and potential_locations
+        times = data['potential_times']
+        locations = data['potential_locations']
 
-            # Read new parameters and append them with new names
-            if 'potential_times' in imp:
-                imp['potential_times2'] = imp['potential_times']
-            if 'potential_locations' in imp:
-                imp['potential_locations2'] = imp['potential_locations']
-            print(imp)
-            data['outputs'].append(imp)
-        print(yaml.dump(data, default_flow_style=False))
+        # Convert times to datetime objects and assign random values
+        times = [datetime.fromisoformat(time.replace("Z", "+00:00")) for time in times]
+        time_values = assign_random_values(times)
+
+        # Assign random values to locations
+        location_values = assign_random_values(locations)
+
+        # Create and save the diagrams
+        create_diagram(times, time_values, 'Times and Values', 'Timestamp', 'Value', 'time_values_diagram.png')
+        create_diagram(locations, location_values, 'Locations and Values', 'Location', 'Value', 'location_values_diagram.png')
+        data['location_diagram'] = current_path + '/location_values_diagram.png'
+        data['time_diagram'] = current_path +  '/time_values_diagram.png'
+        print(data)
     else:
         print("No valid YAML input provided.")
 except yaml.YAMLError as e:

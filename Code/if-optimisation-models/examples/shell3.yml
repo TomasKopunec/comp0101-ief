@@ -13,7 +13,7 @@ graph:
         - sampler
       config:
         sampler:
-          command: python3 /home/jim/comp0101-ief/Code/if-optimisation-models/src/lib/visualizer/sampler
+          command: 'python3 ./src/lib/visualizer/imager'
       inputs:
         - timestamp: "2023-11-02T10:35:31.820Z"
           duration: 3600
