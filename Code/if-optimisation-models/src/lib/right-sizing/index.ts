@@ -1,7 +1,7 @@
 import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
 import { ModelParams } from '@grnsft/if-models/build/types/common';
 
-import { CPUDatabase, CPUFamily, CPU } from './CPUFamily';
+import { CPUDatabase, CPUFamily, CPU } from './azureCPUFamily';
 
 export class RightSizingModel implements ModelPluginInterface {
 
