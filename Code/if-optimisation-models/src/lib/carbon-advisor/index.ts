@@ -16,8 +16,9 @@ export class CarbonAdvisor implements ModelPluginInterface {
   private readonly ALLOWED_DATE_TO_PARAM_NAME = 'allowed-date-to';
 
   private allowedLocations: Set<string> | undefined;
-  private allowedDateFrom: string | undefined;
-  private allowedDateTo: string | undefined;
+  // private allowedDateFrom: string | undefined;
+  // private allowedDateTo: string | undefined;
+  private allowedTimeframeRegions: string[] | undefined;
 
   errorBuilder = buildErrorMessage(CarbonAdvisor);
 
@@ -37,43 +38,49 @@ export class CarbonAdvisor implements ModelPluginInterface {
   async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
     console.log('#execute()');
     this.validateInputs(inputs);
-
-    const {location, time, rating} = await this.getResponse();
-
-    return inputs.map(input => {
-      input['suggested-location'] = location;
-      input['suggested-timeframe'] = time;
-      input['suggested-score'] = rating;
-      return input;
-    });
+  
+    const results: ModelParams[] = [];
+    for (const timeframeRegion of this.allowedTimeframeRegions!) {
+      const [fromTime, toTime] = timeframeRegion.split(' - ');
+      const response = await this.getResponse(fromTime, toTime);
+  
+      // For each API call, enrich each input and set allowed-timeframe-regions to the current timeframeRegion only
+      const enrichedInputs = inputs.map(input => ({
+        ...input,
+        'suggested-location': response.location,
+        'suggested-timeframe': response.time,
+        'suggested-score': response.rating,
+        'allowed-timeframe-region': [timeframeRegion]  // Set to current timeframeRegion only
+      }));
+      results.push(...enrichedInputs);
+    }
+    return results;
   }
 
-  private async getResponse(): Promise<ResponseData> {
-    // TODO: Implement based on allowed-locations
-    const url = this.constructUrl();
+  private async getResponse(fromTime: string, toTime: string): Promise<ResponseData> {
+    const url = this.constructUrl(fromTime, toTime);
     console.info(`Sending request to ${url}`);
+    // Implement the actual API call here
+    // For now, returning hardcoded values for demonstration
     return {
       location: 'London',
-      time: '2020-01-01T00:00:00Z/2020-01-01T01:00:00Z',
+      time: `${fromTime}/${toTime}`,
       rating: 70
     };
   }
 
-  private constructUrl(): string {
+  private constructUrl(fromTime: string, toTime: string): string {
     const url = new URL("https://server.com" + this.ROUTE);
-
-    // https://server.com/emissions/bylocations/best?locations=europe&locations=us&time=2023-07-06T00%3A00&toTime=2023-10-06T01%3A00
-
     const params = new URLSearchParams();
-    for(const location of this.allowedLocations!) {
+    for (const location of this.allowedLocations!) {
       params.append('locations', location);
     }
-    params.append('time', this.allowedDateFrom!);
-    params.append('toTime', this.allowedDateTo!);
+    params.append('fromTime', fromTime);
+    params.append('toTime', toTime);
     url.search = params.toString();
     return url.toString();
   }
-
+  
   private validateInputs(inputs: ModelParams[]): void {
     console.log(JSON.stringify(inputs));
 
@@ -110,27 +117,15 @@ export class CarbonAdvisor implements ModelPluginInterface {
       this.throwError(InputValidationError, `Required Parameter ${this.ALLOWED_LOCATIONS_PARAM_NAME} is empty`);
     }
 
-    // Check if fromTime
-    const fromTime = map.get(this.ALLOWED_DATE_FROM_PARAM_NAME);
-    if (fromTime === undefined) {
-      this.throwError(InputValidationError, `Required Parameter ${this.ALLOWED_DATE_FROM_PARAM_NAME} not provided`);
-    }
+    const allowedTimeframeRegions = map.get('allowed-timeframe-regions');
+  if (!Array.isArray(allowedTimeframeRegions) || allowedTimeframeRegions.length === 0) {
+    this.throwError(InputValidationError, 'Required Parameter allowed-timeframe-regions is empty');
+  }
 
-    // Check if toTime
-    const toTime = map.get(this.ALLOWED_DATE_TO_PARAM_NAME);
-    if (toTime === undefined) {
-      this.throwError(InputValidationError, `Required Parameter ${this.ALLOWED_DATE_TO_PARAM_NAME} not provided`);
-    }
+  this.allowedLocations = new Set(allowedLocations);
+  this.allowedTimeframeRegions = allowedTimeframeRegions;
     
-    // Check if toTime is after fromTime
-    if (fromTime > toTime) {
-      this.throwError(InputValidationError, `Required Parameter ${this.ALLOWED_DATE_TO_PARAM_NAME} is before ${this.ALLOWED_DATE_FROM_PARAM_NAME}`);
-    }
     
-    // Set allowed locations and timeframes
-    this.allowedLocations = new Set(allowedLocations);
-    this.allowedDateFrom = fromTime;
-    this.allowedDateTo = toTime;
   }
 
   private throwError(type: ErrorConstructor, message: string) {
