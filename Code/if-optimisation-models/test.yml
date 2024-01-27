@@ -16,28 +16,24 @@ graph:
           command: python3 ./src/lib/visualizer/imager2
       inputs:
         - timestamp: '2023-11-02T10:35:31.820Z'
-          potential_lsocations:
-            - ath
-            - spain
           duration: 3610
           potential_locations:
             - ath
             - spain
+            - japan
           potential_times:
             - '2023-11-02T10:35:31.820Z'
-            - '2023-11-02T10:35:31.820Z'
+            - '2023-12-03T10:35:31.220Z'
       outputs:
         - timestamp: '2023-11-02T10:35:31.820Z'
-          potential_lsocations:
-            - ath
-            - spain
           duration: 3610
           potential_locations:
             - ath
             - spain
+            - japan
           potential_times:
             - '2023-11-02T10:35:31.820Z'
-            - '2023-11-02T10:35:31.820Z'
+            - '2023-12-03T10:35:31.220Z'
           command: python3 ./src/lib/visualizer/imager2
           diagram: >-
             /home/jim/comp0101-ief/Code/if-optimisation-models/combinations_diagram.png
