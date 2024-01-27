@@ -18,4 +18,5 @@ graph:
         - timestamp: "2023-11-02T10:35:31.820Z"
           duration: 3610
           potential_locations: ["ath", "spain","japan"]
-          potential_times: ["2023-11-02T10:35:31.820Z", "2023-12-03T10:35:31.220Z"]
+          potential_times: ["2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z", "2023-11-03T12:46:31.820Z - 2023-11-03T19:25:31.820Z"]
+          sampling: 4
