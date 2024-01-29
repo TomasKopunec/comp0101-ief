@@ -19,7 +19,7 @@ export class RightSizingModel implements ModelPluginInterface {
                 const instanceDataPath = configParams['data-path'];
                 if (instanceDataPath) {
                     if (typeof instanceDataPath === 'string') {
-                        this.database.loadModelData(instanceDataPath);
+                        await this.database.loadModelData(instanceDataPath);
                     } else {
                         console.error('Error: Invalid instance data path type.');
                     }

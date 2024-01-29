@@ -17,7 +17,7 @@ graph:
       inputs:
         - timestamp: 2023-07-06T00:00
           duration: 3600
-          cloud-vendor: 'azure'
-          cloud-instance-type: 'Standard_B16ls v2'
-          cpu-util: 0.4
+          cloud-vendor: 'aws'
+          cloud-instance-type: 'c4.4xlarge'
+          cpu-util: 0.5
 
