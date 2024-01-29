@@ -90,14 +90,15 @@ npm run if:dev -- --impl examples/tester.yml
 ```
 
 ## Debugging
-
 The debug configurations are already set up in this repository.
 
 Please use VSCode to open the `Code` folder, which contains both the IF and IF-Optimisation-Models repositories, and the vscode config files are also located in this folder.
 
 You can run the debug mode in VSCode debugger and it will run a impl files as specified in the debug configuration. There are two debug configurations, both utilise the dev mode to run the models.
 
-However, there's one thing to notice. You only need to run the debug mode `IF: Launch` for once, since then it will create a symbolic link from the IF repository to this repository and install the models to the IF repository. Any changes you make in this repository will be reflected in the IF repository. So once you have run the `IF: Launch` debug mode, you can run the `IF: Launch (No Install)` debug mode for the rest of the time.
+However, there's one thing to notice. You only need to run the debug mode `IF: Launch` for once, since then it will create a symbolic link from the IF repository to this repository and install the models to the IF repository.
+***The user might need to run it twice if Bugs were met***
+Any changes you make in this repository will be reflected in the IF repository. So once you have run the `IF: Launch` debug mode, you can run the `IF: Launch (No Install)` debug mode for the rest of the time.
 
 Also feel free to change the arguments in the debug configuration to run different impl files.
 
