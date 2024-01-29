@@ -5,7 +5,7 @@ initialize:
   models:
     - name: right-sizing
       model: RightSizingModel
-      path: "./right-sizing"
+      path: "@grnsft/if-optimisation-models"
 graph:
   children:
     child:
@@ -13,11 +13,11 @@ graph:
         - right-sizing
       config:
         right-sizing:
-          cpu-data-path: "data/intel_cpu_data.json"
+          data-path: 'data/aws-instances.json'
       inputs:
         - timestamp: 2023-07-06T00:00
           duration: 3600
           cloud-vendor: 'azure'
-          cloud-instance-type: 'Standard_NC24s_v3'
-          cpu-model: 'Intel® Core™ i7-1185G7'
+          cloud-instance-type: 'Standard_B16ls v2'
+          cpu-util: 0.4
 
