@@ -30,4 +30,5 @@ npm run install-and-exec:local -- --impl "$impl_file" --ompl "$ompl_file" 2>&1 |
 echo "[Output]"
 cat "$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'
 
-printf "\nDone."
+echo "[The output is saved in $ompl_file]"
+printf "Done\n"
