@@ -13,9 +13,8 @@ graph:
         - carbon-advisor
       config:
         carbon-advisor:
-          allowed-locations: ['europe', 'us']
-          allowed-date-from: '2023-07-06'
-          allowed-date-to: '2023-10-06'
+          allowed-locations: ['eastus', 'ukwest']
+          allowed-timeframes: ["2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z"]
       inputs:
         - timestamp: 2023-07-06T00:00
           duration: 3600

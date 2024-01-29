@@ -25,7 +25,10 @@ echo "--ompl=$ompl_file"
 
 # Run the local model
 # npm run if:local -- --impl "$impl_file" --ompl "$ompl_file" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
-npm run install-and-exec:local -- --impl "$impl_file" --ompl "$ompl_file" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
+npm run install-and-exec:local -- --impl "$impl_file" --ompl "$ompl_file" 2>&1 \
+    | grep -v 'DeprecationWarning' \
+    | grep -v 'warning' \
+    | sed -n '/#configure()/,$p'
 
 echo "[Output]"
 cat "$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'

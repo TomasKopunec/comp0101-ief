@@ -16,7 +16,7 @@ graph:
           allowed-locations:
             - europe
             - us
-          allowed-timeframe-regions:
+          allowed-timeframes:
             - 2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z
             - 2023-11-03T10:35:31.820Z - 2023-11-03T11:35:31.820Z
       inputs:
@@ -32,13 +32,13 @@ graph:
           allowed-locations:
             - europe
             - us
-          allowed-timeframe-regions:
+          allowed-timeframes:
             - 2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z
             - 2023-11-03T10:35:31.820Z - 2023-11-03T11:35:31.820Z
           suggested-location: London
           suggested-timeframe: 2023-11-02T10:35:31.820Z/2023-11-02T11:35:31.820Z
           suggested-score: 70
-          allowed-timeframe-region:
+          allowed-timeframes:
             - 2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z
         - timestamp: 2023-07-06T00:00
           duration: 3600
@@ -47,11 +47,11 @@ graph:
           allowed-locations:
             - europe
             - us
-          allowed-timeframe-regions:
+          allowed-timeframes:
             - 2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z
             - 2023-11-03T10:35:31.820Z - 2023-11-03T11:35:31.820Z
           suggested-location: London
           suggested-timeframe: 2023-11-03T10:35:31.820Z/2023-11-03T11:35:31.820Z
           suggested-score: 70
-          allowed-timeframe-region:
+          allowed-timeframes:
             - 2023-11-03T10:35:31.820Z - 2023-11-03T11:35:31.820Z
