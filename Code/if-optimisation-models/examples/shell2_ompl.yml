@@ -1,0 +1,51 @@
+name: shell-demo
+description: example impl invoking shell model
+tags: null
+initialize:
+  models:
+    - name: imager
+      path: '@grnsft/if-optimisation-models'
+      model: Visualizer
+graph:
+  children:
+    child:
+      pipeline:
+        - imager
+      config:
+        imager:
+          command: python3 ./src/lib/visualizer/imager2
+      inputs:
+        - timestamp: '2023-11-02T10:35:31.820Z'
+          duration: 3610
+          potential_locations:
+            - ath
+            - spain
+            - japan
+          potential_times:
+            - 2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z
+            - 2023-11-03T12:46:31.820Z - 2023-11-03T19:25:31.820Z
+          sampling: 4
+      outputs:
+        - timestamp: '2023-11-02T10:35:31.820Z'
+          duration: 3610
+          potential_locations:
+            - ath
+            - spain
+            - japan
+          potential_times:
+            - 2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z
+            - 2023-11-03T12:46:31.820Z - 2023-11-03T19:25:31.820Z
+          sampling: 4
+          command: python3 ./src/lib/visualizer/imager2
+          individual_times:
+            - '2023-11-02T10:35:31.820000Z'
+            - '2023-11-03T12:46:31.820000Z'
+            - '2023-11-03T14:59:31.820000Z'
+            - '2023-11-03T17:12:31.820000Z'
+          response_values:
+            - 122
+            - 122
+            - 122
+            - 122
+          diagram: >-
+            /home/jim/comp0101-ief/Code/if-optimisation-models/combinations_diagram.png

@@ -7,6 +7,18 @@ from datetime import datetime,timedelta
 import os
 import itertools
 import random
+import requests
+import json
+import time
+
+# Wait for 1 second
+
+url = "http://localhost:5073/emissions/forecasts/current"
+
+# Define the parameters
+params1 = {
+    'location': 'northeurope'
+}
 
 
 def calculate_subrange_allocation(timestamp_ranges, sampling):
@@ -99,6 +111,8 @@ for line in sys.stdin:
 # Join the collected lines into a single string
 yaml_input = ''.join(input_lines)
 
+
+
 try:
     # Parse the entire YAML input
     data = yaml.safe_load(yaml_input)[0]
@@ -118,20 +132,38 @@ try:
         # Select an individual timestamp from each sub-range
         individual_times = [sub_range.split(' - ')[0] for sub_range in all_sub_ranges]  # Selects the start of each sub-range
         data['individual_times'] = individual_times
+        response_values = []
+        for ind_time in individual_times:
+            time.sleep(1)
+            response = requests.get(url, params=params1)
+            
+            # Check if the request was successful
+            if response.status_code == 200:
+                #print("Request was successful.")
+                data1= json.loads(response.text)
+                response_values.append(data1[0]['optimalDataPoints'][0]['value'])
+                # Access and print the 'value' from 'optimalDataPoints'
+                #print(data[0]['optimalDataPoints'][0]['value'])
+                # Print the content of the response (as text)
+                
+            else:
+                #print(f"Request failed with status code: {response.status_code}")
+                response_values.append("error")
         #print(individual_times)
 # Convert times to datetime objects and assign random values
+        data['response_values'] = response_values
         combinations = generate_combinations(individual_times, locations)
         # print(combinations)
 
 
         combo_values = assign_random_values(combinations)
         sorted_combo_values = sort_by_value(combo_values)
-        # print(sorted_combo_values)
+        #print(sorted_combo_values)
 
 # Plot and save the diagram
         plot_combinations(sorted_combo_values, "combinations_diagram.png")
         data['diagram'] = current_path + '/combinations_diagram.png'
-
+        
         print(data)
     else:
         print("No valid YAML input provided.")
