@@ -1,6 +1,6 @@
 # Carbon Emissions Analyzer
 
-This Python script analyzes carbon emissions data by interacting with a specified API, processing input configurations from a YAML file, and outputting the optimal results back into a modified YAML file.
+This Python script analyzes carbon emissions data by interacting with a specified API, processing input configurations from a YAML file, and outputting the optimal results back into a modified YAML file. It is used to test if the results will be the same as using the carbon_advisor model. It is one of 2 tests for the carbon advisor. This one uses the SDK APIs the other does recursive calls to the impact engine.
 
 ## Features
 
