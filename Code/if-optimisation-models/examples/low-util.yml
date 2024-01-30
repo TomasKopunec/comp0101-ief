@@ -18,21 +18,21 @@ graph:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
           cloud-vendor: azure
-          cpu-util: '0.5'
+          cpu-util: 0.5
           mem-availableGB: 0.488636416
           mem-usedGB: 0.5113635839999999
-          total-memoryGB: '1'
+          total-memoryGB: 1
           mem-util: 51.13635839999999
           location: uksouth
-          cloud-instance-type: B16ps v2
+          cloud-instance-type: 'B16ps v2'
         - timestamp: '2023-11-02T10:40:00.000Z'
           duration: 300
           cloud-vendor: azure
-          cpu-util: '0.75'
+          cpu-util: 0.75
           mem-availableGB: 0.48978984960000005
           mem-usedGB: 0.5102101504
-          total-memoryGB: '1'
+          total-memoryGB: 1
           mem-util: 51.021015039999995
           location: uksouth
-          cloud-instance-type: F32s v2
+          cloud-instance-type: 'F32s v2'
 
