@@ -1,0 +1,184 @@
+#!/bin/env python3
+import sys
+import yaml
+import matplotlib.pyplot as plt
+import random
+from datetime import datetime,timedelta
+import os
+import random
+import requests
+import json
+import time
+import random
+
+
+
+
+
+def add_unique_random_values(list_a, list_b, x):
+    """
+    Adds x unique random values from list_a to list_b. The values added to list_b
+    are ensured not to already exist in list_b.
+
+    :param list_a: Source list from which to sample the values.
+    :param list_b: Destination list to which the unique random values will be added.
+    :param x: Number of unique random values to add from list_a to list_b.
+    """
+    # Filter list_a to only include values not already in list_b
+    unique_values = [item for item in list_a if item not in list_b]
+    
+    # Check if there are enough unique values to sample
+    if len(unique_values) < x:
+        print(f"Warning: Only {len(unique_values)} unique values available to add, requested {x}.")
+        x = len(unique_values)  # Adjust x to the number of unique values available
+
+    # Sample x unique values from the filtered list
+    random_values = random.sample(unique_values, x)
+
+    # Add the sampled values to list_b
+    list_b.extend(random_values)
+
+    return list_b
+
+def parse_timestamp(timestamp):
+    if ' - ' in timestamp:
+        start, end = map(str.strip, timestamp.split(' - '))
+        return start, end
+    else:
+        raise ValueError(f"Error: timestamp format is not correct {timestamp}")
+
+def get_best_per_timeframe(start_time, finish_time, regions_list):
+    url = "http://localhost:5073/emissions/bylocations/best"
+    params = {
+        'location': regions_list,
+        'time': start_time,
+        'toTime': finish_time
+    }
+    #print(params)  # Debugging: Print the parameters for the request
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        data = json.loads(response.text)
+        return data
+    else:
+        raise ValueError(f"Request failed with status code: {response.status_code}")
+
+def get_all_per_timeframe(start_time, finish_time, regions_list):
+    url = "http://localhost:5073/emissions/bylocations"
+    params = {
+        'location': regions_list,
+        'time': start_time,
+        'toTime': finish_time
+    }
+    #print(params)  # Debugging: Print the parameters for the request
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        data = json.loads(response.text)
+        return data
+    else:
+        raise ValueError(f"Request failed with status code: {response.status_code}")
+
+
+def calculate_subrange_allocation(timestamp_ranges, sampling):
+    durations = []
+    for range_str in timestamp_ranges:
+        start_str, end_str = range_str.split(' - ')
+        # Remove 'Z' and parse
+        start = datetime.fromisoformat(start_str.rstrip('Z'))
+        end = datetime.fromisoformat(end_str.rstrip('Z'))
+        durations.append(end - start)
+    total_duration = sum(durations, timedelta())
+    allocations = [int(round(sampling * (duration / total_duration))) for duration in durations]
+    
+    # Adjust allocations to ensure the sum equals sampling
+    while sum(allocations) > sampling:
+        max_index = allocations.index(max(allocations))
+        allocations[max_index] -= 1
+    while sum(allocations) < sampling:
+        min_index = allocations.index(min(allocations))
+        allocations[min_index] += 1
+
+    return allocations
+
+
+
+
+
+def plot_location_time_values(visuals,filename):
+    """
+    Plots a bar graph of Location_Time vs Value from a list of objects.
+    
+    :param visuals: List of dictionaries, each containing 'location', 'time', 'rating', and 'duration' keys.
+    """
+    # Sort the visuals based on the 'rating' value
+    visuals_sorted = sorted(visuals, key=lambda x: x['rating'])
+
+    # Create labels for the x-axis by combining 'location' and the date part of 'time'
+    labels = [f"{item['location']}_{item['time'].split('T')[0]}" for item in visuals_sorted]
+
+    # Extract the 'rating' values for the y-axis
+    values = [item['rating'] for item in visuals_sorted]
+
+    # Create a bar graph
+    plt.figure(figsize=(10, 6))
+    plt.bar(labels, values, color='skyblue')
+
+    # Set the title and labels for the axes
+    plt.title('Location_Time vs Value')
+    plt.xlabel('Location_Time')
+    plt.ylabel('Value')
+
+    # Rotate the x-axis labels for better readability
+    plt.xticks(rotation=45, ha='right')
+
+    # Display the plot
+    plt.tight_layout()  # Adjust layout to prevent cutting off labels
+    plt.savefig(filename)
+
+current_path = os.getcwd()
+input_lines = []
+
+for line in sys.stdin:
+    # Collect the lines
+    input_lines.append(line)
+# Join the collected lines into a single string
+yaml_input = ''.join(input_lines)
+
+
+
+try:
+    # Parse the entire YAML input
+    data = yaml.safe_load(yaml_input)[0]
+    
+    if data is not None:
+        # Extract potential_times and potential_locations
+        times = data['allowed-timeframes']
+        locations = data['allowed-locations']
+        sampling = data['sampling']
+        allocations = calculate_subrange_allocation(times, sampling)
+        #print(allocations)
+        
+
+        # Select an individual timestamp from each sub-range
+        
+        response_values = []
+        for timeframe in times:
+            allocation=allocations.pop(0)
+            start,end =parse_timestamp(timeframe)
+            time.sleep(1)
+            response = get_best_per_timeframe(start,end,locations)
+            response_values.append(random.choice(response))
+            time.sleep(1)
+            response_all= get_all_per_timeframe(start,end,locations)
+            add_unique_random_values(response_all,response_values,allocation-1)
+        # Plot and save the diagram
+        plot_location_time_values(response_values,'combinations_diagram.png')
+        data['ploted_values'] = response_values
+        data['diagram'] = current_path + '/combinations_diagram.png'
+        
+        print(data)
+    else:
+        print("No valid YAML input provided.")
+except yaml.YAMLError as e:
+    print("Error parsing YAML:", e)

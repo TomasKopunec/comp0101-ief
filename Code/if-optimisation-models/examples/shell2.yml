@@ -13,10 +13,15 @@ graph:
         - imager
       config:
         imager:
-          command: 'python3 ./src/lib/visualizer/imager2'
+          command: 'python3 ./src/lib/visualizer/visualize'
+          allowed-locations:  ['northeurope','eastus','westus']
+          allowed-timeframes: [
+            "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z"
+          ]
+          sampling: 4
       inputs:
         - timestamp: "2023-11-02T10:35:31.820Z"
           duration: 3610
-          potential_locations: ["ath", "spain","japan"]
-          potential_times: ["2023-11-02T10:35:31.820Z - 2023-11-02T11:35:31.820Z", "2023-11-03T12:46:31.820Z - 2023-11-03T19:25:31.820Z"]
-          sampling: 4
+          
+          
