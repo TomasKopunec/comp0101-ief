@@ -19,6 +19,8 @@ export class RightSizingModel implements ModelPluginInterface {
     }
 
     public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
+        
+
         if (configParams && 'data-path' in configParams) {
             const instanceDataPath = configParams['data-path'];
             if (typeof instanceDataPath === 'string') {
@@ -57,6 +59,12 @@ export class RightSizingModel implements ModelPluginInterface {
         return Promise.resolve(outputs);
     }
 
+    /**
+     * Validate the input parameters object, check if the necessary parameters are present.
+     * 
+     * @param input Input model parameters object to be validated
+     * @returns True if the input is valid, false otherwise
+     */
     private validateSingleInput(input: ModelParams) {
         const schema = z
             .object({
@@ -71,7 +79,12 @@ export class RightSizingModel implements ModelPluginInterface {
         return validate<z.infer<typeof schema>>(schema, input);
     }
 
-
+    /**
+     * Process a single input instance, calculate the right-sizing and return the processed output instances.
+     * 
+     * @param input One single input instance (one input instance in the yaml file) to be processed
+     * @returns Processed output instances (one or more) for the input instance
+     */
     private processInput(input: ModelParams): ModelParams[] {
         let outputs: ModelParams[] = [];
         if (this.validateSingleInput(input)) {
@@ -95,6 +108,14 @@ export class RightSizingModel implements ModelPluginInterface {
         return outputs;
     }
 
+    /**
+     * Calculate the optimal combination of instances to fulfill the required vCPUs, based on the CPU utilization given by the input.
+     * Implemented using a knapsack-like algorithm.
+     * 
+     * @param cloudInstance The cloud instance object to be right-sized, the instance must be in the database
+     * @param cpuUtil The percentage of CPU utilization, must be between 0 and 1
+     * @returns The optimal combination of instances to fulfill the required vCPUs, returns by an array of tuples which contains the instance and the percentage of utilization
+     */
     private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number): [CloudInstance, number][] {
         if (cpuUtil < 0 || cpuUtil > 1) {
             throw new Error('CPU utilization must be between 0 and 1');
