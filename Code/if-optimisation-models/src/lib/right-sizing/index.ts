@@ -86,7 +86,7 @@ export class RightSizingModel implements ModelPluginInterface {
             res.forEach(([instance, util]) => {
                 let output = { ...input }; // copy input to create new output
                 output['cloud-instance-type'] = instance.model;
-                output['cpu-util'] = util.toString(); // convert back to string if needed
+                output['cpu-util'] = util
                 outputs.push(output);
             });
         } else {
