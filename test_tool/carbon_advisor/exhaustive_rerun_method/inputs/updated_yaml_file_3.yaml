@@ -1,0 +1,20 @@
+name: cloud-instance-metadata
+description: simple demo invoking metadata lookup
+tags:
+initialize:
+  models:
+  - name: cloud-instance-metadata
+    model: CloudInstanceMetadataModel
+    path: '@grnsft/if-models'
+graph:
+  children:
+    child:
+      pipeline:
+      - cloud-instance-metadata
+      config:
+        cloud-instance-metadata:
+      inputs:
+      - timestamp: '2022-07-19T15:00:00Z'
+        duration: 3600
+        cloud-vendor: azure
+        cloud-instance-type: Standard_NC24s_v3
