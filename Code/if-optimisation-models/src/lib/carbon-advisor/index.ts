@@ -1,11 +1,12 @@
 import axios from 'axios';
-
 import { KeyValuePair, ModelParams } from '@grnsft/if-unofficial-models/build/types/common';
 import { ModelPluginInterface } from '@grnsft/if-unofficial-models/build/interfaces';
 import { buildErrorMessage } from '@grnsft/if-unofficial-models/build/util/helpers';
 
 import { ERRORS } from '@grnsft/if-unofficial-models/build/util/errors';
 const { InputValidationError } = ERRORS;
+
+ // Make sure you have the 'qs' library installed
 
 
 export class CarbonAdvisor implements ModelPluginInterface {
@@ -59,32 +60,83 @@ export class CarbonAdvisor implements ModelPluginInterface {
     return this;
   }
 
+  // async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
+  //   console.log('#execute()');
+  //   this.validateInputs(inputs);
+
+  //   const results: ModelParams[] = [];
+  //   for (const timeframe of this.allowedTimeframes!) {
+  //     const response = {
+  //       location: 'westus',
+  //       time: '2022-08-01T19:00:00Z',
+  //       rating: 0.5
+  //     }  // TODO: await this.getResponse(fromTime, toTime);
+
+  //     // For each API call, enrich each input and set allowed-timeframes to the current timeframeonly
+  //     const enrichedInputs = inputs.map(input => ({
+  //       ...input,
+  //       'suggested-location': response.location,
+  //       'suggested-timeframe': response.time,
+  //       'suggested-score': response.rating//,
+  //       // 'allowed-timeframe': `${timeframe.from} - ${timeframe.to}`  // TODO: set to current timeframe only
+  //     }));
+  //     results.push(...enrichedInputs);
+  //   }
+
+  //   return results;
+  // }
+
   async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
     console.log('#execute()');
     this.validateInputs(inputs);
-
-    const results: ModelParams[] = [];
-    for (const timeframe of this.allowedTimeframes!) {
-      const response = {
-        location: 'westus',
-        time: '2022-08-01T19:00:00Z',
-        rating: 0.5
-      }  // TODO: await this.getResponse(fromTime, toTime);
-
-      // For each API call, enrich each input and set allowed-timeframes to the current timeframeonly
-      const enrichedInputs = inputs.map(input => ({
-        ...input,
-        'suggested-location': response.location,
-        'suggested-timeframe': response.time,
-        'suggested-score': response.rating//,
-        // 'allowed-timeframe': `${timeframe.from} - ${timeframe.to}`  // TODO: set to current timeframe only
-      }));
-      results.push(...enrichedInputs);
+  
+    let results: ModelParams[] = inputs.map(input => ({
+      ...input,
+      suggestions: [] // Initialize an empty array to hold all suggestions
+    }));
+  
+    const locationsArray = Array.from(this.allowedLocations);
+    let allResponses: any[] = []; // Array to store all response items
+  
+    for (const timeframe of this.allowedTimeframes) {
+      const startTime = timeframe.from;
+      const endTime = timeframe.to;
+  
+      const route = "/emissions/bylocations/best";
+      const params = {
+        location: locationsArray,
+        time: startTime,
+        toTime: endTime
+      };
+  
+      try {
+        const response = await this.getResponse(route, 'GET', params);
+        console.log('API call succeeded for timeframe', timeframe, 'with response:', response);
+        allResponses = allResponses.concat(response); // Store all response items
+      } catch (error) {
+        console.error('API call failed for timeframe', timeframe, 'with error:', error);
+      }
     }
-
+  
+    // Determine the lowest rating among all responses
+    const lowestRating = Math.min(...allResponses.map(item => item.rating));
+  
+    // Filter all responses to get items with the lowest rating
+    const lowestRatingItems = allResponses.filter(item => item.rating === lowestRating);
+  
+    // Include all items with the lowest rating in the suggestions
+    lowestRatingItems.forEach(item => {
+      results[0].suggestions.push({
+        'suggested-location': item.location,
+        'suggested-timeframe': item.time,
+        'suggested-score': item.rating
+      });
+    });
+  
+    console.log('Results:', results);
     return results;
   }
-
+  
   /**
    * Send a request to the carbon-aware-sdk API to get the list of supported locations.
    */
@@ -112,31 +164,39 @@ export class CarbonAdvisor implements ModelPluginInterface {
    * @returns The response from the API of any type.
    * @throws Error if the request fails and stops the execution of the model.
    */
-  private async getResponse(route: string,
-    method: string = 'GET',
-    params: Map<string, string> | null = null): Promise<any> {
-
+  private async getResponse(route: string, method: string = 'GET', params: any = null): Promise<any> {
     const url = new URL(`${this.API_URL}${route}`);
 
-    // Add parameters to the URL
-    if (params !== null) {
-      params.forEach((value, key) => {
-        url.searchParams.append(key, value);
-      });
+    // Manually serialize params to match the required format: 'location=eastus&location=westus&...'
+    let queryString = '';
+    if (params) {
+        queryString = Object.entries(params).map(([key, value]) => {
+            if (Array.isArray(value)) {
+                // Convert each value to a string before encoding and repeat the key for each value in the array
+                return value.map(v => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`).join('&');
+            } else {
+                // Convert value to a string before encoding and directly append to query string
+                return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+            }
+        }).join('&');
     }
 
-    // Send request
-    console.log(`Sending ${method} request to ${url.toString()}`);
-    return axios.request({
-      url: url.toString(),
-      method: method
+    const finalUrl = `${url}${queryString ? '?' + queryString : ''}`;
+
+    //console.log(`Sending ${method} request to ${finalUrl}`);
+
+    return axios({
+        url: finalUrl,
+        method: method,
     }).then((response) => {
-      return response.data;
+        return response.data;
     }).catch((error) => {
-      console.log(error);
-      this.throwError(Error, error);
+        console.error(error);
+        this.throwError(Error, error.message);
     });
-  }
+}
+
+
 
   private validateInputs(inputs: ModelParams[]): void {
     console.log(JSON.stringify(inputs));
