@@ -1,4 +1,4 @@
-import { z, object } from 'zod';
+import { z } from 'zod';
 
 import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
 import { ModelParams } from '@grnsft/if-models/build/types/common';
@@ -70,7 +70,7 @@ export class RightSizingModel implements ModelPluginInterface {
             .object({
                 'cloud-instance-type': z.string(),
                 'cloud-vendor': z.string(),
-                'cpu-util': z.number().gte(0).lte(1)
+                'cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/))
             })
             .refine(atLeastOneDefined, {
                 message: `At least one of ${this.cpuMetrics} should present.`,
@@ -92,14 +92,22 @@ export class RightSizingModel implements ModelPluginInterface {
             input['old-cpu-util'] = input['cpu-util'];
 
             let instance = this.database.getInstancesByModel(input['cloud-instance-type']);
-            let util = parseFloat(input['cpu-util']); // ensure cpu-util is a number
+            let util: number;
+            // ensure cpu-util is a number
+            if (typeof input['cpu-util'] === 'number') {
+                util = input['cpu-util'] as number;
+            }else if (typeof input['cpu-util'] === 'string'){
+                util = parseFloat(input['cpu-util']);
+            }else{
+                throw new Error('cpu-util must be a number or string');
+            }
             let res = this.calculateRightSizing(instance, util);
 
             // for each instance combination, create a new output
             res.forEach(([instance, util]) => {
                 let output = { ...input }; // copy input to create new output
                 output['cloud-instance-type'] = instance.model;
-                output['cpu-util'] = util.toString(); // convert back to string if needed
+                output['cpu-util'] = util; // convert back to string if needed
                 outputs.push(output);
             });
         } else {

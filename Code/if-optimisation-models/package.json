@@ -4,7 +4,7 @@
   "description": "Optimisation models for IF (Impact Framework)",
   "main": "build/index.js",
   "scripts": {
-    "start": "npm run if",
+    "start": "npm run install-and-exec:local",
     "build": "rm -rf build && tsc --project tsconfig.build.json",
     "install2if": "./install2if.sh local",
     "install2if:local": "./install2if.sh local",
