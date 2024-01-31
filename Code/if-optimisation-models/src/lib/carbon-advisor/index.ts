@@ -66,8 +66,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
     const results: ModelParams[] = [];
     for (const timeframe of this.allowedTimeframes!) {
       const response = {
-        location: 'London',
-        time: 'suggested-time-1',
+        location: 'westus',
+        time: '2022-08-01T19:00:00Z',
         rating: 0.5
       }  // TODO: await this.getResponse(fromTime, toTime);
 
@@ -76,8 +76,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
         ...input,
         'suggested-location': response.location,
         'suggested-timeframe': response.time,
-        'suggested-score': response.rating,
-        'allowed-timeframe': `${timeframe.from} - ${timeframe.to}`  // TODO: set to current timeframe only
+        'suggested-score': response.rating//,
+        // 'allowed-timeframe': `${timeframe.from} - ${timeframe.to}`  // TODO: set to current timeframe only
       }));
       results.push(...enrichedInputs);
     }
