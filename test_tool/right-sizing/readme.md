@@ -25,7 +25,7 @@ This Python script is designed to read CPU utilization and instance types from t
 6. Run the script using the following command, replacing `<yaml_file_path>` with the path to your input YAML file:
 
    ```
-   python script.py <yaml_file_path>
+   python right-sizer.py <yaml_file_path>
    ```
 
 The script will read the input YAML file, extract CPU utilization and instance types, and then find optimal combinations of new CPU instances that match or exceed the required utilization. It will compare these combinations against the JSON file (`results.json`) to validate if the optimization matches any pof the ones produced by thee ief.
