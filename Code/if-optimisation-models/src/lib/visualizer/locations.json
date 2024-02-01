@@ -1,0 +1,49 @@
+{
+    "europe_azure": [
+      "northeurope",
+      "westeurope",
+      "uksouth",
+      "ukwest"
+      
+    ],
+    "europe_aws": [
+      "eu-central-1",
+      "eu-west-1",
+      "eu-west-2",
+      "eu-west-3",
+      "eu-north-1"
+    ],
+    "asia_azure": [
+      "eastasia",
+      "southeastasia",
+      "japaneast",
+      "japanwest"
+    ],
+    "asia_aws": [
+      "ap-east-1",
+      "ap-southeast-1",
+      "ap-southeast-2",
+      "ap-northeast-1",
+      "ap-northeast-2",
+      "ap-south-1"
+    ],
+    "northamerica_azure": [
+      "eastus",
+      "eastus2",
+      "centralus",
+      "northcentralus",
+      "southcentralus",
+      "westus",
+      "westus2",
+      "canadacentral",
+      "canadaeast"
+    ],
+    "northamerica_aws": [
+      "us-east-1",
+      "us-east-2",
+      "us-west-1",
+      "us-west-2",
+      "ca-central-1"
+    ]
+  }
+  

@@ -13,7 +13,11 @@ import random
 
 
 
-
+region_locations = {
+    "europe": ["northeurope", "westeurope", "uksouth", "ukwest"],  # Add more Azure/AWS Europe locations
+    "asia": ["eastasia", "southeastasia", "japaneast", "japanwest"],  # Add more Azure/AWS Asia locations
+    "world": []  # This will be populated with all locations
+}
 
 def add_unique_random_values(list_a, list_b, x):
     """
@@ -102,7 +106,37 @@ def calculate_subrange_allocation(timestamp_ranges, sampling):
     return allocations
 
 
+# Function to expand location keywords using the loaded mappings
+def expand_location_keywords(locations_input, region_mappings):
+    expanded_locations = []
+    for location in locations_input:
+        if location in region_mappings:
+            expanded_locations.extend(region_mappings[location])
+        else:
+            expanded_locations.append(location)
+    return expanded_locations
 
+
+
+def load_region_mappings(filename='src/lib/visualizer/locations.json'):
+    with open(filename, 'r') as file:
+        region_mappings = json.load(file)
+
+    # Initialize sets to hold all Azure and AWS locations
+    all_azure_locations = set()
+    all_aws_locations = set()
+
+    # Loop through the loaded mappings and aggregate locations for Azure and AWS
+    for region, locations in region_mappings.items():
+        if 'azure' in region:
+            all_azure_locations.update(locations)
+        elif 'aws' in region:
+            all_aws_locations.update(locations)
+    # Add the aggregated locations to the mappings under 'all_azure' and 'all_aws'
+    region_mappings['all_azure'] = list(all_azure_locations)
+    region_mappings['all_aws'] = list(all_aws_locations)
+
+    return region_mappings
 
 
 def plot_location_time_values(visuals,filename):
@@ -154,7 +188,11 @@ try:
     if data is not None:
         # Extract potential_times and potential_locations
         times = data['allowed-timeframes']
-        locations = data['allowed-locations']
+        locations_orig = data['allowed-locations']
+        
+        region_mappings = load_region_mappings()
+        # print(region_mappings)
+        locations = expand_location_keywords(locations_orig,region_mappings)
         sampling = data['sampling']
         allocations = calculate_subrange_allocation(times, sampling)
         #print(allocations)
