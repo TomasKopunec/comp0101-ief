@@ -3,10 +3,12 @@ import * as fs from 'fs/promises';
 export class CloudInstance {
     public model: string;
     public vCPUs: number;
+    public RAM: number;
 
-    constructor(model: string, vCPUs: number) {
+    constructor(model: string, vCPUs: number, RAM: number) {
         this.model = model;
         this.vCPUs = vCPUs;
+        this.RAM = RAM;
     }
 }
 
@@ -50,12 +52,12 @@ export class CPUDatabase {
 
             for (const familyName in jsonData) {
                 const models = jsonData[familyName];
-                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs));
+                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM));
                 this.familyToModels.set(familyName, cpuModels);
 
                 models.forEach((model: any) => {
                     this.modelToFamily.set(model.model, familyName);
-                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs));
+                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM));
                 });
             }
         } catch (error) {
@@ -69,12 +71,12 @@ export class CPUDatabase {
      * @param modelName The name of the instance model.
      * @returns An array of the family of the instance model, or null if the model is not found.
      */
-    public getModelFamily(modelName: string): { model: string, vCPUs: number }[] | null {
+    public getModelFamily(modelName: string): { model: string, vCPUs: number, RAM: number }[] | null {
         const familyName = this.modelToFamily.get(modelName);
         if (familyName) {
             const models = this.familyToModels.get(familyName);
             if (models) {
-                return models.map(cpu => ({ model: cpu.model, vCPUs: cpu.vCPUs }));
+                return models.map(cpu => ({ model: cpu.model, vCPUs: cpu.vCPUs, RAM: cpu.RAM }));
             }
         }
         return null;
