@@ -1,0 +1,67 @@
+graph:
+  outputs: # total per time bucket for the whole graph
+    - timestamp: 2023-01-24T11:00
+      duration: 360        
+      carbon: 19
+    - timestamp: 2023-01-24T11:05
+      duration: 360        
+      carbon: 12
+    - timestamp: 2023-01-24T11:10
+      duration: 360        
+      carbon: 12
+  aggregated:
+    carbon: 43        
+  children:
+    application:
+      outputs: # aggregated up the tree for every grouping node
+        - timestamp: 2023-01-24T11:00
+          duration: 360        
+          carbon: 19
+        - timestamp: 2023-01-24T11:05
+          duration: 360        
+          carbon: 12
+        - timestamp: 2023-01-24T11:10
+          duration: 360        
+          carbon: 12      
+      aggregated:
+        carbon: 43          
+      children:
+        vm1:
+          outputs: 
+            - timestamp: 2023-01-24T11:00
+              duration: 360        
+              carbon: 3
+            - timestamp: 2023-01-24T11:05
+              duration: 360        
+              carbon: 4
+            - timestamp: 2023-01-24T11:10
+              duration: 360        
+              carbon: 5                  
+          aggregated:
+            carbon: 12
+        vm2:
+          outputs: 
+            - timestamp: 2023-01-24T11:00
+              duration: 360        
+              carbon: 4
+            - timestamp: 2023-01-24T11:05
+              duration: 360        
+              carbon: 5
+            - timestamp: 2023-01-24T11:10
+              duration: 360        
+              carbon: 6    
+          aggregated:
+            carbon: 15                            
+        vm3:
+          outputs: 
+            - timestamp: 2023-01-24T11:00
+              duration: 360        
+              carbon: 12
+            - timestamp: 2023-01-24T11:05
+              duration: 360        
+              carbon: 3
+            - timestamp: 2023-01-24T11:10
+              duration: 360        
+              carbon: 1                                                
+          aggregated:
+            carbon: 16      
