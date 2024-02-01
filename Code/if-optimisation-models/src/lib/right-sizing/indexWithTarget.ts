@@ -70,7 +70,8 @@ export class RightSizingModel implements ModelPluginInterface {
             .object({
                 'cloud-instance-type': z.string(),
                 'cloud-vendor': z.string(),
-                'cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/))
+                'cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+                'target-cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional(),
             })
             .refine(atLeastOneDefined, {
                 message: `At least one of ${this.cpuMetrics} should present.`,
@@ -172,7 +173,7 @@ export class RightSizingModel implements ModelPluginInterface {
                 if (requiredCPUs >= instance.vCPUs) {
                     optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
                 } else {
-                    let usage = requiredCPUs / instance.vCPUs
+                    let usage = requiredCPUs / instance.vCPUs * targetUtil;
                     optimalCombination.push([instance, usage]); // use partial capacity of this instance
                 }
                 remainingCPUs -= instance.vCPUs;
@@ -185,7 +186,7 @@ export class RightSizingModel implements ModelPluginInterface {
         if (remainingCPUs > 0) {
             const nextSmallestInstance = sortedFamily.find(inst => inst.vCPUs >= remainingCPUs);
             if (nextSmallestInstance) {
-                optimalCombination.push([nextSmallestInstance, remainingCPUs / nextSmallestInstance.vCPUs]);
+                optimalCombination.push([nextSmallestInstance, remainingCPUs / nextSmallestInstance.vCPUs * targetUtil]);
             }
         }
 
