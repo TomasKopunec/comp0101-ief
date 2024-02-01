@@ -12,7 +12,6 @@ def collect_timestamps(node, timestamps):
         collect_timestamps(child, timestamps)
 
 # Format the timestamp to include date and time up to minutes.
- # Convert from 'YYYY-MM-DDTHH:MM' to 'YYYY-MM-DD-HH:MM'.
 def format_timestamp(timestamp):
     parts = timestamp.replace('T', '-').replace(':', '-').split('-')
     formatted_timestamp = f"{parts[0]}-{parts[1]}-{parts[2]}-{parts[3]}:{parts[4]}"
