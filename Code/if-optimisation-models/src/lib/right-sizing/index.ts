@@ -68,8 +68,8 @@ export class RightSizingModel implements ModelPluginInterface {
             .object({
                 'cloud-instance-type': z.string(),
                 'cloud-vendor': z.string(),
-                'cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
-                'target-cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional(),
+                'cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+                'target-cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional()
             })
             .refine(atLeastOneDefined, {
                 message: `At least one of ${this.cpuMetrics} should present.`,
@@ -103,10 +103,11 @@ export class RightSizingModel implements ModelPluginInterface {
             }else{
                 throw new Error('cpu-util must be a number or string');
             }
+            util = util / 100; // convert percentage to decimal
 
             // If target-cpu-util is not defined, set it to 1
             if (typeof input['target-cpu-util'] === 'undefined') {
-                targetUtil = 1;
+                targetUtil = 100;
             } else {
                 // Ensure that if target-cpu-util is defined, it is a number or string
                 if (typeof input['target-cpu-util'] === 'number') {
@@ -117,6 +118,7 @@ export class RightSizingModel implements ModelPluginInterface {
                     throw new Error('target-cpu-util must be a number or string');
                 }
             }
+            targetUtil = targetUtil / 100; // convert percentage to decimal
 
             res = this.calculateRightSizing(instance, util, targetUtil);
 
@@ -124,7 +126,7 @@ export class RightSizingModel implements ModelPluginInterface {
             res.forEach(([instance, util]) => {
                 let output = { ...input }; // copy input to create new output
                 output['cloud-instance-type'] = instance.model;
-                output['cpu-util'] = util;
+                output['cpu-util'] = Math.round(util * 1000)/10; // convert decimal to percentage
                 outputs.push(output);
             });
         } else {

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Check if two arguments are provided (impl and ompl files)
 if [ "$#" -ne 1 ]; then
