@@ -1,6 +1,7 @@
 import yaml
 import sys
 import json
+import right_sizing_for_azure
 from collections import Counter
 
 
@@ -113,8 +114,14 @@ if __name__ == "__main__":
 
 
     # Load JSON data from file
-    with open('results.json', 'r') as file:
-        json_data = json.load(file)
+    # with open('results.json', 'r') as file:
+    #     json_data = json.load(file)
+
+
+    # New method that doesn't require reading json
+    results, inputs = right_sizing_for_azure.process_config_file(input_file_path)
+    json_data = right_sizing_for_azure.output_results(results, inputs)
+
 
 
 
