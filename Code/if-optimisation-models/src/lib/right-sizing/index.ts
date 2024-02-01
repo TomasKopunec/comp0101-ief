@@ -19,8 +19,6 @@ export class RightSizingModel implements ModelPluginInterface {
     }
 
     public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
-        
-
         if (configParams && 'data-path' in configParams) {
             const instanceDataPath = configParams['data-path'];
             if (typeof instanceDataPath === 'string') {
@@ -70,7 +68,8 @@ export class RightSizingModel implements ModelPluginInterface {
             .object({
                 'cloud-instance-type': z.string(),
                 'cloud-vendor': z.string(),
-                'cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/))
+                'cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+                'target-cpu-util': z.number().gte(0).lte(1).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional(),
             })
             .refine(atLeastOneDefined, {
                 message: `At least one of ${this.cpuMetrics} should present.`,
@@ -93,6 +92,9 @@ export class RightSizingModel implements ModelPluginInterface {
 
             let instance = this.database.getInstancesByModel(input['cloud-instance-type']);
             let util: number;
+            let targetUtil: number;
+            let res: [CloudInstance, number][];
+
             // ensure cpu-util is a number
             if (typeof input['cpu-util'] === 'number') {
                 util = input['cpu-util'] as number;
@@ -101,7 +103,22 @@ export class RightSizingModel implements ModelPluginInterface {
             }else{
                 throw new Error('cpu-util must be a number or string');
             }
-            let res = this.calculateRightSizing(instance, util);
+
+            // If target-cpu-util is not defined, set it to 1
+            if (typeof input['target-cpu-util'] === 'undefined') {
+                targetUtil = 1;
+            } else {
+                // Ensure that if target-cpu-util is defined, it is a number or string
+                if (typeof input['target-cpu-util'] === 'number') {
+                    targetUtil = input['target-cpu-util'] as number;
+                } else if (typeof input['target-cpu-util'] === 'string') {
+                    targetUtil = parseFloat(input['target-cpu-util']);
+                } else {
+                    throw new Error('target-cpu-util must be a number or string');
+                }
+            }
+
+            res = this.calculateRightSizing(instance, util, targetUtil);
 
             // for each instance combination, create a new output
             res.forEach(([instance, util]) => {
@@ -124,9 +141,13 @@ export class RightSizingModel implements ModelPluginInterface {
      * @param cpuUtil The percentage of CPU utilization, must be between 0 and 1
      * @returns The optimal combination of instances to fulfill the required vCPUs, returns by an array of tuples which contains the instance and the percentage of utilization
      */
-    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number): [CloudInstance, number][] {
+    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number): [CloudInstance, number][] {
         if (cpuUtil < 0 || cpuUtil > 1) {
             throw new Error('CPU utilization must be between 0 and 1');
+        }
+
+        if (targetUtil < 0 || targetUtil > 1) {
+            throw new Error('CPU target utilization must be between 0 and 1');
         }
 
         if (!cloudInstance) {
@@ -139,16 +160,22 @@ export class RightSizingModel implements ModelPluginInterface {
         }
 
         // calculate the required vCPUs based on the requested CPU utilization
-        let requiredCPUs = Math.ceil(cloudInstance.vCPUs * cpuUtil);
+        let requiredCPUs = cloudInstance.vCPUs * cpuUtil / targetUtil;
         let sortedFamily = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
         let optimalCombination: [CloudInstance, number][] = [];
-        let remainingCPUs = requiredCPUs;
+        let remainingCPUs = Math.ceil(requiredCPUs);
 
         // iterate over the sorted family and select instances to fulfill the required vCPUs
         for (const instance of sortedFamily) {
-            while (remainingCPUs - instance.vCPUs >= 0) {
-                optimalCombination.push([instance, 1]); // use full capacity of this instance
+            while (remainingCPUs - instance.vCPUs >= 0 ||remainingCPUs - (instance.vCPUs / 2) == 1) {
+                if (requiredCPUs >= instance.vCPUs) {
+                    optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
+                } else {
+                    let usage = requiredCPUs / instance.vCPUs * targetUtil;
+                    optimalCombination.push([instance, usage]); // use partial capacity of this instance
+                }
                 remainingCPUs -= instance.vCPUs;
+                requiredCPUs -= instance.vCPUs;
             }
             if (remainingCPUs === 0) break; // stop if we've matched the required vCPUs
         }
@@ -157,7 +184,7 @@ export class RightSizingModel implements ModelPluginInterface {
         if (remainingCPUs > 0) {
             const nextSmallestInstance = sortedFamily.find(inst => inst.vCPUs >= remainingCPUs);
             if (nextSmallestInstance) {
-                optimalCombination.push([nextSmallestInstance, remainingCPUs / nextSmallestInstance.vCPUs]);
+                optimalCombination.push([nextSmallestInstance, remainingCPUs / nextSmallestInstance.vCPUs * targetUtil]);
             }
         }
 
