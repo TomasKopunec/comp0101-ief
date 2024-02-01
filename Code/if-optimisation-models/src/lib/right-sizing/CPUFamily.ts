@@ -22,11 +22,6 @@ export class CPUDatabase {
      * @returns The instance model object, or null if the model is not found.
      */
     public getInstancesByModel(modelName: string): CloudInstance | null {
-        const underscoreIndex = modelName.indexOf('_');
-        if (underscoreIndex !== -1 && underscoreIndex < modelName.length - 1) {
-            modelName = modelName.substring(underscoreIndex + 1);
-        }
-
         const model = this.nameToInstance.get(modelName);
         if (model) {
             return model;
@@ -75,11 +70,6 @@ export class CPUDatabase {
      * @returns An array of the family of the instance model, or null if the model is not found.
      */
     public getModelFamily(modelName: string): { model: string, vCPUs: number }[] | null {
-        const underscoreIndex = modelName.indexOf('_');
-        if (underscoreIndex !== -1 && underscoreIndex < modelName.length - 1) {
-            modelName = modelName.substring(underscoreIndex + 1);
-        }
-
         const familyName = this.modelToFamily.get(modelName);
         if (familyName) {
             const models = this.familyToModels.get(familyName);
