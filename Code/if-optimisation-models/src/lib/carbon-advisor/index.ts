@@ -47,7 +47,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
    * Initialized during configure() using the GET /locations API call.
    */
   private readonly supportedLocations: Set<string> = new Set();
-
+  private hasSampling: boolean = false;
+  private sampling: number = 0;
   /**
    * Error builder function that is used to build error messages.
    */
@@ -92,39 +93,107 @@ export class CarbonAdvisor implements ModelPluginInterface {
   
     let results: ModelParams[] = inputs.map(input => ({
       ...input,
-      suggestions: [] // Initialize an empty array to hold all suggestions
+      suggestions: [],
+      plotted_points: [] // Initialize an empty array to hold all suggestions
     }));
+    
+  
   
     const locationsArray = Array.from(this.allowedLocations);
     let allResponses: any[] = []; // Array to store all response items
-  
-    for (const timeframe of this.allowedTimeframes) {
+    let allResponses1: any[] = []; // Array to store all response items
+    let best_responses: any[] = []; // Store selected best responses from the first API call
+    let best_responses2: any[] = []; // Store selected best responses from the second API call
+    
+    for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
+      // Your loop logic using 'index'...
       const startTime = timeframe.from;
       const endTime = timeframe.to;
   
       const route = "/emissions/bylocations/best";
+      const route1 = "/emissions/bylocations";
       const params = {
         location: locationsArray,
         time: startTime,
         toTime: endTime
       };
-  
+      let allocations: any[] = [];
+      if (this.hasSampling) {
+        allocations = this.calculateSubrangeAllocation(this.sampling);
+        // Store or use the 'allocations' list as needed
+        console.log('Allocations:', allocations);
+      }
+      interface ApiResponse {
+        location: string;
+        time: string;
+        rating: number;
+        duration: string;
+      }
+    
       try {
         const response = await this.getResponse(route, 'GET', params);
+        if (response.length === 0) {
+          console.log(`No data returned for timeframe starting at ${timeframe.from}`);
+        } else {
+          
+         
         console.log('API call succeeded for timeframe', timeframe, 'with response:', response);
+
         allResponses = allResponses.concat(response); // Store all response items
+
+        
+        const randomIndex = Math.floor(Math.random() * response.length);
+        best_responses.push(response[randomIndex]); 
+        }
+
       } catch (error) {
         console.error('API call failed for timeframe', timeframe, 'with error:', error);
       }
+
+      if (this.hasSampling) {
+        console.log('Using sampling parameter in execution logic.');
+        
+        try {
+          let response1 = await this.getResponse(route1, 'GET', params);
+          if (response1.length === 0) {
+            console.log(`No data returned for timeframe starting at ${timeframe.from}`);
+          } else {
+           
+          response1 = response1.filter((r1: ApiResponse) => !allResponses.some(r => r.location === r1.location && r.time === r1.time));
+          // Use the current index's allocation to add responses to best_responses2
+          const currentAllocation = allocations[index]-1;
+          for (let i = 0; i < currentAllocation && response1.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * response1.length);
+            best_responses2.push(response1.splice(randomIndex, 1)[0]);
+          }
+          console.log('API call succeeded for timeframe', timeframe, 'with response:', response1);
+          allResponses1 = allResponses1.concat(response1); // Store all response items
+        }
+        } catch (error) {
+          console.error('API call failed for timeframe', timeframe, 'with error:', error);
+        }
+
+      }
+
     }
-  
+    console.log('best response:', best_responses);
+    console.log('best response2:', best_responses2);
     // Determine the lowest rating among all responses
     const lowestRating = Math.min(...allResponses.map(item => item.rating));
   
     // Filter all responses to get items with the lowest rating
     const lowestRatingItems = allResponses.filter(item => item.rating === lowestRating);
-  
+    const all_best = [...best_responses, ...best_responses2];
     // Include all items with the lowest rating in the suggestions
+    if (this.hasSampling) {
+    all_best.forEach(item => {
+      results[0].plotted_points.push({
+        'location': item.location,
+        'time': item.time,
+        'score': item.rating
+      });
+    });
+  }
     lowestRatingItems.forEach(item => {
       results[0].suggestions.push({
         'suggested-location': item.location,
@@ -219,12 +288,25 @@ export class CarbonAdvisor implements ModelPluginInterface {
       this.throwError(InputValidationError, 'Required Parameters not provided');
     }
 
+    
+
     // Parse parameters as map
     const map = new Map(Object.entries(params!));
     this.validateLocations(map);
     this.validateTimeframes(map);
-  }
+    this.validateSampling(map); 
 
+    
+  }
+  private validateSampling(map: Map<string, any>): void {
+    this.sampling = map.get('sampling');
+    this.hasSampling = this.sampling >0; // Set the global flag based on the presence of 'sampling'
+  
+    if (this.hasSampling && (typeof this.sampling !== 'number' || this.sampling <= 0)) {
+      console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
+    }
+  }
+  
   private validateLocations(map: Map<string, any>): void {
     const allowedLocations = map.get(this.ALLOWED_LOCATIONS_PARAM_NAME);
     if (allowedLocations === undefined) {
@@ -244,6 +326,33 @@ export class CarbonAdvisor implements ModelPluginInterface {
       }
       this.allowedLocations.add(location);
     });
+  }
+
+  private calculateSubrangeAllocation(sampling:number) {
+    const durations = Array.from(this.allowedTimeframes).map(timeframe => {
+      const start = new Date(timeframe.from).getTime();
+      const end = new Date(timeframe.to).getTime();
+      return (end - start) / 1000; // Duration in seconds
+
+      return (end - start) / 1000; // Duration in seconds
+    });
+  
+    const totalDuration = durations.reduce((a, b) => a + b, 0);
+    let allocations = durations.map(duration =>
+      Math.round(sampling * (duration / totalDuration))
+    );
+  
+    // Adjust allocations to ensure the sum equals sampling
+    while (allocations.reduce((a, b) => a + b, 0) > sampling) {
+      const maxIndex = allocations.indexOf(Math.max(...allocations));
+      allocations[maxIndex] -= 1;
+    }
+    while (allocations.reduce((a, b) => a + b, 0) < sampling) {
+      const minIndex = allocations.indexOf(Math.min(...allocations));
+      allocations[minIndex] += 1;
+    }
+  
+    return allocations;
   }
 
   private validateTimeframes(map: Map<string, any>): void {
