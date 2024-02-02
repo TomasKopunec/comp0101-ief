@@ -36,17 +36,17 @@ graph:
             - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
           sampling: 4
           ploted_values:
-            - location: ukwest
-              time: '2022-07-23T20:45:11+00:00'
+            - location: northeurope
+              time: '2022-07-21T04:45:11+00:00'
               rating: 0
               duration: '08:00:00'
-            - location: northeurope
-              time: '2022-07-20T12:45:11+00:00'
-              rating: 21
+            - location: westus
+              time: '2022-07-24T12:45:11+00:00'
+              rating: 56
               duration: '08:00:00'
-            - location: northeurope
-              time: '2022-07-23T04:45:11+00:00'
-              rating: 69
+            - location: westeurope
+              time: '2022-07-26T20:45:11+00:00'
+              rating: 84
               duration: '08:00:00'
             - location: westeurope
               time: '2022-08-01T12:45:11+00:00'

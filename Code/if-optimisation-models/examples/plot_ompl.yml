@@ -1,0 +1,71 @@
+name: shell-demo
+description: example impl invoking shell model
+tags: null
+initialize:
+  models:
+    - name: plotter
+      path: '@grnsft/if-optimisation-models'
+      model: Visualizer
+graph:
+  children:
+    child:
+      pipeline:
+        - plotter
+      config:
+        plotter:
+          command: python3 ./src/lib/visualizer/plotter
+          x_name:
+            - name
+            - last_name
+          y_name: age
+          colour: red
+          diagram_name: testt
+          x_axis_name: Name and Last Name
+          y_axis_name: Age in years
+          diagram_title: Name to age comparison
+          graph_type: scatter
+          plotted_values:
+            - name: Maria
+              last_name: Johnson
+              age: 19
+            - name: George
+              last_name: Mikan
+              age: 22
+            - name: Mike
+              last_name: Boris
+              age: 17
+            - name: Chris
+              last_name: Wang
+              age: 43
+      inputs:
+        - timestamp: '2023-11-02T10:35:31.820Z'
+          duration: 3610
+      outputs:
+        - timestamp: '2023-11-02T10:35:31.820Z'
+          duration: 3610
+          command: python3 ./src/lib/visualizer/plotter
+          x_name:
+            - name
+            - last_name
+          y_name: age
+          colour: red
+          diagram_name: testt
+          x_axis_name: Name and Last Name
+          y_axis_name: Age in years
+          diagram_title: Name to age comparison
+          graph_type: scatter
+          plotted_values:
+            - name: Maria
+              last_name: Johnson
+              age: 19
+            - name: George
+              last_name: Mikan
+              age: 22
+            - name: Mike
+              last_name: Boris
+              age: 17
+            - name: Chris
+              last_name: Wang
+              age: 43
+          diagram: >-
+            /home/jim/comp0101-ief/Code/if-optimisation-models/combinations_diagram.png
