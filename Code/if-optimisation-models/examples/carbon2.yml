@@ -16,8 +16,7 @@ graph:
           allowed-locations:  ['northeurope','eastus','westus']
           allowed-timeframes: [
             "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
-            "2022-01-01T20:40:00Z - 2022-01-17T21:00:31Z"
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z"
           ]
       inputs:
         - timestamp: 2023-07-06T00:00
