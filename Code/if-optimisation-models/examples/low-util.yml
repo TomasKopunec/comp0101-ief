@@ -13,7 +13,7 @@ graph:
         - right-sizing
       config:
         right-sizing:
-          data-path: 'data/aws-instances.json'
+          data-path: 'data/azure-instances.json'
       inputs:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
@@ -24,7 +24,7 @@ graph:
           total-memoryGB: 1
           mem-util: 51.13635839999999
           location: uksouth
-          cloud-instance-type: 'B16ps v2'
+          cloud-instance-type: 'B16ps_v2'
         - timestamp: '2023-11-02T10:40:00.000Z'
           duration: 300
           cloud-vendor: azure
@@ -34,5 +34,5 @@ graph:
           total-memoryGB: 1
           mem-util: 51.021015039999995
           location: uksouth
-          cloud-instance-type: 'F32s v2'
+          cloud-instance-type: 'F32s_v2'
 
