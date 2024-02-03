@@ -42,7 +42,7 @@ export class CPUDatabase {
      * @returns A promise that resolves when the data is loaded.
      * @throws Error if the file cannot be read.
      * 
-     * @remarks This method is a async method, please use await if you want to ensure the data is loaded before continuing.
+     * @remarks This method is an async method, please use await if you want to ensure the data is loaded before continuing.
      */
     public async loadModelData(path: string) {
         try {
@@ -55,11 +55,13 @@ export class CPUDatabase {
                 const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM));
                 this.familyToModels.set(familyName, cpuModels);
 
-                models.forEach((model: any) => {
+                await models.forEach((model: any) => {
                     this.modelToFamily.set(model.model, familyName);
                     this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM));
                 });
             }
+            console.log("data path: " + path);
+            console.log("Loaded items: " + this.nameToInstance.entries.length);
         } catch (error) {
             console.error('Error reading file:', error);
         }

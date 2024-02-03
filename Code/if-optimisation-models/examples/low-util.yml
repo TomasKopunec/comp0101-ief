@@ -12,8 +12,8 @@ graph:
       pipeline:
         - right-sizing
       config:
-        right-sizing:
-          data-path: 'data/aws-instances.json'
+        # right-sizing:
+        #   data-path: 'data/aws-instances.json'
       inputs:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300

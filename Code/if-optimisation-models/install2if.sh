@@ -16,7 +16,7 @@ then
         npm link
         cd ../if && npm link @grnsft/if-optimisation-models
     else
-        echo "Invalid argument. Please use either 'local', 'global' or 'repo'."
+        echo "Invalid argument. Please use either 'local' or 'repo'."
         exit 1
     fi
     echo "Done."

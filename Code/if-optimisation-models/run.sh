@@ -1,8 +1,12 @@
 #!/bin/sh
 
 # Check if two arguments are provided (impl and ompl files)
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <impl_file>"
+if [ "$#" -eq 2 ]; then
+    option="$2"
+elif [ "$#" -eq 1 ]; then
+    option="local"
+else
+    echo "Usage: $0 <impl_file> <options>"
     exit 1
 fi
 
@@ -24,8 +28,14 @@ echo "--impl=$impl_file"
 echo "--ompl=$ompl_file"
 
 # Run the local model
-# npm run if:local -- --impl "$impl_file" --ompl "$ompl_file" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
-npm run install-and-exec:local -- --impl "$impl_file" --ompl "$ompl_file" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
+if [ $option = "local" ]; then
+    npm run install-and-exec:local -- --impl "./${impl_file}" --ompl "./${ompl_file}" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
+elif [ $option = "dev" ]; then
+    cp -r ./data ../if/
+    npm run install-and-exec:dev -- --impl "../if-optimisation-models/${impl_file}" --ompl "../if-optimisation-models/${ompl_file}" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
+else
+    echo "please input one of the following options for parameter <option>: local/dev."
+fi
 
 echo "[Output]"
 cat "$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'

@@ -12,6 +12,7 @@ export class RightSizingModel implements ModelPluginInterface {
     private Cache: Map<string, CPUDatabase>;
 
     private cpuMetrics = ['cloud-instance-type', 'cloud-vendor', 'cpu-util'];
+    private builtinDataPath = './if/data';
 
     constructor(database: CPUDatabase = new CPUDatabase()) {
         this.database = database;
@@ -19,6 +20,7 @@ export class RightSizingModel implements ModelPluginInterface {
     }
 
     public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
+
         if (configParams && 'data-path' in configParams) {
             const instanceDataPath = configParams['data-path'];
             if (typeof instanceDataPath === 'string') {
@@ -42,9 +44,9 @@ export class RightSizingModel implements ModelPluginInterface {
                 if (!this.Cache.has(cloudVendor)) {
                     const newDatabase = new CPUDatabase();
                     if (cloudVendor === 'aws') {
-                        await newDatabase.loadModelData('./data/aws-instances.json');
+                        await newDatabase.loadModelData(this.builtinDataPath + '/aws-instances.json');
                     } else if (cloudVendor === 'azure') {
-                        await newDatabase.loadModelData('./data/azure-instances.json');
+                        await newDatabase.loadModelData(this.builtinDataPath + '/azure-instances.json');
                     }
                     this.Cache.set(cloudVendor, newDatabase);
                 }
@@ -169,7 +171,7 @@ export class RightSizingModel implements ModelPluginInterface {
 
         // iterate over the sorted family and select instances to fulfill the required vCPUs
         for (const instance of sortedFamily) {
-            while (remainingCPUs - instance.vCPUs >= 0 ||remainingCPUs - (instance.vCPUs / 2) == 1) {
+            while (remainingCPUs - instance.vCPUs >= 0 || remainingCPUs - (instance.vCPUs / 2) == 1) {
                 if (requiredCPUs >= instance.vCPUs) {
                     optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
                 } else {
