@@ -7,7 +7,11 @@ The CarbonAdvisor model is designed to provide carbon emission data based on spe
 ## Key Features
 - **Location Filtering**: Users can specify a list of locations to consider for carbon emission data.
 - **Timeframe Filtering**: Users can define time ranges to narrow down the search for carbon emission data.
-- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape.
+- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape. If sampling is not defined in the impl then no data points are sampled and the plotted_points is not added in the ompl.
+
+## Outputs
+- ** Suggestions: **: List of the best location and time combination to minimize the carbon score along with that score.
+- ** Plotted-points: **: ONLY IF THE LISTING PARAMETER IS INITIALIZED IN THE IMPL. A sampling number of samples for trade-off visualization. A best combination from each timeframe is alwayes included . SO sampling must be >= number of time regions in the allowed-timeframes. The plotter model can then be used in a pipeline to plot this samples.
 
 ## Prerequisites
 - The Carbon Aware Web API must be running locally (default: `http://localhost:5073`).
