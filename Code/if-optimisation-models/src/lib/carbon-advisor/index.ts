@@ -6,9 +6,7 @@ import { buildErrorMessage } from '@grnsft/if-unofficial-models/build/util/helpe
 import { ERRORS } from '@grnsft/if-unofficial-models/build/util/errors';
 const { InputValidationError } = ERRORS;
 
- // Make sure you have the 'qs' library installed
-
-
+// Make sure you have the 'qs' library installed
 export class CarbonAdvisor implements ModelPluginInterface {
   /**
    * Route to the carbon-aware-sdk API. Localhost for now.
@@ -90,26 +88,24 @@ export class CarbonAdvisor implements ModelPluginInterface {
   async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
     console.log('#execute()');
     this.validateInputs(inputs);
-  
+
     let results: ModelParams[] = inputs.map(input => ({
       ...input,
       suggestions: [],
       plotted_points: [] // Initialize an empty array to hold all suggestions
     }));
-    
-  
-  
+
     const locationsArray = Array.from(this.allowedLocations);
     let allResponses: any[] = []; // Array to store all response items
     let allResponses1: any[] = []; // Array to store all response items
     let best_responses: any[] = []; // Store selected best responses from the first API call
     let best_responses2: any[] = []; // Store selected best responses from the second API call
-    
+
     for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
       // Your loop logic using 'index'...
       const startTime = timeframe.from;
       const endTime = timeframe.to;
-  
+
       const route = "/emissions/bylocations/best";
       const route1 = "/emissions/bylocations";
       const params = {
@@ -129,71 +125,65 @@ export class CarbonAdvisor implements ModelPluginInterface {
         rating: number;
         duration: string;
       }
-    
+
       try {
         const response = await this.getResponse(route, 'GET', params);
         if (response.length === 0) {
           console.log(`No data returned for timeframe starting at ${timeframe.from}`);
         } else {
-          
-         
-        console.log('API call succeeded for timeframe', timeframe, 'with response:', response);
+          console.log('API call succeeded for timeframe', timeframe, 'with response:', response);
+          allResponses = allResponses.concat(response); // Store all response items
 
-        allResponses = allResponses.concat(response); // Store all response items
-
-        
-        const randomIndex = Math.floor(Math.random() * response.length);
-        best_responses.push(response[randomIndex]); 
+          const randomIndex = Math.floor(Math.random() * response.length);
+          best_responses.push(response[randomIndex]);
         }
-
       } catch (error) {
         console.error('API call failed for timeframe', timeframe, 'with error:', error);
       }
 
       if (this.hasSampling) {
         console.log('Using sampling parameter in execution logic.');
-        
+
         try {
           let response1 = await this.getResponse(route1, 'GET', params);
           if (response1.length === 0) {
             console.log(`No data returned for timeframe starting at ${timeframe.from}`);
           } else {
-           
-          response1 = response1.filter((r1: ApiResponse) => !allResponses.some(r => r.location === r1.location && r.time === r1.time));
-          // Use the current index's allocation to add responses to best_responses2
-          const currentAllocation = allocations[index]-1;
-          for (let i = 0; i < currentAllocation && response1.length > 0; i++) {
-            const randomIndex = Math.floor(Math.random() * response1.length);
-            best_responses2.push(response1.splice(randomIndex, 1)[0]);
+            response1 = response1.filter((r1: ApiResponse) => !allResponses.some(r => r.location === r1.location && r.time === r1.time));
+            // Use the current index's allocation to add responses to best_responses2
+            const currentAllocation = allocations[index] - 1;
+            for (let i = 0; i < currentAllocation && response1.length > 0; i++) {
+              const randomIndex = Math.floor(Math.random() * response1.length);
+              best_responses2.push(response1.splice(randomIndex, 1)[0]);
+            }
+            console.log('API call succeeded for timeframe', timeframe, 'with response:', response1);
+            allResponses1 = allResponses1.concat(response1); // Store all response items
           }
-          console.log('API call succeeded for timeframe', timeframe, 'with response:', response1);
-          allResponses1 = allResponses1.concat(response1); // Store all response items
-        }
         } catch (error) {
           console.error('API call failed for timeframe', timeframe, 'with error:', error);
         }
-
       }
-
     }
     console.log('best response:', best_responses);
     console.log('best response2:', best_responses2);
+
     // Determine the lowest rating among all responses
     const lowestRating = Math.min(...allResponses.map(item => item.rating));
-  
+
     // Filter all responses to get items with the lowest rating
     const lowestRatingItems = allResponses.filter(item => item.rating === lowestRating);
     const all_best = [...best_responses, ...best_responses2];
     // Include all items with the lowest rating in the suggestions
     if (this.hasSampling) {
-    all_best.forEach(item => {
-      results[0].plotted_points.push({
-        'location': item.location,
-        'time': item.time,
-        'score': item.rating
+      all_best.forEach(item => {
+        results[0].plotted_points.push({
+          'location': item.location,
+          'time': item.time,
+          'score': item.rating
+        });
       });
-    });
-  }
+    }
+
     lowestRatingItems.forEach(item => {
       results[0].suggestions.push({
         'suggested-location': item.location,
@@ -201,11 +191,11 @@ export class CarbonAdvisor implements ModelPluginInterface {
         'suggested-score': item.rating
       });
     });
-  
+
     console.log('Results:', results);
     return results;
   }
-  
+
   /**
    * Send a request to the carbon-aware-sdk API to get the list of supported locations.
    */
@@ -225,6 +215,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
     }
     return await this.getResponse(this.FORECAST_ROUTE, 'GET', params) as ForecastData;
   }
+
   /**
    * Send a request to the carbon-aware-sdk API.
    * @param route The route to send the request to.
@@ -239,33 +230,30 @@ export class CarbonAdvisor implements ModelPluginInterface {
     // Manually serialize params to match the required format: 'location=eastus&location=westus&...'
     let queryString = '';
     if (params) {
-        queryString = Object.entries(params).map(([key, value]) => {
-            if (Array.isArray(value)) {
-                // Convert each value to a string before encoding and repeat the key for each value in the array
-                return value.map(v => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`).join('&');
-            } else {
-                // Convert value to a string before encoding and directly append to query string
-                return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
-            }
-        }).join('&');
+      queryString = Object.entries(params).map(([key, value]) => {
+        if (Array.isArray(value)) {
+          // Convert each value to a string before encoding and repeat the key for each value in the array
+          return value.map(v => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`).join('&');
+        } else {
+          // Convert value to a string before encoding and directly append to query string
+          return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+        }
+      }).join('&');
     }
 
     const finalUrl = `${url}${queryString ? '?' + queryString : ''}`;
-
     //console.log(`Sending ${method} request to ${finalUrl}`);
 
     return axios({
-        url: finalUrl,
-        method: method,
+      url: finalUrl,
+      method: method,
     }).then((response) => {
-        return response.data;
+      return response.data;
     }).catch((error) => {
-        console.error(error);
-        this.throwError(Error, error.message);
+      console.error(error);
+      this.throwError(Error, error.message);
     });
-}
-
-
+  }
 
   private validateInputs(inputs: ModelParams[]): void {
     console.log(JSON.stringify(inputs));
@@ -288,25 +276,22 @@ export class CarbonAdvisor implements ModelPluginInterface {
       this.throwError(InputValidationError, 'Required Parameters not provided');
     }
 
-    
-
     // Parse parameters as map
     const map = new Map(Object.entries(params!));
     this.validateLocations(map);
     this.validateTimeframes(map);
-    this.validateSampling(map); 
-
-    
+    this.validateSampling(map);
   }
+
   private validateSampling(map: Map<string, any>): void {
     this.sampling = map.get('sampling');
-    this.hasSampling = this.sampling >0; // Set the global flag based on the presence of 'sampling'
-  
+    this.hasSampling = this.sampling > 0; // Set the global flag based on the presence of 'sampling'
+
     if (this.hasSampling && (typeof this.sampling !== 'number' || this.sampling <= 0)) {
       console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
     }
   }
-  
+
   private validateLocations(map: Map<string, any>): void {
     const allowedLocations = map.get(this.ALLOWED_LOCATIONS_PARAM_NAME);
     if (allowedLocations === undefined) {
@@ -328,7 +313,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
     });
   }
 
-  private calculateSubrangeAllocation(sampling:number) {
+  private calculateSubrangeAllocation(sampling: number) {
     const durations = Array.from(this.allowedTimeframes).map(timeframe => {
       const start = new Date(timeframe.from).getTime();
       const end = new Date(timeframe.to).getTime();
@@ -336,12 +321,12 @@ export class CarbonAdvisor implements ModelPluginInterface {
 
       return (end - start) / 1000; // Duration in seconds
     });
-  
+
     const totalDuration = durations.reduce((a, b) => a + b, 0);
     let allocations = durations.map(duration =>
       Math.round(sampling * (duration / totalDuration))
     );
-  
+
     // Adjust allocations to ensure the sum equals sampling
     while (allocations.reduce((a, b) => a + b, 0) > sampling) {
       const maxIndex = allocations.indexOf(Math.max(...allocations));
@@ -351,7 +336,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
       const minIndex = allocations.indexOf(Math.min(...allocations));
       allocations[minIndex] += 1;
     }
-  
+
     return allocations;
   }
 
