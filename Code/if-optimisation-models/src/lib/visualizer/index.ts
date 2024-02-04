@@ -1,3 +1,4 @@
+//This is a copy of the shell model
 import {spawnSync, SpawnSyncReturns} from 'child_process';
 import {loadAll, dump} from 'js-yaml'; //you need to run npm i --save-dev @types/js-yaml
 import {z} from 'zod';
