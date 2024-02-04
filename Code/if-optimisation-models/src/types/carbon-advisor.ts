@@ -33,3 +33,10 @@ type ForecastDataPoint = {
     duration: number;
     value: number;
 }
+
+interface ApiResponse {
+    location: string;
+    time: string;
+    rating: number;
+    duration: string;
+}

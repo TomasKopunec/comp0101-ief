@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { KeyValuePair, ModelParams } from '@grnsft/if-unofficial-models/build/types/common';
+import { ModelParams } from '@grnsft/if-unofficial-models/build/types/common';
 import { ModelPluginInterface } from '@grnsft/if-unofficial-models/build/interfaces';
 import { buildErrorMessage } from '@grnsft/if-unofficial-models/build/util/helpers';
 
@@ -88,102 +88,67 @@ export class CarbonAdvisor implements ModelPluginInterface {
   async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
     console.log('#execute()');
     this.validateInputs(inputs);
+    return this.hasSampling ? this.handleSampling(inputs) : this.handleNoSampling(inputs);
+  }
 
-    let results: ModelParams[] = inputs.map(input => ({
+  async handleSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
+    // Initialize an empty array to hold all suggestions and plotted points
+    const results: ModelParams[] = inputs.map(input => ({
       ...input,
       suggestions: [],
-      plotted_points: [] // Initialize an empty array to hold all suggestions
+      plotted_points: []
     }));
 
     const locationsArray = Array.from(this.allowedLocations);
-    let allResponses: any[] = []; // Array to store all response items
-    let allResponses1: any[] = []; // Array to store all response items
-    let best_responses: any[] = []; // Store selected best responses from the first API call
-    let best_responses2: any[] = []; // Store selected best responses from the second API call
+    let byLocationsBestArr: any[] = [];
+    let byLocationsArr: any[] = [];
+    let bestArr: any[] = [];
 
     for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
-      // Your loop logic using 'index'...
-      const startTime = timeframe.from;
-      const endTime = timeframe.to;
-
-      const route = "/emissions/bylocations/best";
-      const route1 = "/emissions/bylocations";
+      // Initialize params for the API call
       const params = {
         location: locationsArray,
-        time: startTime,
-        toTime: endTime
+        time: timeframe.from,
+        toTime: timeframe.to
       };
-      let allocations: any[] = [];
-      if (this.hasSampling) {
-        allocations = this.calculateSubrangeAllocation(this.sampling);
-        // Store or use the 'allocations' list as needed
+
+      // Returns an array of best EmissionsData objects
+      const best = await this.getResponse("/emissions/bylocations/best", 'GET', params);
+      if (best.length > 0) {
+        console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, best);
+        byLocationsBestArr = byLocationsBestArr.concat(best); // Store all response items
+        const randomIndex = Math.floor(Math.random() * best.length);
+        bestArr.push(best[randomIndex]); // Store a random best response
+      }
+
+      // Returns an array of ALL EmissionsData objects
+      let all = await this.getResponse("/emissions/bylocations", 'GET', params);
+      if (all.length > 0) {
+        console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, all);
+
+        // Calculate the allocation for the current timeframe
+        const allocations: any[] = this.calculateSubrangeAllocation(this.sampling);
+        const currAllocation = allocations[index] - 1;
         console.log('Allocations:', allocations);
-      }
-      interface ApiResponse {
-        location: string;
-        time: string;
-        rating: number;
-        duration: string;
-      }
 
-      try {
-        const response = await this.getResponse(route, 'GET', params);
-        if (response.length === 0) {
-          console.log(`No data returned for timeframe starting at ${timeframe.from}`);
-        } else {
-          console.log('API call succeeded for timeframe', timeframe, 'with response:', response);
-          allResponses = allResponses.concat(response); // Store all response items
+        // Filter out all responses that are already in allResponses ?
+        all = all.filter((r1: ApiResponse) => !byLocationsBestArr.some(r => r.location === r1.location && r.time === r1.time));
 
-          const randomIndex = Math.floor(Math.random() * response.length);
-          best_responses.push(response[randomIndex]);
+        for (let i = 0; i < currAllocation; i++) {
+          const randIndex = Math.floor(Math.random() * all.length);
+          bestArr.push(all.splice(randIndex, 1)[0]);
         }
-      } catch (error) {
-        console.error('API call failed for timeframe', timeframe, 'with error:', error);
-      }
-
-      if (this.hasSampling) {
-        console.log('Using sampling parameter in execution logic.');
-
-        try {
-          let response1 = await this.getResponse(route1, 'GET', params);
-          if (response1.length === 0) {
-            console.log(`No data returned for timeframe starting at ${timeframe.from}`);
-          } else {
-            response1 = response1.filter((r1: ApiResponse) => !allResponses.some(r => r.location === r1.location && r.time === r1.time));
-            // Use the current index's allocation to add responses to best_responses2
-            const currentAllocation = allocations[index] - 1;
-            for (let i = 0; i < currentAllocation && response1.length > 0; i++) {
-              const randomIndex = Math.floor(Math.random() * response1.length);
-              best_responses2.push(response1.splice(randomIndex, 1)[0]);
-            }
-            console.log('API call succeeded for timeframe', timeframe, 'with response:', response1);
-            allResponses1 = allResponses1.concat(response1); // Store all response items
-          }
-        } catch (error) {
-          console.error('API call failed for timeframe', timeframe, 'with error:', error);
-        }
+        byLocationsArr = byLocationsArr.concat(all); // Store all response items
       }
     }
-    console.log('best response:', best_responses);
-    console.log('best response2:', best_responses2);
 
-    // Determine the lowest rating among all responses
-    const lowestRating = Math.min(...allResponses.map(item => item.rating));
+    // Find the lowest rating among all responses
+    const lowestRating = Math.min(...byLocationsBestArr.map(item => item.rating));
 
-    // Filter all responses to get items with the lowest rating
-    const lowestRatingItems = allResponses.filter(item => item.rating === lowestRating);
-    const all_best = [...best_responses, ...best_responses2];
-    // Include all items with the lowest rating in the suggestions
-    if (this.hasSampling) {
-      all_best.forEach(item => {
-        results[0].plotted_points.push({
-          'location': item.location,
-          'time': item.time,
-          'score': item.rating
-        });
-      });
-    }
+    // Filter all responses to get items with the lowest rating (i.e. the best responses)
+    const lowestRatingItems = byLocationsBestArr.filter(item => item.rating === lowestRating);
 
+    // Set suggestions
     lowestRatingItems.forEach(item => {
       results[0].suggestions.push({
         'suggested-location': item.location,
@@ -192,7 +157,62 @@ export class CarbonAdvisor implements ModelPluginInterface {
       });
     });
 
-    console.log('Results:', results);
+    // Set plotted points (all responses from both API calls)
+    bestArr.forEach(item => {
+      results[0].plotted_points.push({
+        'location': item.location,
+        'time': item.time,
+        'score': item.rating
+      });
+    });
+
+    return results;
+  }
+
+  async handleNoSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
+    // Initialize an empty array to hold all suggestions
+    const results: ModelParams[] = inputs.map(input => ({
+      ...input,
+      suggestions: []
+    }));
+
+    const locationsArray = Array.from(this.allowedLocations);
+    let byLocationsBestArr: any[] = [];
+    let bestArr: any[] = [];
+
+    for (const [_, timeframe] of Array.from(this.allowedTimeframes).entries()) {
+      // Initialize params for the API call
+      const params = {
+        location: locationsArray,
+        time: timeframe.from,
+        toTime: timeframe.to
+      };
+
+      // Returns an array of best EmissionsData objects
+      const best = await this.getResponse("/emissions/bylocations/best", 'GET', params);
+      if (best.length > 0) {
+        console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, best);
+        byLocationsBestArr = byLocationsBestArr.concat(best); // Store all response items
+        const randomIndex = Math.floor(Math.random() * best.length);
+        bestArr.push(best[randomIndex]); // Store a random best response
+      }
+    }
+
+    // Find the lowest rating among all responses
+    const lowestRating = Math.min(...byLocationsBestArr.map(item => item.rating));
+
+    // Filter all responses to get items with the lowest rating (i.e. the best responses)
+    const lowestRatingItems = byLocationsBestArr.filter(item => item.rating === lowestRating);
+
+    // Set suggestions
+    lowestRatingItems.forEach(item => {
+      results[0].suggestions.push({
+        'suggested-location': item.location,
+        'suggested-timeframe': item.time,
+        'suggested-score': item.rating
+      });
+    });
+
     return results;
   }
 
