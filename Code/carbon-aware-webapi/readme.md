@@ -33,7 +33,7 @@ Optional(Can be skipped, as the code provides the token for the test):
 
 1. git clone https://github.com/Green-Software-Foundation/carbon-aware-sdk.git
 2. Open VSCode and Docker
-3. Open VSCode Command Palette: (Linux/Windows: `ctrl + shift + P`, MacOS: `cmd + shift + P`), and run the command: `Dev Containers: Open Folder in Container` to open carbon-aware-sdk (Starting Dev Container for the first time will take a while)
+3. Open VSCode Command Palette: (Linux/Windows: `ctrl + shift + P`, MacOS: `cmd + shift + P`), and run the command: `Dev Containers: Open Folder in Container` to open carbon-aware-sdk folder you just cloned (Starting Dev Container for the first time will take a while)
 4. Change directory to: `cd src/CarbonAware.WebApi/src`
 5. Replace the appsettings.json file with the following
 ```

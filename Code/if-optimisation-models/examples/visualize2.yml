@@ -16,7 +16,7 @@ graph:
           command: 'python3 ./src/lib/visualizer/plotter'
           x_name: ['time']
           y_name: energy
-          colour: yellow
+          colour: blue
           diagram_name: New_diagram
           x_axis_name: Time in hours minutes and second
           y_axis_name: Energy in KWh
