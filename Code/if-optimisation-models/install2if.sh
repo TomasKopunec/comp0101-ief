@@ -15,7 +15,6 @@ then
     elif [ $1 = "dev" ]; then
         cp -r ./data ../if/
         cp -r ./examples ../if/
-        mkdir -p ../if/results
         npm link
         cd ../if && npm link @grnsft/if-optimisation-models
     else

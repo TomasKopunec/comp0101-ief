@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Check if two arguments are provided (impl and ompl files)
 if [ "$#" -eq 2 ]; then
@@ -29,27 +29,26 @@ echo "--ompl=$ompl_file"
 # Run the local model
 if [ $option = "local" ]; then
     echo "[Running in Local Mode]"
-    npm run install-and-exec:local -- --impl "./${impl_file}" --ompl "./${ompl_file}" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
+    npm run install-and-exec:local -- --impl "${impl_file}" --ompl "${ompl_file}" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
 elif [ $option = "dev" ]; then
     echo "[Running in Dev Mode]"
-    npm run install-and-exec:dev -- --impl "./${impl_file}" --ompl "./${ompl_file}"
+    npm run install-and-exec:dev -- --impl "${impl_file}" --ompl "../if-optimisation-models/${ompl_file}"
 elif [ $option = "dev-no-install" ]; then
     echo "[Running in Dev (No Install) Mode]"
     cp -r ./data ../if/
     cp -r ./examples ../if/
-    mkdir -p ../if/results
     npm run build
-    npm run if:dev -- --impl "./${impl_file}" --ompl "./${ompl_file}"
+    npm run if:dev -- --impl "${impl_file}" --ompl "../if-optimisation-models/${ompl_file}"
 else
     echo "please input one of the following options for parameter <option>: local/dev."
 fi
 
 echo "[Output]"
-if [ $option = "local" ]; then
-    cat "$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'
-elif [ $option = "dev" ] || [ $option = "dev-no-install" ]; then
-    cat "../if/$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'
-fi
+# if [ $option = "local" ]; then
+cat "$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'
+# elif [ $option = "dev" ] || [ $option = "dev-no-install" ]; then
+#     cat "../if/$ompl_file" | grep -v 'DeprecationWarning' | grep -v 'Warning:'
+# fi
 
 echo "[The output is saved in $ompl_file]"
 printf "Done\n"

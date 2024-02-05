@@ -12,6 +12,7 @@
                 //"<node_internals>/**"
             ],
             "cwd": "${workspaceFolder}/if",
+            "runtimeVersion": "18",
             "program": "${workspaceFolder}/if/src/index.ts",
             "preLaunchTask": "install2if:dev",
             "outFiles": [
@@ -33,8 +34,9 @@
                 //"<node_internals>/**"
             ],
             "cwd": "${workspaceFolder}/if",
+            "runtimeVersion": "18",
             "program": "${workspaceFolder}/if/src/index.ts",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-with-copy",
             "outFiles": [
                 "${workspaceFolder}/if/**/*.js",
                 "${workspaceFolder}/if-optimisation-models/**/*.js",
