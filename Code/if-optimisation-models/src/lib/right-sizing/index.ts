@@ -189,10 +189,8 @@ export class RightSizingModel implements ModelPluginInterface {
                 requiredCPUs -= instance.vCPUs;
             }
         }
-        
-    
+              
         let RAMefficientInstances = sortedFamily.sort((a, b) => (b.RAM / b.vCPUs) - (a.RAM / a.vCPUs));
-
         // Limit the number of additional instances to add to avoid over-adding (This could need further testings and adjustments)
         let maxAdditionalInstances = 2;
         let additionalInstancesAdded = 0;
@@ -207,66 +205,12 @@ export class RightSizingModel implements ModelPluginInterface {
                 totalRAM += instance.RAM;
                 additionalInstancesAdded++;
             }
-        }
-        
+        }       
         if (totalRAM < inputRAM) {
             // If the RAM is still not enough after adding the two most efficient instances
             console.log("Optimisation Failed: Unable to meet the RAM requirements without overly increasing CPU.");
             console.log("It is recommended by the model to continue using the original CPUs.");
         }
-        
-        
-    
         return optimalCombination;
     }
-    // private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number): [CloudInstance, number][] {
-    //     if (cpuUtil < 0 || cpuUtil > 1) {
-    //         throw new Error('CPU utilization must be between 0 and 1');
-    //     }
-
-    //     if (targetUtil < 0 || targetUtil > 1) {
-    //         throw new Error('CPU target utilization must be between 0 and 1');
-    //     }
-
-    //     if (!cloudInstance) {
-    //         throw new Error('Cloud instance not found');
-    //     }
-
-    //     let family = this.database.getModelFamily(cloudInstance.model);
-    //     if (!(family instanceof Array)) {
-    //         return [[cloudInstance, cpuUtil]];
-    //     }
-
-    //     // calculate the required vCPUs based on the requested CPU utilization
-    //     let requiredCPUs = cloudInstance.vCPUs * cpuUtil / targetUtil;
-    //     let sortedFamily = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
-    //     let optimalCombination: [CloudInstance, number][] = [];
-    //     let remainingCPUs = Math.ceil(requiredCPUs);
-
-    //     // iterate over the sorted family and select instances to fulfill the required vCPUs
-    //     for (const instance of sortedFamily) {
-    //         while (remainingCPUs - instance.vCPUs >= 0 || remainingCPUs - (instance.vCPUs / 2) == 1) {
-    //             if (requiredCPUs >= instance.vCPUs) {
-    //                 optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
-    //             } else {
-    //                 let usage = requiredCPUs / instance.vCPUs * targetUtil;
-    //                 optimalCombination.push([instance, usage]); // use partial capacity of this instance
-    //             }
-    //             remainingCPUs -= instance.vCPUs;
-    //             requiredCPUs -= instance.vCPUs;
-    //         }
-    //         if (remainingCPUs === 0) break; // stop if we've matched the required vCPUs
-    //     }
-
-    //     // if there's a shortfall, use the next smallest instance to cover the remaining CPUs
-    //     if (remainingCPUs > 0) {
-    //         const nextSmallestInstance = sortedFamily.find(inst => inst.vCPUs >= remainingCPUs);
-    //         if (nextSmallestInstance) {
-    //             optimalCombination.push([nextSmallestInstance, remainingCPUs / nextSmallestInstance.vCPUs * targetUtil]);
-    //         }
-    //     }
-
-    //     return optimalCombination;
-    // }
-
 }
