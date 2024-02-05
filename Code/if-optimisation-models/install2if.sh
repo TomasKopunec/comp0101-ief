@@ -13,8 +13,6 @@ then
         cp -r build ./node_modules/@grnsft/if-optimisation-models
         cp package.dummy.json ./node_modules/@grnsft/if-optimisation-models/package.json
     elif [ $1 = "dev" ]; then
-        cp -r ./data ../if/
-        cp -r ./examples ../if/
         npm link
         cd ../if && npm link @grnsft/if-optimisation-models
     else

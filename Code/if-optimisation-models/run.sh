@@ -32,6 +32,8 @@ if [ $option = "local" ]; then
     npm run install-and-exec:local -- --impl "${impl_file}" --ompl "${ompl_file}" 2>&1 | grep -v 'DeprecationWarning' | grep -v 'warning'
 elif [ $option = "dev" ]; then
     echo "[Running in Dev Mode]"
+    cp -r ./data ../if/
+    cp -r ./examples ../if/
     npm run install-and-exec:dev -- --impl "${impl_file}" --ompl "../if-optimisation-models/${ompl_file}"
 elif [ $option = "dev-no-install" ]; then
     echo "[Running in Dev (No Install) Mode]"

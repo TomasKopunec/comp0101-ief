@@ -20,15 +20,6 @@
             "problemMatcher": [],
             "label": "build",
             "detail": "Build the model"
-        },
-        {
-            "type": "npm",
-            "script": "build-with-copy",
-            "path": "if-optimisation-models",
-            "group": "build",
-            "problemMatcher": [],
-            "label": "build-with-copy",
-            "detail": "Build the model and copy the data files to the IF repository"
         }
     ]
 }

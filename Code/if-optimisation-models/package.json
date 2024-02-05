@@ -6,7 +6,6 @@
   "scripts": {
     "start": "npm run install-and-exec:local",
     "build": "rm -rf build && tsc --project tsconfig.build.json",
-    "build-with-copy": "rm -rf build && tsc --project tsconfig.build.json && cp -r ./data ./examples ../if/",
     "install2if": "./install2if.sh local",
     "install2if:local": "./install2if.sh local",
     "install2if:dev": "./install2if.sh dev",
