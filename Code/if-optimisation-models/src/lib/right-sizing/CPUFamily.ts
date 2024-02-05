@@ -66,8 +66,6 @@ export class CPUDatabase {
                     this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM));
                 });
             }
-            console.log("data path: " + path);
-            console.log("Loaded items: " + this.nameToInstance.entries.length);
         } catch (error) {
             console.error('Error reading file:', error);
         }

@@ -12,7 +12,7 @@ export class RightSizingModel implements ModelPluginInterface {
     private Cache: Map<string, CPUDatabase>;
 
     private cpuMetrics = ['cloud-instance-type', 'cloud-vendor', 'cpu-util'];
-    private builtinDataPath = './if/data';
+    private builtinDataPath = './data';
 
     constructor(database: CPUDatabase = new CPUDatabase()) {
         this.database = database;

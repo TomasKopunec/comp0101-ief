@@ -11,6 +11,7 @@
             "skipFiles": [
                 //"<node_internals>/**"
             ],
+            "cwd": "${workspaceFolder}/if",
             "program": "${workspaceFolder}/if/src/index.ts",
             "preLaunchTask": "install2if:dev",
             "outFiles": [
@@ -21,7 +22,7 @@
             ],
             "args": [
                 "--impl",
-                "./if-optimisation-models/examples/low-util.yml"
+                "./examples/low-util.yml"
             ]
         },
         {
@@ -31,6 +32,7 @@
             "skipFiles": [
                 //"<node_internals>/**"
             ],
+            "cwd": "${workspaceFolder}/if",
             "program": "${workspaceFolder}/if/src/index.ts",
             "preLaunchTask": "build",
             "outFiles": [
@@ -41,7 +43,7 @@
             ],
             "args": [
                 "--impl",
-                "./if-optimisation-models/examples/low-util.yml"
+                "./examples/low-util.yml"
             ]
         }
     ]
