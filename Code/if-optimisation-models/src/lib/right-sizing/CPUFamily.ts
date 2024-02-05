@@ -24,7 +24,12 @@ export class CPUDatabase {
      * @returns The instance model object, or null if the model is not found.
      */
     public getInstancesByModel(modelName: string): CloudInstance | null {
-        const model = this.nameToInstance.get(modelName);
+        let normalisedModelName = modelName;
+        if (!modelName.includes(".")) {
+            normalisedModelName = `Standard_${modelName}`;
+        }
+        const model = this.nameToInstance.get(normalisedModelName);
+        const modelTEST = this.nameToInstance.get("Standard_B16ps_v2");
         if (model) {
             return model;
         } else {
@@ -48,10 +53,11 @@ export class CPUDatabase {
         try {
             const data = await fs.readFile(path, 'utf8');
             const jsonData = JSON.parse(data);
-            // let jsonData = await import(path);
-
+            // let jsonData = await import(path); unused
+            // console.log('jsonData is:',jsonData)
             for (const familyName in jsonData) {
                 const models = jsonData[familyName];
+
                 const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM));
                 this.familyToModels.set(familyName, cpuModels);
 
@@ -84,6 +90,4 @@ export class CPUDatabase {
         return null;
     }
 }
-
-    
 
