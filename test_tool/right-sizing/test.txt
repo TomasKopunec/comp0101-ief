@@ -1,0 +1,699 @@
+0.5 B16ps v2
+0.75 F32s v2
+vCPUs for B16ps v2: 16
+Family details for B16ps v2: [{'model': 'B2pts v2', 'vCPUs': 2}, {'model': 'B2pls v2', 'vCPUs': 2}, {'model': 'B2ps v2', 'vCPUs': 2}, {'model': 'B4pls v2', 'vCPUs': 4}, {'model': 'B4ps v2', 'vCPUs': 4}, {'model': 'B8pls v2', 'vCPUs': 8}, {'model': 'B8ps v2', 'vCPUs': 8}, {'model': 'B16pls v2', 'vCPUs': 16}, {'model': 'B16ps v2', 'vCPUs': 16}]
+Combinations for : B16ps v2, with utilization 0.5 and Total vCPUs: 8.0
+Combination: ['B2pts v2', 'B2pts v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pts v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2pls v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B2ps v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B4pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B4pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B4pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B4ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B4ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pts v2', 'B4ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pts v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2pls v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B2ps v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B4pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B4pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B4pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B4ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B4ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2pls v2', 'B4ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pts v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2pls v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B2ps v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B4pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B4pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B4pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B4ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B4ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B2ps v2', 'B4ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B4pls v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2pts v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2pts v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2pts v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2pls v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2pls v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2pls v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2ps v2', 'B2pts v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2ps v2', 'B2pls v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B2ps v2', 'B2ps v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B4pls v2'], Total vCPUs: 8
+Combination: ['B4ps v2', 'B4ps v2'], Total vCPUs: 8
+Combination: ['B8pls v2'], Total vCPUs: 8
+Combination: ['B8ps v2'], Total vCPUs: 8
+vCPUs for F32s v2: 32
+Family details for F32s v2: [{'model': 'F2s v2', 'vCPUs': 2}, {'model': 'F4s v2', 'vCPUs': 4}, {'model': 'F8s v2', 'vCPUs': 8}, {'model': 'F16s v2', 'vCPUs': 16}, {'model': 'F32s v2', 'vCPUs': 32}, {'model': 'F48s v2', 'vCPUs': 48}, {'model': 'F64s v2', 'vCPUs': 64}, {'model': 'F72s v2', 'vCPUs': 72}]
+Combinations for : F32s v2, with utilization 0.75 and Total vCPUs: 24.0
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F16s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F2s v2', 'F16s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F4s v2', 'F16s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F8s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F16s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F2s v2', 'F16s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F2s v2', 'F16s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F8s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F4s v2', 'F16s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F8s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F16s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F16s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F2s v2', 'F16s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F2s v2', 'F16s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F8s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F2s v2', 'F16s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F4s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F8s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F8s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F4s v2', 'F16s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F8s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F16s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F4s v2', 'F16s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F2s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F4s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F8s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F2s v2', 'F8s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F2s v2', 'F8s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F4s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F4s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F8s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F4s v2', 'F8s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F8s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F8s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F8s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F8s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F8s v2', 'F8s v2'], Total vCPUs: 24
+Combination: ['F8s v2', 'F16s v2'], Total vCPUs: 24
+Combination: ['F16s v2', 'F2s v2', 'F2s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F16s v2', 'F2s v2', 'F2s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F16s v2', 'F2s v2', 'F4s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F16s v2', 'F4s v2', 'F2s v2', 'F2s v2'], Total vCPUs: 24
+Combination: ['F16s v2', 'F4s v2', 'F4s v2'], Total vCPUs: 24
+Combination: ['F16s v2', 'F8s v2'], Total vCPUs: 24
+0.5 B16ps v2
+0.75 F32s v2
+vCPUs for B16ps v2: 16
+Family details for B16ps v2: [{'model': 'B2pts v2', 'vCPUs': 2}, {'model': 'B2pls v2', 'vCPUs': 2}, {'model': 'B2ps v2', 'vCPUs': 2}, {'model': 'B4pls v2', 'vCPUs': 4}, {'model': 'B4ps v2', 'vCPUs': 4}, {'model': 'B8pls v2', 'vCPUs': 8}, {'model': 'B8ps v2', 'vCPUs': 8}, {'model': 'B16pls v2', 'vCPUs': 16}, {'model': 'B16ps v2', 'vCPUs': 16}]
+No optimal combination matches the JSON entry for B16ps v2.
+vCPUs for F32s v2: 32
+Family details for F32s v2: [{'model': 'F2s v2', 'vCPUs': 2}, {'model': 'F4s v2', 'vCPUs': 4}, {'model': 'F8s v2', 'vCPUs': 8}, {'model': 'F16s v2', 'vCPUs': 16}, {'model': 'F32s v2', 'vCPUs': 32}, {'model': 'F48s v2', 'vCPUs': 48}, {'model': 'F64s v2', 'vCPUs': 64}, {'model': 'F72s v2', 'vCPUs': 72}]
+No optimal combination matches the JSON entry for F32s v2.

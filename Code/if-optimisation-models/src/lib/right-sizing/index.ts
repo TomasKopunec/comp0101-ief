@@ -1,82 +1,216 @@
+import { z } from 'zod';
+
 import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
 import { ModelParams } from '@grnsft/if-models/build/types/common';
 
-import { CPUDatabase, CPUFamily, CPU } from './CPUFamily';
+import { CPUDatabase, CloudInstance } from './CPUFamily';
+import { validate, atLeastOneDefined } from '../../util/validations';
 
 export class RightSizingModel implements ModelPluginInterface {
 
-    private cpuDatabase: CPUDatabase;
-    private targetUtilization: number = 1.0;
+    private database: CPUDatabase;
+    private Cache: Map<string, CPUDatabase>;
+    private builtinDataPath = './data';
+    private cpuMetrics = ['cloud-instance-type', 'cloud-vendor', 'cpu-util'];
 
-    constructor(params: ModelParams) {
-        this.cpuDatabase = new CPUDatabase();
-        if (params.hasOwnProperty('cpuData')) {
-            this.cpuDatabase.loadDatabase(params['cpuData']);
-        }
-    }
-    
-    configure(params: object | undefined): Promise<ModelPluginInterface> {
-        let cpuDataPath: Array<string> = [];
-        if (params) {
-            if ('cpuData' in params) {
-                if (params['cpuData'] instanceof Array && typeof params['cpuData'][0] === 'string') {
-                    cpuDataPath = params['cpuData'] as Array<string>;
-                }
-            }
-            if ('targetUtilization' in params) {
-                if (typeof params['targetUtilization'] === 'number' && params['targetUtilization'] > 0 && params['targetUtilization'] <= 1){
-                    this.targetUtilization = params['targetUtilization'] as number;
-                }else{
-                    console.log('targetUtilization must be a number between 0 and 1');
-                }
-            }
-        }
-
-        if (cpuDataPath.length > 0) {
-            for (let path of cpuDataPath) {
-                this.cpuDatabase.loadDatabase(path);
-            }
-        }
-        return Promise.resolve(this);
+    constructor(database: CPUDatabase = new CPUDatabase()) {
+        this.database = database;
+        this.Cache = new Map<string, CPUDatabase>();
     }
 
-    execute(inputs: ModelParams[]): Promise<ModelParams[]> {
-        
-        return Promise.resolve(inputs.map<ModelParams>((input) => {
-            let cpuUtil: number = input['cpuUtilization'];
-            let cpuFamilyName: string = input['cpuFamily'];
-            let cpuFamily: CPUFamily | null = this.cpuDatabase.getFamily(cpuFamilyName);
-            if (cpuFamily){
-                let cpuModelName: string = input['cpuModel'];
-                let cpuModel: CPU | null = cpuFamily.getModel(cpuModelName);
-                // let cpuThreads: number = input['cpuThreads'];
-                // let cpuClock: number = input['cpuClock'];
-                // let cpuTurbo: number = input['cpuTurbo'];
-                if (cpuModel) {
-                    let rightSizingModel = cpuFamily.getRightSizingModel(cpuModel, cpuUtil);
-                    if (rightSizingModel != null && rightSizingModel != cpuModel) {
-                        input['rightSizingModel'] = rightSizingModel.model;
-                    }
-                }
-            }
-            return input;
-        }));
-    }
-
-    private parseCPUModel(cpuModel: CPU|string): CPU | null {
-        if (typeof cpuModel === 'string') {
-            let cpuFamilyName: string = cpuModel.split('-')[0];
-            let cpuModelName: string = cpuModel.split('-')[1];
-            let cpuFamily: CPUFamily | null = this.cpuDatabase.getFamily(cpuFamilyName);
-            if (cpuFamily) {
-                return cpuFamily.getModel(cpuModelName);
+    public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
+        if (configParams && 'data-path' in configParams) {
+            const instanceDataPath = configParams['data-path'];
+            if (typeof instanceDataPath === 'string') {
+                await this.database.loadModelData(instanceDataPath);
             } else {
-                return null;
+                console.error('Error: Invalid instance data path type.');
             }
-        } else {
-            return cpuModel;
         }
+        return this;
+    }
+
+    /**
+     * Calculate the total emissions for a list of inputs.
+     */
+    public async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
+        let outputs: ModelParams[] = [];
+        for (const input of inputs) {
+            if ('cloud-vendor' in input) {
+                const cloudVendor = input['cloud-vendor'];
+                if (!this.Cache.has(cloudVendor)) {
+                    const newDatabase = new CPUDatabase();
+                    if (cloudVendor === 'aws') {
+                        await newDatabase.loadModelData(this.builtinDataPath + '/aws-instances.json');
+                    } else if (cloudVendor === 'azure') {
+                        await newDatabase.loadModelData(this.builtinDataPath + '/azure-instances.json');
+                    }
+                    this.Cache.set(cloudVendor, newDatabase);
+                }
+                this.database = this.Cache.get(cloudVendor)!;
+            }
+            let processedOutputs = this.processInput(input);
+            outputs.push(...processedOutputs);
+        }
+        return Promise.resolve(outputs);
+    }
+
+    /**
+     * Validate the input parameters object, check if the necessary parameters are present.
+     * 
+     * @param input Input model parameters object to be validated
+     * @returns True if the input is valid, false otherwise
+     */
+    private validateSingleInput(input: ModelParams) {
+        const schema = z
+            .object({
+                'cloud-instance-type': z.string(),
+                'cloud-vendor': z.string(),
+                'cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+                'target-cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional()
+            })
+            .refine(atLeastOneDefined, {
+                message: `At least one of ${this.cpuMetrics} should present.`,
+            });
+
+        return validate<z.infer<typeof schema>>(schema, input);
+    }
+
+    /**
+     * Process a single input instance, calculate the right-sizing and return the processed output instances.
+     * 
+     * @param input One single input instance (one input instance in the yaml file) to be processed
+     * @returns Processed output instances (one or more) for the input instance
+     */
+    private processInput(input: ModelParams): ModelParams[] {
+        let outputs: ModelParams[] = [];
+        if (this.validateSingleInput(input)) {
+            input['old-instance'] = input['cloud-instance-type'];
+            input['old-cpu-util'] = input['cpu-util'];
+            let instance = this.database.getInstancesByModel(input['cloud-instance-type']);
+            let util: number;
+            let targetUtil: number;
+            let res: [CloudInstance, number][];
+
+            // ensure cpu-util is a number
+            if (typeof input['cpu-util'] === 'number') {
+                util = input['cpu-util'] as number;
+            }else if (typeof input['cpu-util'] === 'string'){
+                util = parseFloat(input['cpu-util']);
+            }else{
+                throw new Error('cpu-util must be a number or string');
+            }
+            util = util / 100; // convert percentage to decimal
+
+            // If target-cpu-util is not defined, set it to 1
+            if (typeof input['target-cpu-util'] === 'undefined') {
+                targetUtil = 100;
+            } else {
+                // Ensure that if target-cpu-util is defined, it is a number or string
+                if (typeof input['target-cpu-util'] === 'number') {
+                    targetUtil = input['target-cpu-util'] as number;
+                } else if (typeof input['target-cpu-util'] === 'string') {
+                    targetUtil = parseFloat(input['target-cpu-util']);
+                } else {
+                    throw new Error('target-cpu-util must be a number or string');
+                }
+            }
+            targetUtil = targetUtil / 100; // convert percentage to decimal
+            res = this.calculateRightSizing(instance, util, targetUtil);
+
+            // for each instance combination, create a new output
+            res.forEach(([instance, util]) => {
+                let output = { ...input }; // copy input to create new output
+                let processedModel = instance.model.replace("Standard_", "");
+                output['cloud-instance-type'] = processedModel;
+                output['cpu-util'] = Math.round(util * 1000)/10; // convert decimal to percentage
+                if (processedModel === input['old-instance']) {
+                    output['recommendation'] = "SAME as the old instance";
+                }
+                outputs.push(output);
+            });
+        } else {
+            outputs.push(input); // push input unchanged if not processing
+        }
+        return outputs;
+    }
+
+    /**
+     * Calculate the optimal combination of instances to fulfill the required vCPUs, based on the CPU utilization given by the input.
+     * Implemented using a knapsack-like algorithm.
+     * 
+     * @param cloudInstance The cloud instance object to be right-sized, the instance must be in the database
+     * @param cpuUtil The percentage of CPU utilization, must be between 0 and 1
+     * @returns The optimal combination of instances to fulfill the required vCPUs, returns by an array of tuples which contains the instance and the percentage of utilization
+     */
+    
+    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number): [CloudInstance, number][]{
+        if (!cloudInstance) {
+            throw new Error('Cloud instance not found');
+        }
+        if (cpuUtil < 0 || cpuUtil > 1) {
+            throw new Error('CPU utilization must be between 0 and 1');
+        }
+        if (targetUtil < 0 || targetUtil > 1) {
+            throw new Error('CPU target utilization must be between 0 and 1');
+        }
+    
+        const family = this.database.getModelFamily(cloudInstance.model);
+        if (!family) {
+            throw new Error('Instance family not found');
+        }
+    
+        // Sort instances by vCPUs descending, but you might also consider sorting by RAM if that becomes a bottleneck
+        let requiredCPUs = cloudInstance.vCPUs * cpuUtil / targetUtil;
+        let inputRAM = cloudInstance.RAM;
+        let sortedFamily = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
+        let sortedFamily2 = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
+        let optimalCombination: [CloudInstance, number][] = [];
+        let remainingCPUs = Math.ceil(requiredCPUs);
+        let totalRAM = 0; // RAM accumlated during the iterations
+    
+        // First, try to satisfy CPU requirements
+        for (const instance of sortedFamily2) {
+            console.log("RAM in the for Loop:", totalRAM)
+            while (remainingCPUs - instance.vCPUs >= 0 ||remainingCPUs - (instance.vCPUs / 2) == 1) {
+                console.log("Total RAM needed:", cloudInstance.RAM)
+                console.log("RAM now:", totalRAM)
+                if (requiredCPUs >= instance.vCPUs) {
+                    optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
+                    totalRAM += instance.RAM; // add RAM to the total
+                    console.log("RAM (if):", totalRAM)
+                } else {
+                    let usage = requiredCPUs / instance.vCPUs * targetUtil;
+                    optimalCombination.push([instance, usage]); // use partial capacity of this instance
+                    totalRAM += instance.RAM * usage;; // add RAM to the total
+                    console.log("RAM (else):", totalRAM)
+                }
+                remainingCPUs -= instance.vCPUs;
+                requiredCPUs -= instance.vCPUs;
+            }
+        }
+              
+        let RAMefficientInstances = sortedFamily.sort((a, b) => (b.RAM / b.vCPUs) - (a.RAM / a.vCPUs));
+        // Limit the number of additional instances to add to avoid over-adding (This could need further testings and adjustments)
+        let maxAdditionalInstances = 2;
+        let additionalInstancesAdded = 0;
+        
+        while (totalRAM < inputRAM && additionalInstancesAdded < maxAdditionalInstances) {
+            for (const instance of RAMefficientInstances) {
+                if (totalRAM >= inputRAM) {
+                    break; // break if the amount of RAM has been satisfied
+                }
+                console.log("Newly shoved in cloudInstance:", instance)
+                optimalCombination.push([instance, targetUtil]);
+                totalRAM += instance.RAM;
+                additionalInstancesAdded++;
+            }
+        }       
+        if (totalRAM < inputRAM) {
+            // If the RAM is still not enough after adding the two most efficient instances
+            console.log("Optimisation Failed: Unable to meet the RAM requirements without overly increasing CPU.");
+            console.log("It is recommended by the model to continue using the original CPUs.");
+        }
+        return optimalCombination;
     }
 }
-
-  

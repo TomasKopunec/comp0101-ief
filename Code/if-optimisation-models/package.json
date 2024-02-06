@@ -4,20 +4,17 @@
   "description": "Optimisation models for IF (Impact Framework)",
   "main": "build/index.js",
   "scripts": {
-    "start": "npm run if",
+    "start": "npm run install-and-exec:local",
     "build": "rm -rf build && tsc --project tsconfig.build.json",
     "install2if": "./install2if.sh local",
     "install2if:local": "./install2if.sh local",
     "install2if:dev": "./install2if.sh dev",
-    "install2if:global": "./install2if.sh global",
     "if": "yarn impact-engine",
     "if:local": "yarn impact-engine",
     "if:dev": "cd ../if && yarn impact-engine",
-    "if:global": "impact-engine",
     "intall-if": "npm run install2if && yarn impact-engine",
-    "install-and-exec:local": "npm run install2if:local && yarn impact-engine",
-    "install-and-exec:dev": "npm run install2if:dev && cd ../if && yarn impact-engine",
-    "install-and-exec:global": "npm run install2if:global && impact-engine",
+    "install-and-exec:local": "./install2if.sh local && yarn impact-engine",
+    "install-and-exec:dev": "./install2if.sh dev && cd ../if && yarn impact-engine",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

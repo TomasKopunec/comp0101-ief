@@ -1,0 +1,19 @@
+[
+    {
+        "old_cpu": "B16ps v2",
+        "old_util": 0.5,
+        "new_util": 1,
+        "new_cpus": [
+            "B8pls v2"
+        ]
+    },
+    {
+        "old_cpu": "F32s v2",
+        "old_util": 0.75,
+        "new_util": 1,
+        "new_cpus": [
+            "F16s v2",
+            "F8s v2"
+        ]
+    }
+]
