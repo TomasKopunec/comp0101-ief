@@ -303,3 +303,35 @@ To visualize the carbon emission data, integrate the `CarbonAdvisor` model with 
 
 ## Contributing
 Contributions to the CarbonAdvisor model are welcome. Please submit pull requests with any enhancements, bug fixes, or additional features you'd like to add.
+
+
+## Future Forcasts 
+Since future forcasts are not available (for more than one day later ) through the API we need to implement our own solution.
+It will be based on a weighted average of past years.
+So the algorith is as follows:
+If a timeframe range is after the current datetime then replace the year with the previous one.
+Calculate the best time for that time range lets call it time A with Score A.
+For that best time do 3 more APi calls for the 4 previous years getting scores B, C, D.
+If There is no score B make B=0,B1=0 else make B1=0.25 
+If There is no score C makeC=0, C1=0 else make C1=0.15 
+If There is no score D make D=0,D1=0 else make D1=0.10 
+Then return the best time A with score = (0.5A+ 0.25 B + 0.15C +0.10D) /(0.5+B1+C1+D1)
+
+
+alternative approach that is more accurate but much more api calls
+If a timeframe range is after the current datetime then replace the year with the year-1 :Timeframe range 1
+replace the year with the year-2 :Timeframe range 2
+replace the year with the year-3 :Timeframe range 3
+replace the year with the year-4 :Timeframe range 4
+for of the timeframes 1 2 3 4 do api calls and get the best so A1 , A2, A3, A4
+for every of the A1, A2, A3, A4 do this:
+lets say for A1
+do 3 more APi calls for the other 3 years (with same date and time except year as A1):so get values A11=A1 , A12, A13, A14
+find total score for A1 as done in te previous alternative 
+
+so in the end you have score A1 for time A1 in timeframe range 1
+score A2 for time A2 in timeframe range 2
+score A3 for time A3 in timeframe range 3
+score A4 for time A4 in timeframe range 4.
+
+Select form 1 ,2 ,3 or 4 the one with the best score and return that
