@@ -4,10 +4,6 @@ import { ModelPluginInterface } from '@grnsft/if-unofficial-models/build/interfa
 import { buildErrorMessage } from '@grnsft/if-unofficial-models/build/util/helpers';
 
 import { ERRORS } from '@grnsft/if-unofficial-models/build/util/errors';
-
-import { promises as fsPromises } from 'fs';
-import * as path from 'path';
-
 const { InputValidationError } = ERRORS;
 
 // Make sure you have the 'qs' library installed
@@ -33,8 +29,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
    * Allowed location parameter that is passed in the config of the model.
    * The arguments are stored in a set to avoid duplicates.
    */
-  private ALLOWED_LOCATIONS_PARAM_NAME = 'allowed-locations';
-  private allowedLocations: Set<string> = new Set();
+  private readonly ALLOWED_LOCATIONS_PARAM_NAME = 'allowed-locations';
+  private readonly allowedLocations: Set<string> = new Set();
 
   /**
    * Allowed timeframe parameter that is passed in the config of the model.
@@ -51,27 +47,11 @@ export class CarbonAdvisor implements ModelPluginInterface {
   private readonly supportedLocations: Set<string> = new Set();
   private hasSampling: boolean = false;
   private sampling: number = 0;
-  // Use for read from locations.json
-  private locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-advisor', 'locations.json');
-
   /**
    * Error builder function that is used to build error messages.
    */
   errorBuilder = buildErrorMessage(CarbonAdvisor);
-  
-  // Use for read from locations.json
-  async loadLocations() {
-    try {
-      const data = await fsPromises.readFile(this.locationsFilePath, 'utf-8');
-      const locationsObject = JSON.parse(data);
-    return locationsObject;
-    } catch (error) {
-      console.error('Error reading from locations.json:', error);
-      // Return an empty set in case of error
-      return new Set(); 
-    }
-  }
-  
+
   async configure(params: object | undefined = undefined): Promise<CarbonAdvisor> {
     console.log('#configure()');
     await this.setSupportedLocations();
@@ -79,54 +59,40 @@ export class CarbonAdvisor implements ModelPluginInterface {
     return this;
   }
 
+  // async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
+  //   console.log('#execute()');
+  //   this.validateInputs(inputs);
+
+  //   const results: ModelParams[] = [];
+  //   for (const timeframe of this.allowedTimeframes!) {
+  //     const response = {
+  //       location: 'westus',
+  //       time: '2022-08-01T19:00:00Z',
+  //       rating: 0.5
+  //     }  // TODO: await this.getResponse(fromTime, toTime);
+
+  //     // For each API call, enrich each input and set allowed-timeframes to the current timeframeonly
+  //     const enrichedInputs = inputs.map(input => ({
+  //       ...input,
+  //       'suggested-location': response.location,
+  //       'suggested-timeframe': response.time,
+  //       'suggested-score': response.rating//,
+  //       // 'allowed-timeframe': `${timeframe.from} - ${timeframe.to}`  // TODO: set to current timeframe only
+  //     }));
+  //     results.push(...enrichedInputs);
+  //   }
+
+  //   return results;
+  // }
+
   async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
-    this.validateInputs(inputs);
-    // Use aggregatedMatchingValues to store all matching values from localData
-    let aggregatedMatchingValues: Set<string> = new Set();
-
-    // For each input, get the allowed locations and check if they are in the list of supported locations
-    for (const input of inputs) {
-      const allowedLocations = input['allowed-locations'];
-      const localData = await this.loadLocations(); 
-      let matchingValues: any[] = [];
-      
-      // For each key in localData, check if it is in the list of allowedLocations
-      Object.keys(localData).forEach(key => {
-        if (allowedLocations.includes(key)) {
-          // If the key is within allowedLocations, store its corresponding value
-          matchingValues.push(localData[key]);
-        }
-      });
-
-      // Flatten the list of localData values
-      const flattenedLocalDataValues = Object.values(localData).flat(Infinity);
-
-      // For each allowedLocation, check if it is found in the flattened list of localData values
-      allowedLocations.forEach((allowedLocation: unknown) => {
-        // Check if allowedLocation is found in the flattened list of localData values
-        if (flattenedLocalDataValues.includes(allowedLocation)) {
-          // If a match is found, add it to matchingValues
-          matchingValues.push(allowedLocation);
-        }
-      });
-
-      // Flatten the matchingValues array and remove duplicates
-      matchingValues = [...new Set(matchingValues.flat())];
-
-      // Add all matching values to the set of aggregatedMatchingValues
-      matchingValues.forEach(value => aggregatedMatchingValues.add(value));
-      // Set the allowedLocations to the aggregatedMatchingValues
-      this.allowedLocations = aggregatedMatchingValues;
-
-      input['allowed-locations'] = matchingValues;
-    }
-
     console.log('#execute()');
+    this.validateInputs(inputs);
     return this.hasSampling ? this.handleSampling(inputs) : this.handleNoSampling(inputs);
   }
 
   async handleSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
-    // Initialize an empty array to hold all suggestions and plotted points.
+    // Initialize an empty array to hold all suggestions and plotted points
     const results: ModelParams[] = inputs.map(input => ({
       ...input,
       suggestions: [],
@@ -157,7 +123,6 @@ export class CarbonAdvisor implements ModelPluginInterface {
 
       // Returns an array of ALL EmissionsData objects
       let all = await this.getResponse("/emissions/bylocations", 'GET', params);
-      
       if (all.length > 0) {
         console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, all);
 
@@ -239,7 +204,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
     // Filter all responses to get items with the lowest rating (i.e. the best responses)
     const lowestRatingItems = byLocationsBestArr.filter(item => item.rating === lowestRating);
 
-    lowestRatingItems.forEach(async item => {
+    // Set suggestions
+    lowestRatingItems.forEach(item => {
       results[0].suggestions.push({
         'suggested-location': item.location,
         'suggested-timeframe': item.time,
@@ -254,17 +220,11 @@ export class CarbonAdvisor implements ModelPluginInterface {
    * Send a request to the carbon-aware-sdk API to get the list of supported locations.
    */
   private async setSupportedLocations(): Promise<void> {
-    // Get the list of supported locations from the carbon-aware-sdk API
-      const localData = await this.loadLocations(); 
-      // For each key in localData, add the key and its values to the set of supported locations
-      Object.keys(localData).forEach(key => {
-          const locationsArray = localData[key];
-          locationsArray.forEach((location: string) => {
-            // Add each server to the set of supported locations
-              this.supportedLocations.add(location);   
-          });
-          // Add each region to the set of supported locations
-          this.supportedLocations.add(key);
+    const data = await this.getResponse(this.LOCATIONS_ROUTE);
+    Object.keys(data)
+      .map((key: string) => data[key].name)
+      .forEach((location: string) => {
+        this.supportedLocations.add(location);
       });
   }
 
@@ -377,6 +337,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
     const durations = Array.from(this.allowedTimeframes).map(timeframe => {
       const start = new Date(timeframe.from).getTime();
       const end = new Date(timeframe.to).getTime();
+      return (end - start) / 1000; // Duration in seconds
+
       return (end - start) / 1000; // Duration in seconds
     });
 
