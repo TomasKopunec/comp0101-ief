@@ -52,26 +52,31 @@ export class CarbonAdvisor implements ModelPluginInterface {
   private hasSampling: boolean = false;
   private sampling: number = 0;
   // Use for read from locations.json
-  private locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-advisor', 'locations.json');
+  private locationsFilePath = path.join(__dirname, '../../../../../..', 'src', 'lib', 'carbon-advisor', 'locations.json');
 
   /**
    * Error builder function that is used to build error messages.
    */
   errorBuilder = buildErrorMessage(CarbonAdvisor);
-  
+
+  /**
+   * Number of years to use for historical prediction.
+   */
+  private readonly historyYears = 5;
+
   // Use for read from locations.json
   async loadLocations() {
     try {
       const data = await fsPromises.readFile(this.locationsFilePath, 'utf-8');
       const locationsObject = JSON.parse(data);
-    return locationsObject;
+      return locationsObject;
     } catch (error) {
       console.error('Error reading from locations.json:', error);
       // Return an empty set in case of error
-      return new Set(); 
+      return new Set();
     }
   }
-  
+
   async configure(params: object | undefined = undefined): Promise<CarbonAdvisor> {
     console.log('#configure()');
     await this.setSupportedLocations();
@@ -87,9 +92,9 @@ export class CarbonAdvisor implements ModelPluginInterface {
     // For each input, get the allowed locations and check if they are in the list of supported locations
     for (const input of inputs) {
       const allowedLocations = input['allowed-locations'];
-      const localData = await this.loadLocations(); 
+      const localData = await this.loadLocations();
       let matchingValues: any[] = [];
-      
+
       // For each key in localData, check if it is in the list of allowedLocations
       Object.keys(localData).forEach(key => {
         if (allowedLocations.includes(key)) {
@@ -122,7 +127,12 @@ export class CarbonAdvisor implements ModelPluginInterface {
     }
 
     console.log('#execute()');
-    return this.hasSampling ? this.handleSampling(inputs) : this.handleNoSampling(inputs);
+
+    this.getForecast(Array.from(this.allowedLocations), Array.from(this.allowedTimeframes));
+    return inputs;
+
+    // UNCOMMENT THIS LINE TO USE THE SAMPLING LOGIC
+    // return this.hasSampling ? this.handleSampling(inputs) : this.handleNoSampling(inputs);
   }
 
   async handleSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
@@ -157,7 +167,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
 
       // Returns an array of ALL EmissionsData objects
       let all = await this.getResponse("/emissions/bylocations", 'GET', params);
-      
+
       if (all.length > 0) {
         console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, all);
 
@@ -255,26 +265,108 @@ export class CarbonAdvisor implements ModelPluginInterface {
    */
   private async setSupportedLocations(): Promise<void> {
     // Get the list of supported locations from the carbon-aware-sdk API
-      const localData = await this.loadLocations(); 
-      // For each key in localData, add the key and its values to the set of supported locations
-      Object.keys(localData).forEach(key => {
-          const locationsArray = localData[key];
-          locationsArray.forEach((location: string) => {
-            // Add each server to the set of supported locations
-              this.supportedLocations.add(location);   
-          });
-          // Add each region to the set of supported locations
-          this.supportedLocations.add(key);
+    const localData = await this.loadLocations();
+    // For each key in localData, add the key and its values to the set of supported locations
+    Object.keys(localData).forEach(key => {
+      const locationsArray = localData[key];
+      locationsArray.forEach((location: string) => {
+        // Add each server to the set of supported locations
+        this.supportedLocations.add(location);
       });
+      // Add each region to the set of supported locations
+      this.supportedLocations.add(key);
+    });
   }
 
-  private async getForecast(): Promise<ForecastData> {
-    const params = new Map();
-    for (const location of this.allowedLocations) {
-      params.set('location', location);
-    }
-    return await this.getResponse(this.FORECAST_ROUTE, 'GET', params) as ForecastData;
+  /**
+   * Task 1: Write the logic that decides whether we are forecasting or not. (validate inputs properly, check if
+   * every date is in the future, etc.)
+   * 
+   * Task 2: Implement actual forecast, if we are within 3 days in future call the /forecast endpoint,
+   * otherwise perform weighted historical prediction.
+   */
+  private async getForecast(location: string[], timeframes: Timeframe[]): Promise<any> {
+    // Find each unique combination of location and timeframe
+    const combinations = this.cartesianProduct(location, timeframes);
+
+    // TODO: Call on the first one only, for now
+    await this.getForecastForLocationAndTimeframe(combinations[0][0], combinations[0][1]);
   }
+
+  /**
+   * Builds a forecast for a given location and timeframe by querying the carbon-aware-sdk API for the last 5 years
+   * @param location Location 
+   * @param timeframe Timeframe
+   * @returns Forecast
+   */
+  private async getForecastForLocationAndTimeframe(location: string, timeframe: Timeframe): Promise<Forecast> {
+    const map: Map<Timeframe, ApiResponse> = new Map(); // Map of ttimeframes to scores
+
+    let from = new Date(timeframe.from);
+    let to = new Date(timeframe.to);
+
+    for (let i = 0; i < this.historyYears; i++) {
+      const timeframe = {
+        from: from.toISOString(),
+        to: to.toISOString()
+      }
+      console.log(`Forecast for ${location} on ${JSON.stringify(timeframe)}`);
+
+      const response: ApiResponse[] = await this.getResponse('/emissions/bylocations/best', 'GET', {
+        location: location,
+        time: from.toISOString(),
+        toTime: to.toISOString()
+      });
+      map.set(timeframe, response[0]);
+      // Shift by one year to past
+      from.setFullYear(from.getFullYear() - 1);
+      to.setFullYear(to.getFullYear() - 1);
+    }
+
+    console.log(map);
+
+    // Calculate the prediction
+    const forecast = this.forecast(location, timeframe, map);
+    console.log(`Forecast`);
+    console.log(forecast);
+
+    return forecast;
+  }
+
+  /**
+   * Returns a forecast for a given location and timeframe. The forecast is a weighted average of the scores of the
+   * responses, where the weights are determined by the decay factor.
+   * For example if the scores are [2023=5, 2022=4, 2021=3, 2020=2, 2019=1], the forecast is:
+   * (1*5 + 0.95 * 4 + 0.95^2 * 3 + 0.95^3 * 2 + 0.95^4 * 1) / (1 + 0.95 + 0.95^2 + 0.95^3 + 0.95^4)
+   * 
+   * @param location Location, e.g. 'eastus'
+   * @param timeframe Timeframe, e.g. { from: '2023-01-01T00:00:00.000Z', to: '2023-12-31T23:59:59.999Z' }
+   * @param map Map of timeframes to scores, e.g. { 2023: 5, 2022: 4, 2021: 3, 2020: 2, 2019: 1 }
+   * @returns Forecast, e.g. { location: 'eastus', timeframe: { from: ..., to: ... }, rating: 4.5, n: 5, decay: 0.95 }
+   */
+  private forecast(location: string, timeframe: Timeframe, map: Map<Timeframe, ApiResponse>): Forecast {
+    const decayFactor = 0.95;
+    let i = 0;
+    let weightedSum = 0;
+    let weightSum = 0;
+
+    for (const [_, response] of map) {
+      const decay = Math.pow(decayFactor, i);
+      // rating * 0.95^i, otherwise 0
+      weightedSum += response ? (response.rating * decay) : 0;
+      weightSum += decay; // 1 + 0.95 + 0.95^2 + ...
+      i++;
+    }
+
+    return {
+      location: location,
+      timeframe: timeframe,
+      rating: weightedSum / weightSum,
+      n: map.size,
+      decay: decayFactor
+    };
+  }
+
 
   /**
    * Send a request to the carbon-aware-sdk API.
@@ -302,7 +394,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
     }
 
     const finalUrl = `${url}${queryString ? '?' + queryString : ''}`;
-    //console.log(`Sending ${method} request to ${finalUrl}`);
+    // console.log(`Sending ${method} request to ${finalUrl}`);
 
     return axios({
       url: finalUrl,
@@ -431,5 +523,22 @@ export class CarbonAdvisor implements ModelPluginInterface {
 
   private throwError(type: ErrorConstructor, message: string) {
     throw new type(this.errorBuilder({ message }));
+  }
+
+  /**
+   * Returns the cartesian product of two arrays (string and Timeframe). 
+   * If locations size is n, and dates size is m, the result will be an array of size n * m.
+   * @param locations List of allowed locations
+   * @param dates List of allowed timeframes
+   * @returns Array of tuples, where each tuple contains a location and a timeframe. 
+   */
+  private cartesianProduct(locations: string[], dates: Timeframe[]): Array<[string, Timeframe]> {
+    const product: Array<[string, Timeframe]> = [];
+    for (const str of locations) {
+      for (const date of dates) {
+        product.push([str, date]);
+      }
+    }
+    return product;
   }
 }
