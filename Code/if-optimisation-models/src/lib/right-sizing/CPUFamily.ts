@@ -24,12 +24,7 @@ export class CPUDatabase {
      * @returns The instance model object, or null if the model is not found.
      */
     public getInstancesByModel(modelName: string): CloudInstance | null {
-        let normalisedModelName = modelName;
-        if (!modelName.includes(".")) {
-            normalisedModelName = `Standard_${modelName}`;
-        }
-        const model = this.nameToInstance.get(normalisedModelName);
-        const modelTEST = this.nameToInstance.get("Standard_B16ps_v2");
+        const model = this.nameToInstance.get(modelName);
         if (model) {
             return model;
         } else {
