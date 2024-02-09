@@ -1,0 +1,19 @@
+{
+    "TestFamily": [
+        {
+            "model": "Standard_test1_2_8",
+            "vCPUs": 2,
+            "RAM": 8.0
+        },
+        {
+            "model": "Standard_test2_4_16",
+            "vCPUs": 4,
+            "RAM": 16.0
+        },
+        {
+            "model": "Standard_test3_8_32",
+            "vCPUs": 8,
+            "RAM": 32.0
+        }
+    ]
+}

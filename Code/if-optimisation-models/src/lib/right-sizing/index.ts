@@ -23,6 +23,7 @@ export class RightSizingModel implements ModelPluginInterface {
             const instanceDataPath = configParams['data-path'];
             if (typeof instanceDataPath === 'string') {
                 await this.database.loadModelData(instanceDataPath);
+                this.Cache.set('custom', this.database);
             } else {
                 console.error('Error: Invalid instance data path type.');
             }
@@ -88,7 +89,7 @@ export class RightSizingModel implements ModelPluginInterface {
             input['old-instance'] = input['cloud-instance-type'];
             input['old-cpu-util'] = input['cpu-util'];
             input['old-mem-util'] = input['mem-util'];
-            let instance = this.database.getInstancesByModel(input['cloud-instance-type']);
+            let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
             let util: number;
             let targetUtil: number;
             let res: [CloudInstance, number, number, number][];
@@ -98,9 +99,9 @@ export class RightSizingModel implements ModelPluginInterface {
             // ensure cpu-util is a number
             if (typeof input['cpu-util'] === 'number') {
                 util = input['cpu-util'] as number;
-            }else if (typeof input['cpu-util'] === 'string'){
+            } else if (typeof input['cpu-util'] === 'string') {
                 util = parseFloat(input['cpu-util']);
-            }else{
+            } else {
                 throw new Error('cpu-util must be a number or string');
             }
             util = util / 100; // convert percentage to decimal
@@ -195,4 +196,14 @@ export class RightSizingModel implements ModelPluginInterface {
     }
     
 
+
+    /**
+     * Get the databases of cloud instances.
+     * This method is used for testing purposes.
+     * 
+     * @returns The databases of cloud instances
+     */
+    public getDatabases(): Map<string, CPUDatabase> {
+        return this.Cache;
+    }
 }
