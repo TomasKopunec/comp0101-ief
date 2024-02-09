@@ -154,8 +154,8 @@ private processInput(input: ModelParams): ModelParams[] {
         // Calculate right sizing for the instance
         res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil, region);
 
-        // generate unique id to use for the given combination
-        let uuid = crypto.randomUUID();
+        // generate unique id to use for cases where many instances replace one
+        let combination_uuid = crypto.randomUUID();
 
         // Create a new output for each instance combination
         res.forEach(([instance, cpuUtil, memUtil, totalRAM, price, priceDifference]) => {
@@ -167,7 +167,9 @@ private processInput(input: ModelParams): ModelParams[] {
             output['cpu-util'] = cpuUtil;
             output['mem-util'] = memUtil;
             output['total-memoryGB'] = totalRAM;
-            output['change-id'] = uuid
+            if (res.length > 1) {
+                output['combination-id'] = combination_uuid
+            }
 
             // Determine price change
             if (priceDifference > 0) {
