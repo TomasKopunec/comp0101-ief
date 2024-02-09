@@ -23,7 +23,7 @@ export class CPUDatabase {
      * @param modelName The name of the instance model.
      * @returns The instance model object, or null if the model is not found.
      */
-    public getInstancesByModel(modelName: string): CloudInstance | null {
+    public getInstanceByModel(modelName: string): CloudInstance | null {
         let normalisedModelName = modelName;
         if (!modelName.includes(".")) {
             normalisedModelName = `Standard_${modelName}`;
@@ -51,7 +51,9 @@ export class CPUDatabase {
      */
     public async loadModelData(path: string) {
         try {
+            console.log('cwd:', process.cwd());
             const data = await fs.readFile(path, 'utf8');
+            console.log('full path:', await fs.realpath(path));
             const jsonData = JSON.parse(data);
             // let jsonData = await import(path); unused
             // console.log('jsonData is:',jsonData)
@@ -86,6 +88,16 @@ export class CPUDatabase {
             }
         }
         return null;
+    }
+
+    /**
+     * Get all the instance families in the database.
+     * This method is for testing purposes only.
+     * 
+     * @returns An array of the family names.
+     */
+    public getFamilies(): Map<string, CloudInstance[]> {
+        return this.familyToModels;
     }
 }
 

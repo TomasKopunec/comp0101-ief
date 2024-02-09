@@ -23,6 +23,7 @@ export class RightSizingModel implements ModelPluginInterface {
             const instanceDataPath = configParams['data-path'];
             if (typeof instanceDataPath === 'string') {
                 await this.database.loadModelData(instanceDataPath);
+                this.Cache.set('custom', this.database);
             } else {
                 console.error('Error: Invalid instance data path type.');
             }
@@ -87,7 +88,7 @@ export class RightSizingModel implements ModelPluginInterface {
         if (this.validateSingleInput(input)) {
             input['old-instance'] = input['cloud-instance-type'];
             input['old-cpu-util'] = input['cpu-util'];
-            let instance = this.database.getInstancesByModel(input['cloud-instance-type']);
+            let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
             let util: number;
             let targetUtil: number;
             let res: [CloudInstance, number][];
@@ -95,9 +96,9 @@ export class RightSizingModel implements ModelPluginInterface {
             // ensure cpu-util is a number
             if (typeof input['cpu-util'] === 'number') {
                 util = input['cpu-util'] as number;
-            }else if (typeof input['cpu-util'] === 'string'){
+            } else if (typeof input['cpu-util'] === 'string') {
                 util = parseFloat(input['cpu-util']);
-            }else{
+            } else {
                 throw new Error('cpu-util must be a number or string');
             }
             util = util / 100; // convert percentage to decimal
@@ -123,7 +124,7 @@ export class RightSizingModel implements ModelPluginInterface {
                 let output = { ...input }; // copy input to create new output
                 let processedModel = instance.model.replace("Standard_", "");
                 output['cloud-instance-type'] = processedModel;
-                output['cpu-util'] = Math.round(util * 1000)/10; // convert decimal to percentage
+                output['cpu-util'] = Math.round(util * 1000) / 10; // convert decimal to percentage
                 if (processedModel === input['old-instance']) {
                     output['recommendation'] = "SAME as the old instance";
                 }
@@ -143,8 +144,8 @@ export class RightSizingModel implements ModelPluginInterface {
      * @param cpuUtil The percentage of CPU utilization, must be between 0 and 1
      * @returns The optimal combination of instances to fulfill the required vCPUs, returns by an array of tuples which contains the instance and the percentage of utilization
      */
-    
-    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number): [CloudInstance, number][]{
+
+    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number): [CloudInstance, number][] {
         if (!cloudInstance) {
             throw new Error('Cloud instance not found');
         }
@@ -154,12 +155,12 @@ export class RightSizingModel implements ModelPluginInterface {
         if (targetUtil < 0 || targetUtil > 1) {
             throw new Error('CPU target utilization must be between 0 and 1');
         }
-    
+
         const family = this.database.getModelFamily(cloudInstance.model);
         if (!family) {
             throw new Error('Instance family not found');
         }
-    
+
         // Sort instances by vCPUs descending, but you might also consider sorting by RAM if that becomes a bottleneck
         let requiredCPUs = cloudInstance.vCPUs * cpuUtil / targetUtil;
         let inputRAM = cloudInstance.RAM;
@@ -168,13 +169,13 @@ export class RightSizingModel implements ModelPluginInterface {
         let optimalCombination: [CloudInstance, number][] = [];
         let remainingCPUs = Math.ceil(requiredCPUs);
         let totalRAM = 0; // RAM accumlated during the iterations
-    
+
         // First, try to satisfy CPU requirements
         for (const instance of sortedFamily2) {
-            console.log("RAM in the for Loop:", totalRAM)
-            while (remainingCPUs - instance.vCPUs >= 0 ||remainingCPUs - (instance.vCPUs / 2) == 1) {
-                console.log("Total RAM needed:", cloudInstance.RAM)
-                console.log("RAM now:", totalRAM)
+            console.log("RAM in the for Loop:", totalRAM);
+            while (remainingCPUs - instance.vCPUs >= 0 || remainingCPUs - (instance.vCPUs / 2) == 1) {
+                console.log("Total RAM needed:", cloudInstance.RAM);
+                console.log("RAM now:", totalRAM);
                 if (requiredCPUs >= instance.vCPUs) {
                     optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
                     totalRAM += instance.RAM; // add RAM to the total
@@ -182,19 +183,19 @@ export class RightSizingModel implements ModelPluginInterface {
                 } else {
                     let usage = requiredCPUs / instance.vCPUs * targetUtil;
                     optimalCombination.push([instance, usage]); // use partial capacity of this instance
-                    totalRAM += instance.RAM * usage;; // add RAM to the total
-                    console.log("RAM (else):", totalRAM)
+                    totalRAM += instance.RAM * usage; // add RAM to the total
+                    console.log("RAM (else):", totalRAM);
                 }
                 remainingCPUs -= instance.vCPUs;
                 requiredCPUs -= instance.vCPUs;
             }
         }
-              
+
         let RAMefficientInstances = sortedFamily.sort((a, b) => (b.RAM / b.vCPUs) - (a.RAM / a.vCPUs));
         // Limit the number of additional instances to add to avoid over-adding (This could need further testings and adjustments)
         let maxAdditionalInstances = 2;
         let additionalInstancesAdded = 0;
-        
+
         while (totalRAM < inputRAM && additionalInstancesAdded < maxAdditionalInstances) {
             for (const instance of RAMefficientInstances) {
                 if (totalRAM >= inputRAM) {
@@ -205,12 +206,22 @@ export class RightSizingModel implements ModelPluginInterface {
                 totalRAM += instance.RAM;
                 additionalInstancesAdded++;
             }
-        }       
+        }
         if (totalRAM < inputRAM) {
             // If the RAM is still not enough after adding the two most efficient instances
             console.log("Optimisation Failed: Unable to meet the RAM requirements without overly increasing CPU.");
             console.log("It is recommended by the model to continue using the original CPUs.");
         }
         return optimalCombination;
+    }
+
+    /**
+     * Get the databases of cloud instances.
+     * This method is used for testing purposes.
+     * 
+     * @returns The databases of cloud instances
+     */
+    public getDatabases(): Map<string, CPUDatabase> {
+        return this.Cache;
     }
 }
