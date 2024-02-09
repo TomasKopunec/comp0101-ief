@@ -30,7 +30,7 @@ describe("CPUDatabase", () => {
     });
 
     it("CPUDatabase.getInstanceByModel", () => {
-        const instance = db.getInstanceByModel('test2_4_16');
+        const instance = db.getInstanceByModel('Standard_test2_4_16');
         expect(instance).toBeDefined();
         expect(instance).not.toBeNull();
         expect(instance?.model).toEqual('Standard_test2_4_16');
@@ -54,7 +54,7 @@ describe("RightSizingModel", () => {
             "total-memoryGB": 1,
             "mem-util": 51.13635839999999,
             "location": "uksouth",
-            "cloud-instance-type": "B16ps_v2"
+            "cloud-instance-type": "Standard_B16ps_v2"
         },
         {
             "timestamp": "2023-11-02T10:40:00.000Z",

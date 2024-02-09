@@ -88,10 +88,13 @@ export class RightSizingModel implements ModelPluginInterface {
         if (this.validateSingleInput(input)) {
             input['old-instance'] = input['cloud-instance-type'];
             input['old-cpu-util'] = input['cpu-util'];
+            input['old-mem-util'] = input['mem-util'];
             let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
             let util: number;
             let targetUtil: number;
-            let res: [CloudInstance, number][];
+            let res: [CloudInstance, number, number, number][];
+            let originalMemUtil = input['mem-util'] 
+            let targetRAM = (originalMemUtil / 100) * input['total-memoryGB'];
 
             // ensure cpu-util is a number
             if (typeof input['cpu-util'] === 'number') {
@@ -117,16 +120,18 @@ export class RightSizingModel implements ModelPluginInterface {
                 }
             }
             targetUtil = targetUtil / 100; // convert percentage to decimal
-            res = this.calculateRightSizing(instance, util, targetUtil);
+            res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil);
 
             // for each instance combination, create a new output
-            res.forEach(([instance, util]) => {
+            res.forEach(([instance, cpuUtil, memUtil, totalRAM]) => {
                 let output = { ...input }; // copy input to create new output
-                let processedModel = instance.model.replace("Standard_", "");
+                let processedModel = instance.model
                 output['cloud-instance-type'] = processedModel;
-                output['cpu-util'] = Math.round(util * 1000) / 10; // convert decimal to percentage
+                output['cpu-util'] = Math.round(cpuUtil * 1000)/10; // convert decimal to percentage
+                output['mem-util'] = memUtil * 100
+                output['total-memoryGB'] = totalRAM
                 if (processedModel === input['old-instance']) {
-                    output['recommendation'] = "SAME as the old instance";
+                    output['recommendation'] = "Size already optimal";
                 }
                 outputs.push(output);
             });
@@ -144,74 +149,57 @@ export class RightSizingModel implements ModelPluginInterface {
      * @param cpuUtil The percentage of CPU utilization, must be between 0 and 1
      * @returns The optimal combination of instances to fulfill the required vCPUs, returns by an array of tuples which contains the instance and the percentage of utilization
      */
-
-    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number): [CloudInstance, number][] {
+    
+    private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number, targetRAM: number, originalMemUtil: number): [CloudInstance, number, number, number][] {
         if (!cloudInstance) {
             throw new Error('Cloud instance not found');
         }
-        if (cpuUtil < 0 || cpuUtil > 1) {
-            throw new Error('CPU utilization must be between 0 and 1');
+        if (cpuUtil < 0 || cpuUtil > 1 || targetUtil < 0 || targetUtil > 1) {
+            throw new Error('CPU utilization and target utilization must be between 0 and 1');
         }
-        if (targetUtil < 0 || targetUtil > 1) {
-            throw new Error('CPU target utilization must be between 0 and 1');
+    
+        let family = this.database.getModelFamily(cloudInstance.model);
+        if (!(family instanceof Array)) {
+            // If no family data is available, return the original instance
+            return [[cloudInstance, cpuUtil, originalMemUtil/100, cloudInstance.RAM]];
         }
-
-        const family = this.database.getModelFamily(cloudInstance.model);
-        if (!family) {
-            throw new Error('Instance family not found');
-        }
-
-        // Sort instances by vCPUs descending, but you might also consider sorting by RAM if that becomes a bottleneck
+    
         let requiredCPUs = cloudInstance.vCPUs * cpuUtil / targetUtil;
-        let inputRAM = cloudInstance.RAM;
         let sortedFamily = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
-        let sortedFamily2 = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
-        let optimalCombination: [CloudInstance, number][] = [];
+        let optimalCombination: [CloudInstance, number, number, number][] = [];
+        let totalSelectedRAM = 0;
         let remainingCPUs = Math.ceil(requiredCPUs);
-        let totalRAM = 0; // RAM accumlated during the iterations
-
-        // First, try to satisfy CPU requirements
-        for (const instance of sortedFamily2) {
-            console.log("RAM in the for Loop:", totalRAM);
-            while (remainingCPUs - instance.vCPUs >= 0 || remainingCPUs - (instance.vCPUs / 2) == 1) {
-                console.log("Total RAM needed:", cloudInstance.RAM);
-                console.log("RAM now:", totalRAM);
-                if (requiredCPUs >= instance.vCPUs) {
-                    optimalCombination.push([instance, targetUtil]); // use full capacity of this instance
-                    totalRAM += instance.RAM; // add RAM to the total
-                    console.log("RAM (if):", totalRAM)
-                } else {
-                    let usage = requiredCPUs / instance.vCPUs * targetUtil;
-                    optimalCombination.push([instance, usage]); // use partial capacity of this instance
-                    totalRAM += instance.RAM * usage; // add RAM to the total
-                    console.log("RAM (else):", totalRAM);
-                }
+    
+        for (const instance of sortedFamily) {
+            let instanceCPUsFits = remainingCPUs - instance.vCPUs >= 0;
+            let potentialTotalRAM = totalSelectedRAM + instance.RAM; // Updated total RAM after adding this instance
+        
+            if (instanceCPUsFits && potentialTotalRAM >= targetRAM) {
+                let cpuUtilization = instanceCPUsFits ? targetUtil : (remainingCPUs / instance.vCPUs) * targetUtil;
+                
+                // Ensure totalSelectedRAM is updated before calculating newMemUtilization
+                totalSelectedRAM = potentialTotalRAM; // Update totalSelectedRAM with the new potential total
+                
+                // Calculate memory utilization based on targetRAM divided by totalSelectedRAM, ensuring it doesn't exceed 100%
+                let newMemUtilization = Math.min(targetRAM / totalSelectedRAM, 1); // Ensure it doesn't exceed 1 (100%)
+                
+                optimalCombination.push([instance, cpuUtilization, newMemUtilization, instance.RAM]); // Convert to percentage
                 remainingCPUs -= instance.vCPUs;
-                requiredCPUs -= instance.vCPUs;
+            }
+            if (remainingCPUs <= 0 && totalSelectedRAM >= targetRAM) {
+                // Optimal combination found, break out of the loop
+                break;
             }
         }
-
-        let RAMefficientInstances = sortedFamily.sort((a, b) => (b.RAM / b.vCPUs) - (a.RAM / a.vCPUs));
-        // Limit the number of additional instances to add to avoid over-adding (This could need further testings and adjustments)
-        let maxAdditionalInstances = 2;
-        let additionalInstancesAdded = 0;
-
-        while (totalRAM < inputRAM && additionalInstancesAdded < maxAdditionalInstances) {
-            for (const instance of RAMefficientInstances) {
-                if (totalRAM >= inputRAM) {
-                    break; // break if the amount of RAM has been satisfied
-                }
-                console.log("Newly shoved in cloudInstance:", instance)
-                optimalCombination.push([instance, targetUtil]);
-                totalRAM += instance.RAM;
-                additionalInstancesAdded++;
-            }
+        
+        
+    
+        // Check if we have found a valid combination or not
+        if (optimalCombination.length === 0 || totalSelectedRAM < targetRAM) {
+            // If no valid combination found that meets CPU and RAM requirements, return the original instance
+            return [[cloudInstance, cpuUtil, originalMemUtil/100, cloudInstance.RAM]];
         }
-        if (totalRAM < inputRAM) {
-            // If the RAM is still not enough after adding the two most efficient instances
-            console.log("Optimisation Failed: Unable to meet the RAM requirements without overly increasing CPU.");
-            console.log("It is recommended by the model to continue using the original CPUs.");
-        }
+    
         return optimalCombination;
     }
 
