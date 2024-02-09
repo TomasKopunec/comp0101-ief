@@ -6,6 +6,8 @@ import { ModelParams } from '@grnsft/if-models/build/types/common';
 import { CPUDatabase, CloudInstance } from './CPUFamily';
 import { validate, atLeastOneDefined } from '../../util/validations';
 
+import * as crypto from 'crypto';
+
 /**
  * Implementation of the ModelPluginInterface for the Right Sizing model.
  */
@@ -152,6 +154,9 @@ private processInput(input: ModelParams): ModelParams[] {
         // Calculate right sizing for the instance
         res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil, region);
 
+        // generate unique id to use for the given combination
+        let uuid = crypto.randomUUID();
+
         // Create a new output for each instance combination
         res.forEach(([instance, cpuUtil, memUtil, totalRAM, price, priceDifference]) => {
             let output = { ...input }; // Copy input to create new output
@@ -162,6 +167,7 @@ private processInput(input: ModelParams): ModelParams[] {
             output['cpu-util'] = cpuUtil;
             output['mem-util'] = memUtil;
             output['total-memoryGB'] = totalRAM;
+            output['change-id'] = uuid
 
             // Determine price change
             if (priceDifference > 0) {
@@ -276,9 +282,6 @@ private calculateRightSizing(
 
     return optimalCombination;
 }
-
-    
-
 
     /**
      * Get the databases of cloud instances.
