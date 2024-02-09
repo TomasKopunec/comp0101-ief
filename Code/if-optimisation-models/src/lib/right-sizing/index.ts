@@ -120,14 +120,13 @@ export class RightSizingModel implements ModelPluginInterface {
             }
             targetUtil = targetUtil / 100; // convert percentage to decimal
             res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil);
-
             // for each instance combination, create a new output
             res.forEach(([instance, cpuUtil, memUtil, totalRAM]) => {
                 let output = { ...input }; // copy input to create new output
                 let processedModel = instance.model
                 output['cloud-instance-type'] = processedModel;
-                output['cpu-util'] = Math.round(cpuUtil * 1000)/10; // convert decimal to percentage
-                output['mem-util'] = memUtil * 100
+                output['cpu-util'] = cpuUtil
+                output['mem-util'] = memUtil
                 output['total-memoryGB'] = totalRAM
                 if (processedModel === input['old-instance']) {
                     output['recommendation'] = "Size already optimal";
@@ -140,66 +139,60 @@ export class RightSizingModel implements ModelPluginInterface {
         return outputs;
     }
 
-    /**
-     * Calculate the optimal combination of instances to fulfill the required vCPUs, based on the CPU utilization given by the input.
-     * Implemented using a knapsack-like algorithm.
-     * 
-     * @param cloudInstance The cloud instance object to be right-sized, the instance must be in the database
-     * @param cpuUtil The percentage of CPU utilization, must be between 0 and 1
-     * @returns The optimal combination of instances to fulfill the required vCPUs, returns by an array of tuples which contains the instance and the percentage of utilization
-     */
-    
+
     private calculateRightSizing(cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number, targetRAM: number, originalMemUtil: number): [CloudInstance, number, number, number][] {
         if (!cloudInstance) {
             throw new Error('Cloud instance not found');
         }
-        if (cpuUtil < 0 || cpuUtil > 1 || targetUtil < 0 || targetUtil > 1) {
-            throw new Error('CPU utilization and target utilization must be between 0 and 1');
-        }
     
         let family = this.database.getModelFamily(cloudInstance.model);
-        if (!(family instanceof Array)) {
-            // If no family data is available, return the original instance
-            return [[cloudInstance, cpuUtil, originalMemUtil/100, cloudInstance.RAM]];
+        if (!family || family.length === 0) {
+            return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM]];
         }
     
-        let requiredCPUs = cloudInstance.vCPUs * cpuUtil / targetUtil;
-        let sortedFamily = family.sort((a, b) => b.vCPUs - a.vCPUs); // Sort instances by vCPUs descending
+        let originalRAM = cloudInstance.RAM; // RAM of the original instance for comparison
+    
+        let requiredvCPUs = cpuUtil * cloudInstance.vCPUs; 
+    
         let optimalCombination: [CloudInstance, number, number, number][] = [];
-        let totalSelectedRAM = 0;
-        let remainingCPUs = Math.ceil(requiredCPUs);
+        let closestCPUUtilizationDiff = Number.MAX_VALUE;
+        let optimalRAM = Number.MAX_VALUE;
     
-        for (const instance of sortedFamily) {
-            let instanceCPUsFits = remainingCPUs - instance.vCPUs >= 0;
-            let potentialTotalRAM = totalSelectedRAM + instance.RAM; // Updated total RAM after adding this instance
-        
-            if (instanceCPUsFits && potentialTotalRAM >= targetRAM) {
-                let cpuUtilization = instanceCPUsFits ? targetUtil : (remainingCPUs / instance.vCPUs) * targetUtil;
-                
-                // Ensure totalSelectedRAM is updated before calculating newMemUtilization
-                totalSelectedRAM = potentialTotalRAM; // Update totalSelectedRAM with the new potential total
-                
-                // Calculate memory utilization based on targetRAM divided by totalSelectedRAM, ensuring it doesn't exceed 100%
-                let newMemUtilization = Math.min(targetRAM / totalSelectedRAM, 1); // Ensure it doesn't exceed 1 (100%)
-                
-                optimalCombination.push([instance, cpuUtilization, newMemUtilization, instance.RAM]); // Convert to percentage
-                remainingCPUs -= instance.vCPUs;
-            }
-            if (remainingCPUs <= 0 && totalSelectedRAM >= targetRAM) {
-                // Optimal combination found, break out of the loop
-                break;
-            }
-        }
-        
-        
+        // Iterate through all possible combinations of instances
+        for (let i = 0; i < (1 << family.length); i++) {
+            let combination: CloudInstance[] = [];
+            let totalvCPUs = 0;
+            let totalRAM = 0;
     
-        // Check if we have found a valid combination or not
-        if (optimalCombination.length === 0 || totalSelectedRAM < targetRAM) {
-            // If no valid combination found that meets CPU and RAM requirements, return the original instance
-            return [[cloudInstance, cpuUtil, originalMemUtil/100, cloudInstance.RAM]];
+            for (let j = 0; j < family.length; j++) {
+                if (i & (1 << j)) {
+                    combination.push(family[j]);
+                    totalvCPUs += family[j].vCPUs;
+                    totalRAM += family[j].RAM;
+                }
+            }
+    
+    
+            // Skip combinations where total RAM exceeds the original instance's RAM
+            if (totalRAM > originalRAM) {
+                continue;
+            }
+    
+            if (totalRAM >= targetRAM) {
+                let cpuUtilizationDiff = Math.abs(requiredvCPUs - totalvCPUs);
+    
+                if (cpuUtilizationDiff < closestCPUUtilizationDiff || (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM < optimalRAM)) {
+                    closestCPUUtilizationDiff = cpuUtilizationDiff;
+                    optimalRAM = totalRAM;
+                    let totalCPUUtil = (totalvCPUs / requiredvCPUs) * 100; 
+                    let totalMemUtil = (totalRAM / targetRAM) * 100; 
+                    optimalCombination = combination.map(instance => [instance, totalCPUUtil, totalMemUtil, instance.RAM]);
+                }
+            }
         }
     
         return optimalCombination;
     }
     
+
 }

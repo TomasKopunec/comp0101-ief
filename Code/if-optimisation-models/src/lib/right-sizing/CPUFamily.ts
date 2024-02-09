@@ -4,11 +4,13 @@ export class CloudInstance {
     public model: string;
     public vCPUs: number;
     public RAM: number;
+    public price: number
 
-    constructor(model: string, vCPUs: number, RAM: number) {
+    constructor(model: string, vCPUs: number, RAM: number, price: number) {
         this.model = model;
         this.vCPUs = vCPUs;
         this.RAM = RAM;
+        this.price = price;
     }
 }
 
@@ -53,12 +55,12 @@ export class CPUDatabase {
             for (const familyName in jsonData) {
                 const models = jsonData[familyName];
 
-                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM));
+                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM, model.price));
                 this.familyToModels.set(familyName, cpuModels);
 
                 await models.forEach((model: any) => {
                     this.modelToFamily.set(model.model, familyName);
-                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM));
+                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM, model.price));
                 });
             }
         } catch (error) {
@@ -72,12 +74,12 @@ export class CPUDatabase {
      * @param modelName The name of the instance model.
      * @returns An array of the family of the instance model, or null if the model is not found.
      */
-    public getModelFamily(modelName: string): { model: string, vCPUs: number, RAM: number }[] | null {
+    public getModelFamily(modelName: string): { model: string, vCPUs: number, RAM: number, price: number }[] | null {
         const familyName = this.modelToFamily.get(modelName);
         if (familyName) {
             const models = this.familyToModels.get(familyName);
             if (models) {
-                return models.map(cpu => ({ model: cpu.model, vCPUs: cpu.vCPUs, RAM: cpu.RAM }));
+                return models.map(cpu => ({ model: cpu.model, vCPUs: cpu.vCPUs, RAM: cpu.RAM, price: cpu.price }));
             }
         }
         return null;
