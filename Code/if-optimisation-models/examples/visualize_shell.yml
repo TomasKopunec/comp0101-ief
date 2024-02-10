@@ -17,7 +17,7 @@ graph:
         - plotter
       config:
         carbon-advisor:
-          allowed-locations:  ['northeurope','eastus','westus']
+          allowed-locations:  ['northeurope','westus']
           allowed-timeframes: [
             "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
             "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z"
@@ -27,12 +27,12 @@ graph:
           command: 'python3 ./src/lib/visualizer/plotter'
           x_name:  [location,time]
           y_name: score
-          colour: blue
+          colour: yellow
           diagram_name: demo
           x_axis_name: Date and Location
           y_axis_name: Carbon score
           diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line # bar line or scatter
+          graph_type: bar # bar line or scatter
       inputs:
         - 
           

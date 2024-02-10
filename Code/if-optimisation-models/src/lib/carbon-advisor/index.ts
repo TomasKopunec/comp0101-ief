@@ -9,7 +9,12 @@ import { promises as fsPromises } from 'fs';
 import * as path from 'path';
 
 const { InputValidationError } = ERRORS;
-
+interface EmissionsData {
+  location: string;
+  time: string;
+  rating: number;
+  duration: string;
+}
 // Make sure you have the 'qs' library installed
 export class CarbonAdvisor implements ModelPluginInterface {
   /**
@@ -58,6 +63,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
    * Error builder function that is used to build error messages.
    */
   errorBuilder = buildErrorMessage(CarbonAdvisor);
+  
   
   // Use for read from locations.json
   async loadLocations() {
@@ -138,6 +144,8 @@ export class CarbonAdvisor implements ModelPluginInterface {
     let byLocationsArr: any[] = [];
     let bestArr: any[] = [];
 
+    
+
     for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
       // Initialize params for the API call
       const params = {
@@ -155,6 +163,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
         bestArr.push(best[randomIndex]); // Store a random best response
       }
 
+      
       // Returns an array of ALL EmissionsData objects
       let all = await this.getResponse("/emissions/bylocations", 'GET', params);
       
@@ -203,7 +212,48 @@ export class CarbonAdvisor implements ModelPluginInterface {
 
     return results;
   }
+  
+ /**
+   * Calculates the average score for a given location over the last x days.
+   * 
+   * @param x The number of days to look back from the current date.
+   * @param location The location for which to calculate the average score.
+   * @returns The average score for the specified location over the last x days.
+   */
+ async getAverageScoreForLastXDays(x: number, location: string): Promise<number | null> {
+  // Calculate the start date by subtracting x days from the current date
+  const toTime = new Date();
+  const time = new Date(toTime.getTime() - x * 24 * 60 * 60 * 1000);
+  //print the start and finish time
+  console.log('Start time:', time.toISOString());
+  console.log('Finish time:', toTime.toISOString());
+  // Prepare parameters for the API call
+  const params = {
+    location: location,
+    time: time.toISOString(),
+    toTime: toTime.toISOString(),
+  };
 
+  try {
+    // Make the API call to retrieve emissions data
+    const response = await this.getResponse('/emissions/bylocations', 'GET', params);
+    //print the response
+    //console.log('Response for forecast:', response);
+    // Check if the response contains data
+    if (response && response.length > 0) {
+      // Calculate the average score from the response data
+      const totalrating = response.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0);
+      const averagerating = totalrating / response.length;
+      return averagerating;
+    } else {
+      console.log('No data available for the specified location and time frame.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Failed to retrieve emissions data:', error);
+    throw error;
+  }
+}
   async handleNoSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
     // Initialize an empty array to hold all suggestions
     const results: ModelParams[] = inputs.map(input => ({
@@ -214,25 +264,54 @@ export class CarbonAdvisor implements ModelPluginInterface {
     const locationsArray = Array.from(this.allowedLocations);
     let byLocationsBestArr: any[] = [];
     let bestArr: any[] = [];
+    
+// Define the object with an index signature
+  const averageScoresByLocation: { [key: string]: number | null } = {};
 
+  for (const location of locationsArray) {
+    // Get the average score for the location
+    const averageScore = await this.getAverageScoreForLastXDays(500, location);
+
+    // Store the average score in the dictionary with the location as the key
+    averageScoresByLocation[location] = averageScore;
+  }
+
+  // After all locations are processed, print the dictionary
+  console.log("Average Scores by Location:", averageScoresByLocation);
     for (const [_, timeframe] of Array.from(this.allowedTimeframes).entries()) {
-      // Initialize params for the API call
-      const params = {
-        location: locationsArray,
-        time: timeframe.from,
-        toTime: timeframe.to
-      };
+      let isForecast = false;
+      let numOfYears=0;
+      let mutableTimeframe: Timeframe = timeframe;
+      while(true){
+        const params = {
+          location: locationsArray,
+          time: mutableTimeframe.from,
+          toTime: mutableTimeframe.to
+        };
 
-      // Returns an array of best EmissionsData objects
-      const best = await this.getResponse("/emissions/bylocations/best", 'GET', params);
-      if (best.length > 0) {
-        console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, best);
-        byLocationsBestArr = byLocationsBestArr.concat(best); // Store all response items
-        const randomIndex = Math.floor(Math.random() * best.length);
-        bestArr.push(best[randomIndex]); // Store a random best response
+        // Returns an array of best EmissionsData objects
+        let best = await this.getResponse("/emissions/bylocations", 'GET', params);
+        if (best.length > 0) {
+          console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, best);
+          if(isForecast){
+            best = this.adjustRatingsAndYears(best, numOfYears, averageScoresByLocation);
+            console.log('Best after adjustment:', best);
+          }
+          byLocationsBestArr = byLocationsBestArr.concat(best); // Store all response items
+          const randomIndex = Math.floor(Math.random() * best.length);
+          bestArr.push(best[randomIndex]); // Store a random best response
+          break;
+        }
+        // Adjust timeframe by decreasing the year by one
+        // Inside your loop or function where you're adjusting the timeframe
+        mutableTimeframe = await this.adjustTimeframeByOneYear(mutableTimeframe);
+        //increase the numOfYears by 1
+        numOfYears++;
+        isForecast = true; // Set flag since adjustment is needed
       }
-    }
+      
 
+    }
     // Find the lowest rating among all responses
     const lowestRating = Math.min(...byLocationsBestArr.map(item => item.rating));
 
@@ -248,6 +327,31 @@ export class CarbonAdvisor implements ModelPluginInterface {
     });
 
     return results;
+  }
+  adjustRatingsAndYears(
+    emissionsData: EmissionsData[], 
+    yearsToAdd: number, 
+    averageScoresByLocation: { [key: string]: number | null }
+  ): EmissionsData[] {
+    return emissionsData.map(data => {
+      const averageRating = averageScoresByLocation[data.location];
+      const adjustedRating = averageRating !== null ? (data.rating + averageRating) / 2 : data.rating; // Handle null values
+      const time = new Date(data.time);
+      time.setFullYear(time.getFullYear() + yearsToAdd);
+      return { ...data, rating: adjustedRating, time: time.toISOString() };
+    });
+  }
+  async adjustTimeframeByOneYear(timeframe: Timeframe): Promise<Timeframe> {
+    const adjustYear = (dateString: string): string => {
+      const date = new Date(dateString);
+      date.setFullYear(date.getFullYear() - 1);
+      return date.toISOString();
+    };
+
+    return {
+      from: adjustYear(timeframe.from),
+      to: adjustYear(timeframe.to),
+    };
   }
 
   /**

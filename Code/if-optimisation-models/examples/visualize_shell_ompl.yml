@@ -19,7 +19,6 @@ graph:
         carbon-advisor:
           allowed-locations:
             - northeurope
-            - eastus
             - westus
           allowed-timeframes:
             - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
@@ -31,18 +30,17 @@ graph:
             - location
             - time
           y_name: score
-          colour: blue
+          colour: yellow
           diagram_name: demo
           x_axis_name: Date and Location
           y_axis_name: Carbon score
           diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line
+          graph_type: bar
       inputs:
         - null
       outputs:
         - allowed-locations:
             - northeurope
-            - eastus
             - westus
           allowed-timeframes:
             - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
@@ -53,36 +51,33 @@ graph:
             - location
             - time
           y_name: score
-          colour: blue
+          colour: yellow
           diagram_name: demo
           x_axis_name: Date and Location
           y_axis_name: Carbon score
           diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line
+          graph_type: bar
           suggestions:
             - suggested-location: northeurope
               suggested-timeframe: '2022-07-21T04:45:11+00:00'
-              suggested-score: 0
-            - suggested-location: eastus
-              suggested-timeframe: '2022-08-02T20:45:11+00:00'
               suggested-score: 0
           plotted_points:
             - location: northeurope
               time: '2022-07-21T04:45:11+00:00'
               score: 0
-            - location: eastus
-              time: '2022-08-02T20:45:11+00:00'
-              score: 0
             - location: westus
-              time: '2022-07-30T04:45:11+00:00'
-              score: 60
+              time: '2022-07-27T12:45:11+00:00'
+              score: 44
             - location: northeurope
-              time: '2022-07-28T04:45:11+00:00'
-              score: 33
-            - location: eastus
-              time: '2022-07-21T12:45:11+00:00'
+              time: '2022-07-22T12:45:11+00:00'
+              score: 97
+            - location: northeurope
+              time: '2022-07-28T20:45:11+00:00'
+              score: 31
+            - location: northeurope
+              time: '2022-07-30T12:45:11+00:00'
+              score: 95
+            - location: northeurope
+              time: '2022-08-03T04:45:11+00:00'
               score: 9
-            - location: eastus
-              time: '2022-07-29T20:45:11+00:00'
-              score: 96
           diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png
