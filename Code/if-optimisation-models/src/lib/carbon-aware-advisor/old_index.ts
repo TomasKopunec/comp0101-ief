@@ -7,7 +7,7 @@ import { ERRORS } from '@grnsft/if-unofficial-models/build/util/errors';
 const { InputValidationError } = ERRORS;
 
 // Make sure you have the 'qs' library installed
-export class CarbonAdvisor implements ModelPluginInterface {
+export class CarbonAwareAdvisor implements ModelPluginInterface {
   /**
    * Route to the carbon-aware-sdk API. Localhost for now.
    */
@@ -50,9 +50,9 @@ export class CarbonAdvisor implements ModelPluginInterface {
   /**
    * Error builder function that is used to build error messages.
    */
-  errorBuilder = buildErrorMessage(CarbonAdvisor);
+  errorBuilder = buildErrorMessage(CarbonAwareAdvisor);
 
-  async configure(params: object | undefined = undefined): Promise<CarbonAdvisor> {
+  async configure(params: object | undefined = undefined): Promise<CarbonAwareAdvisor> {
     console.log('#configure()');
     await this.setSupportedLocations();
     this.validateParams(params);

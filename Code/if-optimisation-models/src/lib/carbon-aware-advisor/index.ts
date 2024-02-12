@@ -16,7 +16,7 @@ interface EmissionsData {
   duration: string;
 }
 // Make sure you have the 'qs' library installed
-export class CarbonAdvisor implements ModelPluginInterface {
+export class CarbonAwareAdvisor implements ModelPluginInterface {
   /**
    * Route to the carbon-aware-sdk API. Localhost for now.
    */
@@ -55,14 +55,16 @@ export class CarbonAdvisor implements ModelPluginInterface {
    */
   private readonly supportedLocations: Set<string> = new Set();
   private hasSampling: boolean = false;
+  //number of last days to get average score
+  private lastDaysNumber: number = 500;
   private sampling: number = 0;
   // Use for read from locations.json
-  private locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-advisor', 'locations.json');
+  private locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-aware-advisor', 'locations.json');
 
   /**
    * Error builder function that is used to build error messages.
    */
-  errorBuilder = buildErrorMessage(CarbonAdvisor);
+  errorBuilder = buildErrorMessage(CarbonAwareAdvisor);
   
   
   // Use for read from locations.json
@@ -78,7 +80,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
     }
   }
   
-  async configure(params: object | undefined = undefined): Promise<CarbonAdvisor> {
+  async configure(params: object | undefined = undefined): Promise<CarbonAwareAdvisor> {
     console.log('#configure()');
     await this.setSupportedLocations();
     this.validateParams(params);
@@ -128,90 +130,10 @@ export class CarbonAdvisor implements ModelPluginInterface {
     }
 
     console.log('#execute()');
-    return this.hasSampling ? this.handleSampling(inputs) : this.handleNoSampling(inputs);
+    return this.calculate(inputs);
   }
 
-  async handleSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
-    // Initialize an empty array to hold all suggestions and plotted points.
-    const results: ModelParams[] = inputs.map(input => ({
-      ...input,
-      suggestions: [],
-      plotted_points: []
-    }));
 
-    const locationsArray = Array.from(this.allowedLocations);
-    let byLocationsBestArr: any[] = [];
-    let byLocationsArr: any[] = [];
-    let bestArr: any[] = [];
-
-    
-
-    for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
-      // Initialize params for the API call
-      const params = {
-        location: locationsArray,
-        time: timeframe.from,
-        toTime: timeframe.to
-      };
-
-      // Returns an array of best EmissionsData objects
-      const best = await this.getResponse("/emissions/bylocations/best", 'GET', params);
-      if (best.length > 0) {
-        console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, best);
-        byLocationsBestArr = byLocationsBestArr.concat(best); // Store all response items
-        const randomIndex = Math.floor(Math.random() * best.length);
-        bestArr.push(best[randomIndex]); // Store a random best response
-      }
-
-      
-      // Returns an array of ALL EmissionsData objects
-      let all = await this.getResponse("/emissions/bylocations", 'GET', params);
-      
-      if (all.length > 0) {
-        console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, all);
-
-        // Calculate the allocation for the current timeframe
-        const allocations: any[] = this.calculateSubrangeAllocation(this.sampling);
-        const currAllocation = allocations[index] - 1;
-        console.log('Allocations:', allocations);
-
-        // Filter out all responses that are already in allResponses ?
-        all = all.filter((r1: ApiResponse) => !byLocationsBestArr.some(r => r.location === r1.location && r.time === r1.time));
-
-        for (let i = 0; i < currAllocation; i++) {
-          const randIndex = Math.floor(Math.random() * all.length);
-          bestArr.push(all.splice(randIndex, 1)[0]);
-        }
-        byLocationsArr = byLocationsArr.concat(all); // Store all response items
-      }
-    }
-
-    // Find the lowest rating among all responses
-    const lowestRating = Math.min(...byLocationsBestArr.map(item => item.rating));
-
-    // Filter all responses to get items with the lowest rating (i.e. the best responses)
-    const lowestRatingItems = byLocationsBestArr.filter(item => item.rating === lowestRating);
-
-    // Set suggestions
-    lowestRatingItems.forEach(item => {
-      results[0].suggestions.push({
-        'suggested-location': item.location,
-        'suggested-timeframe': item.time,
-        'suggested-score': item.rating
-      });
-    });
-
-    // Set plotted points (all responses from both API calls)
-    bestArr.forEach(item => {
-      results[0].plotted_points.push({
-        'location': item.location,
-        'time': item.time,
-        'score': item.rating
-      });
-    });
-
-    return results;
-  }
   
  /**
    * Calculates the average score for a given location over the last x days.
@@ -254,31 +176,48 @@ export class CarbonAdvisor implements ModelPluginInterface {
     throw error;
   }
 }
-  async handleNoSampling(inputs: ModelParams[]): Promise<ModelParams[]> {
-    // Initialize an empty array to hold all suggestions
-    const results: ModelParams[] = inputs.map(input => ({
+  async calculate(inputs: ModelParams[]): Promise<ModelParams[]> {
+    // Initialize an empty array to hold all suggestions if this.hassampling =true then we need plotted points as well
+    // iwant if this.hasSampling is true then the results should have plotted points as well
+    let results: ModelParams[] = []
+    if (this.hasSampling) {
+    results = inputs.map(input => ({
+      ...input,
+      suggestions: [],
+      plotted_points: []
+    }));
+  }
+  else {
+    results = inputs.map(input => ({
       ...input,
       suggestions: []
     }));
+  }
 
     const locationsArray = Array.from(this.allowedLocations);
     let byLocationsBestArr: any[] = [];
+    let byLocationsAllArr: any[] = [];
     let bestArr: any[] = [];
     
 // Define the object with an index signature
   const averageScoresByLocation: { [key: string]: number | null } = {};
 
   for (const location of locationsArray) {
-    // Get the average score for the location
-    const averageScore = await this.getAverageScoreForLastXDays(500, location);
+    // Get the average score for the location for lastDaysNumber days
+    const averageScore = await this.getAverageScoreForLastXDays(this.lastDaysNumber, location);
 
     // Store the average score in the dictionary with the location as the key
     averageScoresByLocation[location] = averageScore;
   }
-
+  // Calculate the allocation for the current timeframe
+  //if this.hasSampling is true then calculate the allocation
+  const allocations: any[] = this.hasSampling ? this.calculateSubrangeAllocation(this.sampling) : [1];
+  
+  console.log('Allocations:', allocations);
   // After all locations are processed, print the dictionary
   console.log("Average Scores by Location:", averageScoresByLocation);
-    for (const [_, timeframe] of Array.from(this.allowedTimeframes).entries()) {
+    for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
+      const currAllocation = allocations[index] - 1;
       let isForecast = false;
       let numOfYears=0;
       let mutableTimeframe: Timeframe = timeframe;
@@ -292,14 +231,31 @@ export class CarbonAdvisor implements ModelPluginInterface {
         // Returns an array of best EmissionsData objects
         let best = await this.getResponse("/emissions/bylocations", 'GET', params);
         if (best.length > 0) {
-          console.log(`API call succeeded for timeframe starting at ${timeframe.from} with response:`, best);
+          console.log(`API call succeeded for timeframe starting at ${timeframe.from} `);
           if(isForecast){
             best = this.adjustRatingsAndYears(best, numOfYears, averageScoresByLocation);
-            console.log('Best after adjustment:', best);
+            //console.log('Best after adjustment:', best);
           }
-          byLocationsBestArr = byLocationsBestArr.concat(best); // Store all response items
-          const randomIndex = Math.floor(Math.random() * best.length);
-          bestArr.push(best[randomIndex]); // Store a random best response
+          
+          const minRating = Math.min(...best.map((item: EmissionsData) => item.rating));
+
+          // Step 2: Filter the array to keep only items with the minimum rating
+          const itemsWithMinRating = best.filter((item: EmissionsData) => item.rating === minRating);
+          byLocationsBestArr = byLocationsBestArr.concat(itemsWithMinRating); // Store minimum response items
+          byLocationsAllArr = byLocationsAllArr.concat(best); // Store All response items
+          const randomIndex = Math.floor(Math.random() * itemsWithMinRating.length);
+          bestArr.push(itemsWithMinRating[randomIndex]); // Store a random best response
+          //if this.hasSampling is true 
+          if (this.hasSampling) {
+            //remove from best array all the elements that are in itemsWithMinRating
+            best = best.filter((item: EmissionsData) => !itemsWithMinRating.includes(item));
+            //select currAllocation eleemnets at random from the best array
+            //and add them to the bestArr
+            for (let i = 0; i < currAllocation; i++) {
+              const randIndex = Math.floor(Math.random() * best.length);
+              bestArr.push(best.splice(randIndex, 1)[0]);
+            }
+        }
           break;
         }
         // Adjust timeframe by decreasing the year by one
@@ -313,10 +269,10 @@ export class CarbonAdvisor implements ModelPluginInterface {
 
     }
     // Find the lowest rating among all responses
-    const lowestRating = Math.min(...byLocationsBestArr.map(item => item.rating));
+    const lowestRating = Math.min(...bestArr.map(item => item.rating));
 
     // Filter all responses to get items with the lowest rating (i.e. the best responses)
-    const lowestRatingItems = byLocationsBestArr.filter(item => item.rating === lowestRating);
+    const lowestRatingItems = bestArr.filter(item => item.rating === lowestRating);
 
     lowestRatingItems.forEach(async item => {
       results[0].suggestions.push({
@@ -325,7 +281,16 @@ export class CarbonAdvisor implements ModelPluginInterface {
         'suggested-score': item.rating
       });
     });
-
+    if (this.hasSampling) {
+      // Set plotted points (all responses from both API calls)
+      bestArr.forEach(async item => {
+        results[0].plotted_points.push({
+          'location': item.location,
+          'time': item.time,
+          'score': item.rating
+        });
+      });
+    }
     return results;
   }
   adjustRatingsAndYears(
@@ -335,7 +300,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
   ): EmissionsData[] {
     return emissionsData.map(data => {
       const averageRating = averageScoresByLocation[data.location];
-      const adjustedRating = averageRating !== null ? (data.rating + averageRating) / 2 : data.rating; // Handle null values
+      const adjustedRating = averageRating !== null ? (data.rating*0.8 + averageRating*0.2)  : data.rating; // Handle null values
       const time = new Date(data.time);
       time.setFullYear(time.getFullYear() + yearsToAdd);
       return { ...data, rating: adjustedRating, time: time.toISOString() };
@@ -372,14 +337,7 @@ export class CarbonAdvisor implements ModelPluginInterface {
       });
   }
 
-  private async getForecast(): Promise<ForecastData> {
-    const params = new Map();
-    for (const location of this.allowedLocations) {
-      params.set('location', location);
-    }
-    return await this.getResponse(this.FORECAST_ROUTE, 'GET', params) as ForecastData;
-  }
-
+  
   /**
    * Send a request to the carbon-aware-sdk API.
    * @param route The route to send the request to.

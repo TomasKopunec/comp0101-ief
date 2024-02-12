@@ -1,8 +1,8 @@
 
-# CarbonAdvisor Model
+# CarbonAwareAdvisor Model
 
 ## Overview
-The CarbonAdvisor model is designed to provide carbon emission data based on specified locations and timeframes. It interacts with the Carbon Aware SDK to fetch the most carbon-efficient options for given parameters.
+The CarbonAwareAdvisor model is designed to provide carbon emission data based on specified locations and timeframes. It interacts with the Carbon Aware SDK to fetch the most carbon-efficient options for given parameters.
 
 ## Key Features
 - **Location Filtering**: Users can specify a list of locations to consider for carbon emission data.
@@ -90,7 +90,7 @@ description: Simple demo for invoking carbon-advisor model
 initialize:
   models:
     - name: carbon-advisor
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
 graph:
   children:
@@ -115,7 +115,7 @@ initialize:
   models:
     - name: carbon-advisor
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
 graph:
   children:
     child:
@@ -166,7 +166,7 @@ tags:
 initialize:
   models:
     - name: carbon-advisor
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
     - name: plotter
       model: ShellModel
@@ -207,7 +207,7 @@ initialize:
   models:
     - name: carbon-advisor
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
     - name: plotter
       path: '@grnsft/if-models'
       model: ShellModel
@@ -295,14 +295,14 @@ And we can see the following diagram being created:
 
 ## Usage
 1. Define the required configuration in an impl file as shown in the example above.
-2. Invoke the CarbonAdvisor model within your pipeline.
+2. Invoke the CarbonAwareAdvisor model within your pipeline.
 3. Optionally, add the `plotter` model to visualize the carbon emission data.
 
 ## Integrating with Plotter
-To visualize the carbon emission data, integrate the `CarbonAdvisor` model with the `plotter` model in your pipeline. Provide the necessary configurations for both models as per your requirements. The plotter model will automatically go through the plotted-points to search for the data so the x_name should be defined as [location, time] and the y_name as score.
+To visualize the carbon emission data, integrate the `CarbonAwareAdvisor` model with the `plotter` model in your pipeline. Provide the necessary configurations for both models as per your requirements. The plotter model will automatically go through the plotted-points to search for the data so the x_name should be defined as [location, time] and the y_name as score.
 
 ## Contributing
-Contributions to the CarbonAdvisor model are welcome. Please submit pull requests with any enhancements, bug fixes, or additional features you'd like to add.
+Contributions to the CarbonAwareAdvisor model are welcome. Please submit pull requests with any enhancements, bug fixes, or additional features you'd like to add.
 
 
 ## Future Forcasts 

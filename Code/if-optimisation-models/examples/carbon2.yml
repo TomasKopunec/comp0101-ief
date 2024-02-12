@@ -4,7 +4,7 @@ tags: null
 initialize:
   models:
     - name: carbon-advisor
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
 graph:
   children:
@@ -19,5 +19,6 @@ graph:
             "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
             "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
+          sampling: 6
       inputs:
         - 

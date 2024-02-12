@@ -124,7 +124,7 @@ tags:
 initialize:
   models:
     - name: carbon-advisor
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
     - name: plotter
       model: ShellModel
@@ -165,7 +165,7 @@ initialize:
   models:
     - name: carbon-advisor
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
     - name: plotter
       path: '@grnsft/if-models'
       model: ShellModel
