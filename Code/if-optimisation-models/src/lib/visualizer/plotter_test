@@ -45,9 +45,20 @@ def plot_values(x_values, y_values, filename, graph_title, x_axis_label, y_axis_
 
 
 # Reading YAML input from stdin
-yaml_input = ''.join(sys.stdin.readlines())
 try:
-    data = yaml.safe_load(yaml_input)[0]
+    # Parse the entire YAML input
+    data =  {
+    'command': 'python3 ./src/lib/visualizer/plotter',
+    'x_name': ['time'],
+    'y_name': 'A',
+    'colour': 'yellow',
+    'diagram_name': 'm_new_diagram',
+    'x_axis_name': 'Name and Last Name',
+    'y_axis_name': 'Age in years',
+    'diagram_title': 'Name to age comparison',
+    'graph_type': 'bar',  # bar, line, or scatter
+    'csv_path': '/home/jim/comp0101-ief/Code/if-optimisation-models/helper.csv'
+    }
     if not data:
         raise ValueError("YAML input is empty or invalid.")
 
@@ -105,7 +116,25 @@ try:
             # Raise an error if no such rows exist
             raise ValueError(f"No rows start with {y_label} in the first column.")
         
-       
+        print(x)
+        print(y)
+        
+
+
+    
+    
+    plot_dict = data.get('plotted_points', [])
+
+    
+   
+    
+
+    
+   
+    
+
+    
+        
     diagram_title = data.get('diagram_title', f'{x_axis_name} vs {y_axis_name}')
     #plot the diagram
     plot_values(x, y, diagram_name, diagram_title, x_axis_name, y_axis_name, colour, graph_type)
