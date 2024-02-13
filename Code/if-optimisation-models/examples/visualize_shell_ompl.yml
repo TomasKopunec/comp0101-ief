@@ -65,18 +65,18 @@ graph:
             - location: northeurope
               time: '2022-07-21T04:45:11+00:00'
               score: 0
+            - location: northeurope
+              time: '2022-07-23T12:45:11+00:00'
+              score: 3
             - location: westus
               time: '2022-07-27T12:45:11+00:00'
               score: 44
+            - location: westus
+              time: '2022-07-20T04:45:11+00:00'
+              score: 44
             - location: northeurope
-              time: '2022-07-22T12:45:11+00:00'
-              score: 97
-            - location: northeurope
-              time: '2022-07-28T20:45:11+00:00'
-              score: 31
-            - location: northeurope
-              time: '2022-07-30T12:45:11+00:00'
-              score: 95
+              time: '2022-07-19T12:45:11+00:00'
+              score: 73
             - location: northeurope
               time: '2022-08-03T04:45:11+00:00'
               score: 9
