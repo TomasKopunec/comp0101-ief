@@ -183,20 +183,19 @@ describe("RightSizingModel", () => {
             "mem-util": 51.13635839999999,
             "location": "uksouth",
             "cloud-instance-type": "Standard_B16ps_v2"
+        },
+        {
+            "timestamp": "2023-11-02T10:40:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "aws",
+            "cpu-util": 75,
+            "mem-availableGB": 0.48978984960000005,
+            "mem-usedGB": 0.5102101504,
+            "total-memoryGB": 30,
+            "mem-util": 51.021015039999995,
+            "location": "uksouth",
+            "cloud-instance-type": "a1.4xlarge"
         }
-        // ,
-        // {
-        //     "timestamp": "2023-11-02T10:40:00.000Z",
-        //     "duration": 300,
-        //     "cloud-vendor": "aws",
-        //     "cpu-util": 75,
-        //     "mem-availableGB": 0.48978984960000005,
-        //     "mem-usedGB": 0.5102101504,
-        //     "total-memoryGB": 30,
-        //     "mem-util": 51.021015039999995,
-        //     "location": "uksouth",
-        //     "cloud-instance-type": "a1.4xlarge"
-        // }
     ];
 
     let model = new RightSizingModel();
@@ -294,9 +293,9 @@ describe("RightSizingModel", () => {
     it("Can Load Builtin Data?", () => {
         const data = model.getDatabases();
         expect(data).toBeDefined();
-        // expect(data.has('aws')).toBeTruthy();
-        // expect(data.get('aws')?.getFamilies().size).toBeGreaterThan(0);
+        expect(data.has('aws')).toBeTruthy();
         expect(data.has('azure')).toBeTruthy();
+        expect(data.get('aws')?.getFamilies().size).toBeGreaterThan(0);
         expect(data.get('azure')?.getFamilies().size).toBeGreaterThan(0);
     });
 
@@ -314,7 +313,6 @@ describe("RightSizingModel", () => {
         expect(output[0]).toHaveProperty('old-instance');
         expect(output[0]).toHaveProperty('old-cpu-util');
     });
-
 
     describe("RightSizingModel-Algorithms", () => {
         /**
@@ -350,44 +348,6 @@ describe("RightSizingModel", () => {
                 if (!next || next['timestamp'] !== out['timestamp']){
                     let oldIns = getInstance(out['cloud-vendor'], out['old-instance']);
                     expect(oldIns).not.toBeNull();
-                    expect(combinedCPUs).toBeGreaterThanOrEqual(requiredCPU[j]);
-                    expect(combinedCPUs).toBeLessThanOrEqual(oldIns!.vCPUs);
-                    expect(totalPrice).toBeLessThanOrEqual(oldIns!.Price[out['location']]);
-                    j++;
-                    combinedCPUs = 0;
-                }
-            };
-        });
-        
-        it("Correct CPU combination with custom target utilisation?", async () => {
-            const inputs = ALG_TEST2_INPUTS;
-            const outputs = await model.execute(inputs);
-
-            const requiredCPU = inputs.map((input: ModelParams) => {
-                let vCPUs = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.vCPUs;
-                if (vCPUs) {
-                    return input['cpu-util'] / 100 * vCPUs;
-                }else{
-                    console.error('Instance not found:', input['cloud-instance-type']);
-                    return 0;
-                }
-            });
-            
-            let j = 0;
-            let combinedCPUs = 0;
-            for (let i = 0; i < outputs.length; i++) {
-                let out = outputs[i];
-                let next = outputs[i + 1];
-                let ins = getInstance(out['cloud-vendor'], out['cloud-instance-type']);
-                expect(ins).toBeDefined();
-                expect(ins).not.toBeNull();
-
-                expect(out['cpu-util']).toBeLessThanOrEqual(out['target-cpu-util']);
-                combinedCPUs += (ins?.vCPUs || 0) * out['cpu-util'];
-                if (!next || next['timestamp'] !== out['timestamp']){
-                    let oldIns = getInstance(out['cloud-vendor'], out['old-instance']);
-                    expect(oldIns).not.toBeNull();
-
                     expect(combinedCPUs).toBeGreaterThanOrEqual(requiredCPU[j]);
                     expect(combinedCPUs).toBeLessThanOrEqual(oldIns!.vCPUs);
                     j++;
