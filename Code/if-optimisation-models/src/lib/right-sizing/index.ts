@@ -119,6 +119,9 @@ private processInput(input: ModelParams): ModelParams[] {
 
         // Retrieve instance details from database
         let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
+        if (!instance) {
+            throw new Error(`Invalid cloud instance: ${input['cloud-instance-type']}, not found in cloud vendor database: ${input['cloud-vendor']}`);
+        }
         let util: number;
         let targetUtil: number;
         let res: [CloudInstance, number, number, number, number, number][];
@@ -209,18 +212,18 @@ private calculateRightSizing(
 ): [CloudInstance, number, number, number, number, number][] {
     // Check if the cloud instance is valid
     if (!cloudInstance) {
-        throw new Error('Cloud instance not found');
+        throw new Error(`Invalid cloud instance: ${cloudInstance}`);
     }
     
     // Retrieve the model family of the cloud instance
     let family = this.database.getModelFamily(cloudInstance.model);
     // If no model family is found, return the original instance
     if (!family || family.length === 0) {
-        return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.Price[region], 0]];
+        return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
     }
     
     // Store original cost, RAM size, and calculate required vCPUs
-    let originalCost = cloudInstance.Price[region];
+    let originalCost = cloudInstance.getPrice(region);
     let originalRAM = cloudInstance.RAM;
     let requiredvCPUs = cpuUtil * cloudInstance.vCPUs; 
 
@@ -243,7 +246,7 @@ private calculateRightSizing(
                 combination.push(family[j]);
                 totalvCPUs += family[j].vCPUs;
                 totalRAM += family[j].RAM;
-                totalCost += family[j].Price[region] || 0;
+                totalCost += family[j].getPrice(region);
             }
         }
 
@@ -263,7 +266,7 @@ private calculateRightSizing(
                 lowestCost = totalCost;
                 let totalCPUUtil = (totalvCPUs / requiredvCPUs) * 100; 
                 let totalMemUtil = (totalRAM / targetRAM) * 100; 
-                optimalCombination = combination.map(instance => [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.Price[region], 0]);
+                optimalCombination = combination.map(instance => [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(region), 0]);
             }
         }
     }
@@ -271,7 +274,7 @@ private calculateRightSizing(
     // If an optimal combination is found
     if (optimalCombination.length > 0) {
         // Calculate final total cost and price difference
-        let finalTotalCost = optimalCombination.reduce((sum, [instance]) => sum + instance.Price[region], 0);
+        let finalTotalCost = optimalCombination.reduce((sum, [instance]) => sum + instance.getPrice(region), 0);
         let priceDifference = originalCost - finalTotalCost; // This will be positive, indicating savings
         let priceDifferencePercentage = (priceDifference / originalCost) * 100;
         console.log(`Final total cost: ${finalTotalCost}, Price difference: ${priceDifference}, Price difference percentage: ${priceDifferencePercentage}`);
@@ -279,7 +282,7 @@ private calculateRightSizing(
         optimalCombination = optimalCombination.map(([instance, cpuUtil, memUtil, ram, price]): [CloudInstance, number, number, number, number, number] => [instance, cpuUtil, memUtil, ram, price, priceDifferencePercentage]);
     } else {
         // If no better combination found, use the original instance
-        optimalCombination = [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.Price[region], 0]];
+        optimalCombination = [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
     }
 
     return optimalCombination;
