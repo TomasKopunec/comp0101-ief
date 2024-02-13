@@ -15,10 +15,10 @@ graph:
         carbon-advisor:
           allowed-locations:  ['northeurope','eastus','westus']
           allowed-timeframes: [
-            "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
+            "2022-06-19T14:00:00Z - 2022-07-31T19:00:00Z",
             "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
             "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
-          sampling: 6
+          sampling: 10
       inputs:
         - 

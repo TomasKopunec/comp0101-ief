@@ -11,7 +11,7 @@ The CarbonAwareAdvisor model is designed to provide carbon emission data based o
 
 ## Outputs
 - ** Suggestions: **: List of the best location and time combination to minimize the carbon score along with that score.
-- ** Plotted-points: **: ONLY IF THE LISTING PARAMETER IS INITIALIZED IN THE IMPL. A sampling number of samples for trade-off visualization. A best combination from each timeframe is alwayes included . SO sampling must be >= number of time regions in the allowed-timeframes. The plotter model can then be used in a pipeline to plot this samples.
+- ** Plotted-points: **: ONLY IF THE SAMPLING PARAMETER IS INITIALIZED IN THE IMPL. A sampling number of samples for trade-off visualization. A best combination from each timeframe is always included . So sampling must be >= number of time regions in the allowed-timeframes. The plotter model can then be used in the pipeline to plot this samples.
 
 ## Prerequisites
 - The Carbon Aware Web API must be running locally (default: `http://localhost:5073`).
@@ -32,10 +32,9 @@ Please refer to this for more information, but there are too many errors in this
 
 
 1. git clone https://github.com/Green-Software-Foundation/carbon-aware-sdk.git
-2. Open VSCode and Docker
-3. Open VSCode Command Palette: (Linux/Windows: `ctrl + shift + P`, MacOS: `cmd + shift + P`), and run the command: `Dev Containers: Open Folder in Container` to open carbon-aware-sdk folder you just cloned (Starting Dev Container for the first time will take a while)
-4. Change directory to: `cd src/CarbonAware.WebApi/src`
-5. Replace the appsettings.json file with the following
+2. Open VSCode Command Palette: (Linux/Windows: `ctrl + shift + P`, MacOS: `cmd + shift + P`), and run the command: `Dev Containers: Open Folder in Container` to open carbon-aware-sdk folder you just cloned (Starting Dev Container for the first time will take a while)
+3. Change directory to: `cd src/CarbonAware.WebApi/src`
+4. Replace the appsettings.json file with the following
 ```
 {
   "LocationDataSourcesConfiguration": {
@@ -68,7 +67,7 @@ Please refer to this for more information, but there are too many errors in this
   }
 }
 ```
-6. Run in Terminal: `dotnet run` , default running at 127.0.0.1:5073
+5. Run in Terminal: `dotnet run` in the 'src/CarbonAware.WebApi/src' directory, default running at 127.0.0.1:5073
 
 
 
@@ -298,6 +297,12 @@ And we can see the following diagram being created:
 2. Invoke the CarbonAwareAdvisor model within your pipeline.
 3. Optionally, add the `plotter` model to visualize the carbon emission data.
 
+
+## Forecasting
+For a number of timeframe ranges that are either very recent or in the future the Carbon Aware SDK Api will not return any values. So we have created a prediction mechanism to provide with a forecast for that timeframe range using past values. This is a simple approach and by no means offers high accuracy. But it is a first implementation that can be expanded in the future to offer better predictions. The carbon Aware SDK might also be improved in future versions to perform future predictions for a longer time.
+
+The way the current algorith works is that the carbon of an unavaliable timeframe is measured as the weighted average of the average carbon score for that location the last X number of days.(X is currently defined as 500) and the score for that datetime and location the last available year. The weights are 0.2 for the average and 0.8 for the last available year.
+
 ## Integrating with Plotter
 To visualize the carbon emission data, integrate the `CarbonAwareAdvisor` model with the `plotter` model in your pipeline. Provide the necessary configurations for both models as per your requirements. The plotter model will automatically go through the plotted-points to search for the data so the x_name should be defined as [location, time] and the y_name as score.
 
@@ -305,33 +310,3 @@ To visualize the carbon emission data, integrate the `CarbonAwareAdvisor` model 
 Contributions to the CarbonAwareAdvisor model are welcome. Please submit pull requests with any enhancements, bug fixes, or additional features you'd like to add.
 
 
-## Future Forcasts 
-Since future forcasts are not available (for more than one day later ) through the API we need to implement our own solution.
-It will be based on a weighted average of past years.
-So the algorith is as follows:
-If a timeframe range is after the current datetime then replace the year with the previous one.
-Calculate the best time for that time range lets call it time A with Score A.
-For that best time do 3 more APi calls for the 4 previous years getting scores B, C, D.
-If There is no score B make B=0,B1=0 else make B1=0.25 
-If There is no score C makeC=0, C1=0 else make C1=0.15 
-If There is no score D make D=0,D1=0 else make D1=0.10 
-Then return the best time A with score = (0.5A+ 0.25 B + 0.15C +0.10D) /(0.5+B1+C1+D1)
-
-
-alternative approach that is more accurate but much more api calls
-If a timeframe range is after the current datetime then replace the year with the year-1 :Timeframe range 1
-replace the year with the year-2 :Timeframe range 2
-replace the year with the year-3 :Timeframe range 3
-replace the year with the year-4 :Timeframe range 4
-for of the timeframes 1 2 3 4 do api calls and get the best so A1 , A2, A3, A4
-for every of the A1, A2, A3, A4 do this:
-lets say for A1
-do 3 more APi calls for the other 3 years (with same date and time except year as A1):so get values A11=A1 , A12, A13, A14
-find total score for A1 as done in te previous alternative 
-
-so in the end you have score A1 for time A1 in timeframe range 1
-score A2 for time A2 in timeframe range 2
-score A3 for time A3 in timeframe range 3
-score A4 for time A4 in timeframe range 4.
-
-Select form 1 ,2 ,3 or 4 the one with the best score and return that

@@ -176,9 +176,11 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
     throw error;
   }
 }
+
+  //this is the function that performs all the api calls and returns the actual results, it is the core of the CarbonAware Advisor model
   async calculate(inputs: ModelParams[]): Promise<ModelParams[]> {
-    // Initialize an empty array to hold all suggestions if this.hassampling =true then we need plotted points as well
-    // iwant if this.hasSampling is true then the results should have plotted points as well
+    // Initialize an empty array to hold all suggestions
+    // if this.hassampling =true then we need plotted points as well
     let results: ModelParams[] = []
     if (this.hasSampling) {
     results = inputs.map(input => ({
@@ -196,8 +198,8 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
 
     const locationsArray = Array.from(this.allowedLocations);
     let byLocationsBestArr: any[] = [];
-    let byLocationsAllArr: any[] = [];
     let bestArr: any[] = [];
+    let suggestedArr: any[] = [];
     
 // Define the object with an index signature
   const averageScoresByLocation: { [key: string]: number | null } = {};
@@ -209,13 +211,13 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
     // Store the average score in the dictionary with the location as the key
     averageScoresByLocation[location] = averageScore;
   }
-  // Calculate the allocation for the current timeframe
-  //if this.hasSampling is true then calculate the allocation
+  
+  //if this.hasSampling is true then calculate the allocations
   const allocations: any[] = this.hasSampling ? this.calculateSubrangeAllocation(this.sampling) : [1];
   
   console.log('Allocations:', allocations);
-  // After all locations are processed, print the dictionary
   console.log("Average Scores by Location:", averageScoresByLocation);
+  // For each timeframe, get the best response from the API
     for (const [index, timeframe] of Array.from(this.allowedTimeframes).entries()) {
       const currAllocation = allocations[index] - 1;
       let isForecast = false;
@@ -232,9 +234,9 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
         let best = await this.getResponse("/emissions/bylocations", 'GET', params);
         if (best.length > 0) {
           console.log(`API call succeeded for timeframe starting at ${timeframe.from} `);
+          //if the api call is a forecast then we need to normalize the values
           if(isForecast){
             best = this.adjustRatingsAndYears(best, numOfYears, averageScoresByLocation);
-            //console.log('Best after adjustment:', best);
           }
           
           const minRating = Math.min(...best.map((item: EmissionsData) => item.rating));
@@ -242,10 +244,12 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
           // Step 2: Filter the array to keep only items with the minimum rating
           const itemsWithMinRating = best.filter((item: EmissionsData) => item.rating === minRating);
           byLocationsBestArr = byLocationsBestArr.concat(itemsWithMinRating); // Store minimum response items
-          byLocationsAllArr = byLocationsAllArr.concat(best); // Store All response items
           const randomIndex = Math.floor(Math.random() * itemsWithMinRating.length);
           bestArr.push(itemsWithMinRating[randomIndex]); // Store a random best response
-          //if this.hasSampling is true 
+          // add all of the items in itemsWithMinRating to the suggestedArr
+          suggestedArr = [...suggestedArr, ...itemsWithMinRating];
+          
+          //if this.hasSampling is true  then we need more than the best value
           if (this.hasSampling) {
             //remove from best array all the elements that are in itemsWithMinRating
             best = best.filter((item: EmissionsData) => !itemsWithMinRating.includes(item));
@@ -259,20 +263,21 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
           break;
         }
         // Adjust timeframe by decreasing the year by one
-        // Inside your loop or function where you're adjusting the timeframe
         mutableTimeframe = await this.adjustTimeframeByOneYear(mutableTimeframe);
-        //increase the numOfYears by 1
+        //increase the numOfYears we have gone in the pastby 1
         numOfYears++;
+        //if we have reached this part of the code then that means that for this timeframe we are forecasting
         isForecast = true; // Set flag since adjustment is needed
       }
       
 
     }
+    
     // Find the lowest rating among all responses
-    const lowestRating = Math.min(...bestArr.map(item => item.rating));
+    const lowestRating = Math.min(...suggestedArr.map(item => item.rating));
 
     // Filter all responses to get items with the lowest rating (i.e. the best responses)
-    const lowestRatingItems = bestArr.filter(item => item.rating === lowestRating);
+    const lowestRatingItems = suggestedArr.filter(item => item.rating === lowestRating);
 
     lowestRatingItems.forEach(async item => {
       results[0].suggestions.push({
@@ -282,7 +287,7 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
       });
     });
     if (this.hasSampling) {
-      // Set plotted points (all responses from both API calls)
+      // Set plotted points (all responses from both API calls) if the sampling param has been defined
       bestArr.forEach(async item => {
         results[0].plotted_points.push({
           'location': item.location,
@@ -293,6 +298,9 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
     }
     return results;
   }
+  //this function adjusts the ratings and years of the forecasted data
+  //it takes the forecasted data, the number of years to add and the average scores by location
+  //it returns the adjusted forecasted data
   adjustRatingsAndYears(
     emissionsData: EmissionsData[], 
     yearsToAdd: number, 
@@ -306,6 +314,12 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
       return { ...data, rating: adjustedRating, time: time.toISOString() };
     });
   }
+
+  /**
+   * Adjust the timeframe by decreasing the year by one.
+   * @param timeframe The timeframe to adjust.
+   * @returns The adjusted timeframe.
+   */
   async adjustTimeframeByOneYear(timeframe: Timeframe): Promise<Timeframe> {
     const adjustYear = (dateString: string): string => {
       const date = new Date(dateString);
@@ -435,7 +449,15 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
     });
   }
 
+  //this function calculates the allocation of the samples to the timeframes
+  //there must be at least one sample per timeframe
+  //if samples < timeframes then an error is thrown
   private calculateSubrangeAllocation(sampling: number) {
+    const timeframesCount = this.allowedTimeframes.size;
+    if (sampling < timeframesCount) {
+        throw new Error("Sampling number too small for the number of timeframes.");
+    }
+
     const durations = Array.from(this.allowedTimeframes).map(timeframe => {
       const start = new Date(timeframe.from).getTime();
       const end = new Date(timeframe.to).getTime();
@@ -443,22 +465,41 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
     });
 
     const totalDuration = durations.reduce((a, b) => a + b, 0);
-    let allocations = durations.map(duration =>
-      Math.round(sampling * (duration / totalDuration))
-    );
 
-    // Adjust allocations to ensure the sum equals sampling
-    while (allocations.reduce((a, b) => a + b, 0) > sampling) {
-      const maxIndex = allocations.indexOf(Math.max(...allocations));
-      allocations[maxIndex] -= 1;
+    // Initial allocation of 1 sample per timeframe
+    let allocations = durations.map(_ => 1);
+    let remainingSamples = sampling - timeframesCount; // Adjust remaining samples
+
+    // Proportional allocation of the remaining samples
+    if (totalDuration > 0) {
+        const remainingDurations = durations.map(duration => duration / totalDuration * remainingSamples);
+        for (let i = 0; i < allocations.length; i++) {
+            allocations[i] += Math.round(remainingDurations[i]);
+        }
     }
-    while (allocations.reduce((a, b) => a + b, 0) < sampling) {
-      const minIndex = allocations.indexOf(Math.min(...allocations));
-      allocations[minIndex] += 1;
+
+    // Redistribution to ensure total matches sampling
+    let totalAllocated = allocations.reduce((a, b) => a + b, 0);
+    while (totalAllocated !== sampling) {
+        if (totalAllocated > sampling) {
+            for (let i = 0; i < allocations.length && totalAllocated > sampling; i++) {
+                if (allocations[i] > 1) {
+                    allocations[i] -= 1;
+                    totalAllocated -= 1;
+                }
+            }
+        } else {
+            for (let i = 0; i < allocations.length && totalAllocated < sampling; i++) {
+                allocations[i] += 1;
+                totalAllocated += 1;
+            }
+        }
     }
 
     return allocations;
-  }
+}
+
+
 
   private validateTimeframes(map: Map<string, any>): void {
     const timeframes = map.get(this.ALLOWED_TIMEFRAMES_PARAM_NAME);
