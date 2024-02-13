@@ -22,6 +22,16 @@ export class CloudInstance {
         this.RAM = RAM;
         this.Price = Price;
     }
+
+    public getPrice(region: string): number {
+        if (this.Price) {
+            if (this.Price[region]){
+                return this.Price[region];
+            }
+        }
+        // return 0 will cause the division by 0 error
+        return 0.0001;
+    }
 }
 
 /**

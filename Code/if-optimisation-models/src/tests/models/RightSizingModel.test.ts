@@ -3,6 +3,136 @@ import { RightSizingModel } from "../../lib";
 import { CPUDatabase, CloudInstance } from "../../lib/right-sizing/CPUFamily";
 import { ModelParams } from "@grnsft/if-models/build/types/common";
 
+type CombinationValues = {
+    vCPUs: number;
+    RAM: number;
+    cost: number;
+}
+
+const ALG_TEST1_INPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "azure",
+        "cpu-util": 75,
+        "location": "uksouth",
+        "cloud-instance-type": "Standard_B32s_v2"
+    }
+];
+
+const ALG_TEST2_INPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "azure",
+        "cpu-util": 50,
+        "target-cpu-util": 80,
+        "location": "uksouth",
+        "cloud-instance-type": "Standard_B32s_v2"
+    }
+];
+
+const ALG_TEST3_INPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 50,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_16_64"
+    }
+];
+
+
+// Required cpu: 75% of 16 = 12
+// Required memory: 50% of 64 = 32
+// Fittest combination: [6, 8] + [2, 8] + [4, 16] = 12, 32
+const ALG_TEST4_INPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 75,
+        "mem-util": 50,
+        "total-memoryGB": 64,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_16_64"
+    }
+];
+
+const ALG_TEST4_EXPECTED_OUTPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "total-memoryGB": 8,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_2_8"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "total-memoryGB": 16,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_4_16"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "total-memoryGB": 8,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_6_8"
+    }
+];
+
+// Required cpu: 75% of 16 = 12
+// Required memory: 50% of 32 = 16
+// Fittest combination: [8, 8] + [4, 8] = 12, 16
+// or [6, 8] + [6, 8] = 12, 16
+const ALG_TEST5_INPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 75,
+        "mem-util": 50,
+        "total-memoryGB": 32,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_16_32"
+    }
+];
+
+const ALG_TEST5_EXPECTED_OUTPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_6_8"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_6_8"
+    }
+];
+
+
 describe("CPUDatabase", () => {
     const db = new CPUDatabase();
     const path = './data/test-instances.json';
@@ -15,25 +145,23 @@ describe("CPUDatabase", () => {
         expect(families.get('TestFamily')).toBeDefined();
         const family = families.get('TestFamily');
         expect(family).toBeDefined();
-        expect(family?.length).toEqual(3);
         expect(family?.[0]).toBeInstanceOf(CloudInstance);
-        expect(family?.[0].model).toEqual('Standard_test1_2_8');
+        expect(family?.[0].model).toEqual('Test_2_8');
         expect(family?.[0].vCPUs).toEqual(2);
         expect(family?.[0].RAM).toEqual(8.0);
     });
 
     it("CPUDatabase.getModelFamily", () => {
-        const family = db.getModelFamily('Standard_test2_4_16');
+        const family = db.getModelFamily('Test_4_16');
         expect(family).toBeDefined();
-        expect(family?.length).toEqual(3);
-        expect(family?.[0].model).toEqual('Standard_test1_2_8');
+        expect(family?.[0].model).toEqual('Test_2_8');
     });
 
     it("CPUDatabase.getInstanceByModel", () => {
-        const instance = db.getInstanceByModel('Standard_test2_4_16');
+        const instance = db.getInstanceByModel('Test_4_16');
         expect(instance).toBeDefined();
         expect(instance).not.toBeNull();
-        expect(instance?.model).toEqual('Standard_test2_4_16');
+        expect(instance?.model).toEqual('Test_4_16');
         expect(instance?.vCPUs).toEqual(4);
         expect(instance?.RAM).toEqual(16.0);
     });
@@ -87,6 +215,77 @@ describe("RightSizingModel", () => {
         return null;
     };
 
+    const compareWithExpected = (expected: ModelParams[], actual: ModelParams[]) => {
+
+        if (expected.length !== actual.length) {
+            console.error('Count of expected and actual outputs are different');
+            return false;
+        }
+
+        let allMatched = true;
+        for (let i = 0; i < expected.length; i++) {
+            let exp = expected[i];
+            let act = actual[i];
+            let matched = true;
+            for (let key in exp) {
+                if (exp[key] !== act[key]) {
+                    matched = false;
+                    allMatched = false;
+                    break;
+                }
+            }
+            if (!matched) {
+                console.error(`Unmatched output,\n Expected: ${JSON.stringify(exp)} \n Actual: ${JSON.stringify(act)}`);
+            }
+        }
+        return allMatched;
+    };
+
+    const getCombinedData = (outputs: ModelParams[]) => {
+        let data: { [timestamp: string]: CombinationValues } = {};
+
+        for (let i = 0; i < outputs.length; i++) {
+            let out = outputs[i];
+            let ins = getInstance(out['cloud-vendor'], out['cloud-instance-type']);
+            if (ins) {
+                let timestamp = out['timestamp'];
+                if (!data[timestamp]) {
+                    data[timestamp] = {
+                        vCPUs: 0,
+                        RAM: 0,
+                        cost: 0
+                    };
+                }
+                data[timestamp].vCPUs += ins.vCPUs;
+                data[timestamp].RAM += ins.RAM;
+                data[timestamp].cost += ins.getPrice(out['location']);
+            }
+        }
+        return data;
+    };
+
+    const compareWithExpectedCombinedValues = (expected: { [timestamp: string]: CombinationValues } | ModelParams[], actual: { [timestamp: string]: CombinationValues } | ModelParams[]) => {
+
+        if (Array.isArray(expected)) {
+            expected = getCombinedData(expected);
+        }
+
+        if (Array.isArray(actual)) {
+            actual = getCombinedData(actual);
+        }
+
+        let allMatched = true;
+        for (let key in expected) {
+            let exp = expected[key];
+            let act = actual[key];
+            if (exp.vCPUs !== act.vCPUs || exp.RAM !== act.RAM || exp.cost !== act.cost) {
+                allMatched = false;
+                console.error(`Unmatched output,\n Expected: ${JSON.stringify(exp)} \n Actual: ${JSON.stringify(act)}`);
+            }
+        }
+        return allMatched;
+    };
+
     it("Is Defined?", () => {
         expect(RightSizingModel).toBeDefined();
     });
@@ -116,7 +315,17 @@ describe("RightSizingModel", () => {
     });
 
     describe("RightSizingModel-Algorithms", () => {
-        it("Correct CPU combination with default target utilisation?", () => {
+        /**
+         * Test if the CPU combination is correct with the default target utilisation (100%)
+         * 
+         * Test method:
+         * For each instance from input, check if: 
+         * minimum required CPUs <= Total number of CPUs of combination <= original number of CPUs
+         */
+        it("Correct CPU combination with default target utilisation?", async () => {
+            const inputs = ALG_TEST1_INPUTS;
+            const outputs = await model.execute(inputs);
+
             const requiredCPU = inputs.map((input: ModelParams) => {
                 let vCPUs = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.vCPUs;
                 if (vCPUs) {
@@ -129,9 +338,9 @@ describe("RightSizingModel", () => {
             
             let j = 0;
             let combinedCPUs = 0;
-            for (let i = 0; i < output.length; i++) {
-                let out = output[i];
-                let next = output[i + 1];
+            for (let i = 0; i < outputs.length; i++) {
+                let out = outputs[i];
+                let next = outputs[i + 1];
                 let ins = getInstance(out['cloud-vendor'], out['cloud-instance-type']);
                 expect(ins).toBeDefined();
                 expect(ins).not.toBeNull();
@@ -145,6 +354,90 @@ describe("RightSizingModel", () => {
                     combinedCPUs = 0;
                 }
             };
+        });
+        
+        it("Correct CPU combination with custom target utilisation?", async () => {
+            const inputs = ALG_TEST2_INPUTS;
+            const outputs = await model.execute(inputs);
+
+            const requiredCPU = inputs.map((input: ModelParams) => {
+                let vCPUs = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.vCPUs;
+                if (vCPUs) {
+                    return input['cpu-util'] / 100 * vCPUs;
+                }else{
+                    console.error('Instance not found:', input['cloud-instance-type']);
+                    return 0;
+                }
+            });
+            
+            let j = 0;
+            let combinedCPUs = 0;
+            for (let i = 0; i < outputs.length; i++) {
+                let out = outputs[i];
+                let next = outputs[i + 1];
+                let ins = getInstance(out['cloud-vendor'], out['cloud-instance-type']);
+                expect(ins).toBeDefined();
+                expect(ins).not.toBeNull();
+
+                expect(out['cpu-util']).toBeLessThanOrEqual(out['target-cpu-util']);
+                combinedCPUs += (ins?.vCPUs || 0) * out['cpu-util'];
+                if (!next || next['timestamp'] !== out['timestamp']){
+                    let oldIns = getInstance(out['cloud-vendor'], out['old-instance']);
+                    expect(oldIns).not.toBeNull();
+
+                    expect(combinedCPUs).toBeGreaterThanOrEqual(requiredCPU[j]);
+                    expect(combinedCPUs).toBeLessThanOrEqual(oldIns!.vCPUs);
+                    j++;
+                    combinedCPUs = 0;
+                }
+            };
+        });
+
+        it("Instance combination RAM doesn't below the minimum required?", async () => {
+            const inputs = ALG_TEST3_INPUTS;
+            const outputs = await model.execute(inputs);
+
+            const requiredRAM = inputs.map((input: ModelParams) => {
+                let RAM = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.RAM;
+                if (RAM) {
+                    return input['mem-util'] / 100 * RAM;
+                }else{
+                    console.error('Instance not found:', input['cloud-instance-type']);
+                    return 0;
+                }
+            });
+
+            let j = 0;
+            let combinedRAM = 0;
+            for (let i = 0; i < outputs.length; i++) {
+                let out = outputs[i];
+                let next = outputs[i + 1];
+                let ins = getInstance(out['cloud-vendor'], out['cloud-instance-type']);
+                expect(ins).toBeDefined();
+                expect(ins).not.toBeNull();
+                combinedRAM += ins?.RAM || 0;
+                if (!next || next['timestamp'] !== out['timestamp']){
+                    let oldIns = getInstance(out['cloud-vendor'], out['old-instance']);
+                    expect(oldIns).not.toBeNull();
+                    expect(combinedRAM).toBeGreaterThanOrEqual(requiredRAM[j]);
+                    j++;
+                    combinedRAM = 0;
+                }
+            };
+        });
+
+        it("Instance combination RAM with the fittest RAM is selected?", async () => {
+            const inputs = ALG_TEST4_INPUTS;
+            const outputs = await model.execute(inputs);
+
+            expect(compareWithExpectedCombinedValues(ALG_TEST4_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+        });
+
+        it ("The instance combination with lowest cost is selected?", async () => {
+            const inputs = ALG_TEST5_INPUTS;
+            const outputs = await model.execute(inputs);
+            
+            expect(compareWithExpectedCombinedValues(ALG_TEST5_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
         });
     });
 });
