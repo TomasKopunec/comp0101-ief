@@ -84,4 +84,3 @@ export class CPUDatabase {
         return this.familyToModels;
     }
 }
-
