@@ -145,110 +145,30 @@ graph:
           duration: 300
           cloud-vendor: azure
           cpu-util: 50
-          target-cpu-util: 75
+          target-cpu-util: 100
           mem-availableGB: 0.488636416
           mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: B16ps_v2
-        - timestamp: '2023-11-02T10:35:00.000Z'
-          duration: 300
-          cloud-vendor: azure
-          cpu-util: 50
-          target-cpu-util: 80
-          mem-availableGB: 0.488636416
-          mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: F64s_v2
+          total-memoryGB: 32
+          mem-util: 50
+          location: westus
+          cloud-instance-type: Standard_D8a_v4
       outputs:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
           cloud-vendor: azure
-          cpu-util: 75
-          target-cpu-util: 75
+          cpu-util: 100
+          target-cpu-util: 100
           mem-availableGB: 0.488636416
           mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: B8pls_v2
+          total-memoryGB: 16
+          mem-util: 100
+          location: westus
+          cloud-instance-type: Standard_D4a_v4
           data-path: data/azure-instances.json
-          old-instance: B16ps_v2
+          old-instance: Standard_D8a_v4
           old-cpu-util: 50
-        - timestamp: '2023-11-02T10:35:00.000Z'
-          duration: 300
-          cloud-vendor: azure
-          cpu-util: 50
-          target-cpu-util: 75
-          mem-availableGB: 0.488636416
-          mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: B4pls_v2
-          data-path: data/azure-instances.json
-          old-instance: B16ps_v2
-          old-cpu-util: 50
-        - timestamp: '2023-11-02T10:35:00.000Z'
-          duration: 300
-          cloud-vendor: azure
-          cpu-util: 75
-          target-cpu-util: 75
-          mem-availableGB: 0.488636416
-          mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: B16ps_v2
-          data-path: data/azure-instances.json
-          old-instance: B16ps_v2
-          old-cpu-util: 50
-          recommendation: SAME as the old instance
-        - timestamp: '2023-11-02T10:35:00.000Z'
-          duration: 300
-          cloud-vendor: azure
-          cpu-util: 80
-          target-cpu-util: 80
-          mem-availableGB: 0.488636416
-          mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: F32s_v2
-          data-path: data/azure-instances.json
-          old-instance: F64s_v2
-          old-cpu-util: 50
-        - timestamp: '2023-11-02T10:35:00.000Z'
-          duration: 300
-          cloud-vendor: azure
-          cpu-util: 80
-          target-cpu-util: 80
-          mem-availableGB: 0.488636416
-          mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: F8s_v2
-          data-path: data/azure-instances.json
-          old-instance: F64s_v2
-          old-cpu-util: 50
-        - timestamp: '2023-11-02T10:35:00.000Z'
-          duration: 300
-          cloud-vendor: azure
-          cpu-util: 80
-          target-cpu-util: 80
-          mem-availableGB: 0.488636416
-          mem-usedGB: 0.5113635839999999
-          total-memoryGB: 1
-          mem-util: 51.13635839999999
-          location: uksouth
-          cloud-instance-type: F72s_v2
-          data-path: data/azure-instances.json
-          old-instance: F64s_v2
-          old-cpu-util: 50
+          old-mem-util: 50
+          price-change: Price decreased by 98%
 ```
 
 ## Contributing
