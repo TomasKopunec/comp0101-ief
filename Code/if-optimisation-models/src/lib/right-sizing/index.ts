@@ -126,7 +126,7 @@ private processInput(input: ModelParams): ModelParams[] {
         let targetUtil: number;
         let res: [CloudInstance, number, number, number, number, number][];
         let originalMemUtil = input['mem-util'];
-        let targetRAM = (originalMemUtil / 100) * input['total-memoryGB'];
+        let targetRAM = (originalMemUtil / 100) * instance.RAM;
         let region = input['location'];
 
         // Ensure cpu-util is a number
