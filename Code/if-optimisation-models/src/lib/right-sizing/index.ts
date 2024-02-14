@@ -260,13 +260,17 @@ private calculateRightSizing(
             let cpuUtilizationDiff = Math.abs(requiredvCPUs - totalvCPUs);
 
             // Update optimal combination if a better one is found
-            if (cpuUtilizationDiff < closestCPUUtilizationDiff || (cpuUtilizationDiff === closestCPUUtilizationDiff && (totalRAM < optimalRAM || (totalRAM === optimalRAM && totalCost < lowestCost)))) {
+            if (cpuUtilizationDiff < closestCPUUtilizationDiff || 
+                (cpuUtilizationDiff === closestCPUUtilizationDiff && 
+                    (totalRAM < optimalRAM || 
+                        (totalRAM === optimalRAM && totalCost < lowestCost)))) {
                 closestCPUUtilizationDiff = cpuUtilizationDiff;
                 optimalRAM = totalRAM;
                 lowestCost = totalCost;
                 let totalCPUUtil = (totalvCPUs / requiredvCPUs) * 100; 
                 let totalMemUtil = (totalRAM / targetRAM) * 100; 
-                optimalCombination = combination.map(instance => [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(region), 0]);
+                optimalCombination = combination.map(instance => 
+                    [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(region), 0]);
             }
         }
     }

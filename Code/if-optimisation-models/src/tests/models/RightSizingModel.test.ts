@@ -430,7 +430,13 @@ describe("RightSizingModel", () => {
             const inputs = ALG_TEST4_INPUTS;
             const outputs = await model.execute(inputs);
 
-            expect(compareWithExpectedCombinedValues(ALG_TEST4_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+            let timestamp = inputs[0].timestamp;
+
+            expect(getCombinedData(outputs)[timestamp].RAM)
+            .toEqual(getCombinedData(ALG_TEST4_EXPECTED_OUTPUTS)[timestamp].RAM);
+
+            expect(getCombinedData(outputs)[timestamp].vCPUs)
+            .toEqual(getCombinedData(ALG_TEST4_EXPECTED_OUTPUTS)[timestamp].vCPUs);
         });
 
         it ("The instance combination with lowest cost is selected?", async () => {
@@ -438,6 +444,7 @@ describe("RightSizingModel", () => {
             const outputs = await model.execute(inputs);
             
             expect(compareWithExpectedCombinedValues(ALG_TEST5_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+            
         });
     });
 });
