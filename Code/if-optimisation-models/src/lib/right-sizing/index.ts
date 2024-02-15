@@ -261,9 +261,8 @@ private calculateRightSizing(
 
             // Update optimal combination if a better one is found
             if (cpuUtilizationDiff < closestCPUUtilizationDiff || 
-                (cpuUtilizationDiff === closestCPUUtilizationDiff && 
-                    (totalRAM < optimalRAM || 
-                        (totalRAM === optimalRAM && totalCost < lowestCost)))) {
+                (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM < optimalRAM && totalRAM >= targetRAM) || 
+                (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM === optimalRAM && totalCost < lowestCost)) { 
                 closestCPUUtilizationDiff = cpuUtilizationDiff;
                 optimalRAM = totalRAM;
                 lowestCost = totalCost;
