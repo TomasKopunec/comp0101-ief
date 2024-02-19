@@ -105,6 +105,10 @@
     "israel_aws": [
       "il-central-1"
     ],
+    "special_canary_azure": [
+      "centraluseuap",
+      "eastus2euap"
+    ],
     "world_azure": [
       "southafricanorth",
       "southafricawest",
@@ -154,7 +158,9 @@
       "westus2",
       "westus3",
       "canadacentral",
-      "canadaeast"
+      "canadaeast",
+      "centraluseuap",
+      "eastus2euap"
     ],
     "world_aws": [
       "af-south-1",
