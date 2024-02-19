@@ -195,20 +195,35 @@ export class RightSizingModel implements ModelPluginInterface {
         return outputs;
     }
 
+    /**
+     * Processes a single input to generate multiple outputs, each representing a different instance combination.
+     * @param index The current index in the family array.
+     * @param family The sorted array of CloudInstance objects.
+     * @param originalData With original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance.
+     * @param optimalData The current optimal combination data.
+     * @param currentData The current state of the combination being evaluated.
+     * @returns An object containing optimal combination details, closest CPU utilization difference, optimal RAM, and lowest cost.
+     */
     private findOptimalCombination(index: number, family: CloudInstance[], originalData: any, optimalData: any, currentData: any
     ): { optimalCombination: [CloudInstance, number, number, number, number, number][]; closestCPUUtilizationDiff: number; optimalRAM: number; lowestCost: number; } {
         try {
+            // if index exceeds the length of the family array, return the current optimal data
             if (index >= family.length) return { ...optimalData }
+            // Check if adding the current instance would exceed the RAM of original instance
+            // If it exceeds, try the next one (family has been sorted in descending order).
             if (currentData.currentRAM + family[index].RAM > originalData.originalRAM) {
                 return this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
             }
+
             currentData.currentCPUs += family[index].vCPUs;
             currentData.currentRAM += family[index].RAM;
             currentData.currentCost += family[index].getPrice(originalData.region);
             currentData.combination.push(family[index]);
+
+            // Check if the current combination meets the target requirements
             if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
                 let cpuUtilizationDiff = currentData.currentCPUs - originalData.requiredvCPUs;
-
+                // Update optimal combination if the current combination is better
                 if (cpuUtilizationDiff < optimalData.closestCPUUtilizationDiff ||
                     (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM < optimalData.optimalRAM) ||
                     (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost < optimalData.lowestCost)) {
@@ -217,7 +232,7 @@ export class RightSizingModel implements ModelPluginInterface {
                     optimalData.lowestCost = currentData.currentCost;
                     let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs) * 100;
                     let totalMemUtil = (originalData.targetRAM / currentData.currentRAM) * 100;
-
+                    // Update optimal combination array
                     optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) =>
                         [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(originalData.region), 0]);
                 }
@@ -225,15 +240,19 @@ export class RightSizingModel implements ModelPluginInterface {
 
             // Include the instance and recurse
             optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
+
+            // Backtrack: Exclude the current instance and recurse
             currentData.currentCPUs -= family[index].vCPUs;
             currentData.currentRAM -= family[index].RAM;
             currentData.currentCost -= family[index].getPrice(originalData.region);
             currentData.combination.pop();
+
             // Exclude the instance and recurse
             optimalData = this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
         } catch (err) {
             throw (err)
         }
+        // Return the final optimal combination details
         return {
             optimalCombination: optimalData.optimalCombination,
             closestCPUUtilizationDiff: optimalData.closestCPUUtilizationDiff,
@@ -267,9 +286,11 @@ export class RightSizingModel implements ModelPluginInterface {
             return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
         }
 
+        // Sort family in descending order based on RAM size
         family.sort((a, b) => b.RAM - a.RAM);
 
-        // Store original cost, RAM size, and calculate required vCPUs
+        // Prepare parameters for recursive findOptimalCombination.
+        // original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance
         let originalData = {
             originalCost: cloudInstance.getPrice(region),
             originalRAM: cloudInstance.RAM,
@@ -278,7 +299,7 @@ export class RightSizingModel implements ModelPluginInterface {
             targetRAM: targetRAM,
             region: region
         }
-
+        // Initialize an object to store the optimal data with default values
         let optimalCombination: [CloudInstance, number, number, number, number, number][] = [];
         let optimalData = {
             optimalCombination: optimalCombination,
@@ -286,13 +307,14 @@ export class RightSizingModel implements ModelPluginInterface {
             optimalRAM: Number.MAX_VALUE,
             lowestCost: Number.MAX_VALUE
         }
-        // Initialize variables for optimal combination
+        // Initialize variables for the current state of the combination being evaluated
         let currentData = {
             combination: [],
             currentCPUs: 0,
             currentRAM: 0,
             currentCost: 0
         }
+        // Start the recursive search for the optimal combination
         let index = 0;
         optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
 
