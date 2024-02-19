@@ -45,40 +45,40 @@ export class RightSizingModel implements ModelPluginInterface {
         return this; // Return the configured instance
     }
 
-/**
- * Executes the model with the given inputs and returns the corresponding outputs.
- * @param inputs The list of input parameters for the models.
- * @returns A Promise resolving to an array of model parameters representing the outputs.
- */
-public async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
-    let outputs: ModelParams[] = [];
+    /**
+     * Executes the model with the given inputs and returns the corresponding outputs.
+     * @param inputs The list of input parameters for the models.
+     * @returns A Promise resolving to an array of model parameters representing the outputs.
+     */
+    public async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
+        let outputs: ModelParams[] = [];
 
-    // Process each input
-    for (const input of inputs) {
-        // Check if 'cloud-vendor' key exists in input
-        if ('cloud-vendor' in input) {
-            const cloudVendor = input['cloud-vendor'];
-            // Check if database for the cloud vendor is cached
-            if (!this.Cache.has(cloudVendor)) {
-                // If not cached, create a new database instance and load model data for the specific cloud vendor
-                const newDatabase = new CPUDatabase();
-                if (cloudVendor === 'aws') {
-                    await newDatabase.loadModelData(this.builtinDataPath + '/aws-instances.json');
-                } else if (cloudVendor === 'azure') {
-                    await newDatabase.loadModelData(this.builtinDataPath + '/azure-instances.json');
+        // Process each input
+        for (const input of inputs) {
+            // Check if 'cloud-vendor' key exists in input
+            if ('cloud-vendor' in input) {
+                const cloudVendor = input['cloud-vendor'];
+                // Check if database for the cloud vendor is cached
+                if (!this.Cache.has(cloudVendor)) {
+                    // If not cached, create a new database instance and load model data for the specific cloud vendor
+                    const newDatabase = new CPUDatabase();
+                    if (cloudVendor === 'aws') {
+                        await newDatabase.loadModelData(this.builtinDataPath + '/aws-instances.json');
+                    } else if (cloudVendor === 'azure') {
+                        await newDatabase.loadModelData(this.builtinDataPath + '/azure-instances.json');
+                    }
+                    this.Cache.set(cloudVendor, newDatabase); // Cache the loaded database
                 }
-                this.Cache.set(cloudVendor, newDatabase); // Cache the loaded database
+                this.database = this.Cache.get(cloudVendor)!; // Set database to the cached one
             }
-            this.database = this.Cache.get(cloudVendor)!; // Set database to the cached one
+
+            // Process input and collect processed outputs
+            let processedOutputs = this.processInput(input);
+            outputs.push(...processedOutputs); // Append processed outputs to the outputs array
         }
 
-        // Process input and collect processed outputs
-        let processedOutputs = this.processInput(input);
-        outputs.push(...processedOutputs); // Append processed outputs to the outputs array
+        return Promise.resolve(outputs); // Resolve the promise with the outputs array
     }
-    
-    return Promise.resolve(outputs); // Resolve the promise with the outputs array
-}
 
 
     /**
@@ -102,194 +102,239 @@ public async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
         return validate<z.infer<typeof schema>>(schema, input);
     }
 
-/**
- * Processes a single input to generate multiple outputs, each representing a different instance combination.
- * @param input The input parameters for the model.
- * @returns An array of model parameters representing different instance combinations.
- */
-private processInput(input: ModelParams): ModelParams[] {
-    let outputs: ModelParams[] = [];
+    /**
+     * Processes a single input to generate multiple outputs, each representing a different instance combination.
+     * @param input The input parameters for the model.
+     * @returns An array of model parameters representing different instance combinations.
+     */
+    private processInput(input: ModelParams): ModelParams[] {
+        let outputs: ModelParams[] = [];
 
-    // Validate input and proceed if valid
-    if (this.validateSingleInput(input)) {
-        // Store original instance details
-        input['old-instance'] = input['cloud-instance-type'];
-        input['old-cpu-util'] = input['cpu-util'];
-        input['old-mem-util'] = input['mem-util'];
+        // Validate input and proceed if valid
+        if (this.validateSingleInput(input)) {
+            // Store original instance details
+            input['old-instance'] = input['cloud-instance-type'];
+            input['old-cpu-util'] = input['cpu-util'];
+            input['old-mem-util'] = input['mem-util'];
 
-        // Retrieve instance details from database
-        let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
-        if (!instance) {
-            throw new Error(`Invalid cloud instance: ${input['cloud-instance-type']}, not found in cloud vendor database: ${input['cloud-vendor']}`);
-        }
-        let util: number;
-        let targetUtil: number;
-        let res: [CloudInstance, number, number, number, number, number][];
-        let originalMemUtil = input['mem-util'];
-        let targetRAM = (originalMemUtil / 100) * instance.RAM;
-        let region = input['location'];
+            // Retrieve instance details from database
+            let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
+            if (!instance) {
+                throw new Error(`Invalid cloud instance: ${input['cloud-instance-type']}, not found in cloud vendor database: ${input['cloud-vendor']}`);
+            }
+            let util: number;
+            let targetUtil: number;
+            let res: [CloudInstance, number, number, number, number, number][];
+            let originalMemUtil = input['mem-util'];
+            let targetRAM = (originalMemUtil / 100) * instance.RAM;
+            let region = input['location'];
 
-        // Ensure cpu-util is a number
-        if (typeof input['cpu-util'] === 'number') {
-            util = input['cpu-util'] as number;
-        } else if (typeof input['cpu-util'] === 'string') {
-            util = parseFloat(input['cpu-util']);
-        } else {
-            throw new Error('cpu-util must be a number or string');
-        }
-        util = util / 100; // Convert percentage to decimal
-
-        // Set target CPU utilization to 100 if not defined
-        if (typeof input['target-cpu-util'] === 'undefined') {
-            targetUtil = 100;
-        } else {
-            // Ensure target-cpu-util is a number or string
-            if (typeof input['target-cpu-util'] === 'number') {
-                targetUtil = input['target-cpu-util'] as number;
-            } else if (typeof input['target-cpu-util'] === 'string') {
-                targetUtil = parseFloat(input['target-cpu-util']);
+            // Ensure cpu-util is a number
+            if (typeof input['cpu-util'] === 'number') {
+                util = input['cpu-util'] as number;
+            } else if (typeof input['cpu-util'] === 'string') {
+                util = parseFloat(input['cpu-util']);
             } else {
-                throw new Error('target-cpu-util must be a number or string');
+                throw new Error('cpu-util must be a number or string');
             }
-        }
-        targetUtil = targetUtil / 100; // Convert percentage to decimal
+            util = util / 100; // Convert percentage to decimal
 
-        // Calculate right sizing for the instance
-        res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil, region);
-
-        // generate unique id to use for cases where many instances replace one
-        let output_id = crypto.randomUUID();
-
-        // Create a new output for each instance combination
-        res.forEach(([instance, cpuUtil, memUtil, totalRAM, price, priceDifference]) => {
-            let output = { ...input }; // Copy input to create new output
-            let processedModel = instance.model;
-
-            // Update output parameters
-            output['cloud-instance-type'] = processedModel;
-            output['cpu-util'] = cpuUtil;
-            output['mem-util'] = memUtil;
-            output['total-memoryGB'] = totalRAM;
-            if (res.length > 1) {
-                output['output-id'] = output_id
-            }
-
-            // Determine price change
-            if (priceDifference > 0) {
-                output['price-change'] = `Price decreased by ${Math.ceil(priceDifference)}%`;
+            // Set target CPU utilization to 100 if not defined
+            if (typeof input['target-cpu-util'] === 'undefined') {
+                targetUtil = 100;
             } else {
-                output['price-change'] = `Price has increased by ${Math.ceil(Math.abs(priceDifference))}%`;
+                // Ensure target-cpu-util is a number or string
+                if (typeof input['target-cpu-util'] === 'number') {
+                    targetUtil = input['target-cpu-util'] as number;
+                } else if (typeof input['target-cpu-util'] === 'string') {
+                    targetUtil = parseFloat(input['target-cpu-util']);
+                } else {
+                    throw new Error('target-cpu-util must be a number or string');
+                }
             }
+            targetUtil = targetUtil / 100; // Convert percentage to decimal
 
-            // Set recommendation based on processed model
-            if (processedModel === input['old-instance']) {
-                output['Recommendation'] = "Size already optimal";
-            }
+            // Calculate right sizing for the instance
+            res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil, region);
 
-            outputs.push(output); // Add output to outputs array
-        });
-    } else {
-        outputs.push(input); // Push input unchanged if not processing
-    }
-    
-    return outputs;
-}
+            // generate unique id to use for cases where many instances replace one
+            let output_id = crypto.randomUUID();
 
+            // Create a new output for each instance combination
+            res.forEach(([instance, cpuUtil, memUtil, totalRAM, price, priceDifference]) => {
+                let output = { ...input }; // Copy input to create new output
+                let processedModel = instance.model;
 
+                // Update output parameters
+                output['cloud-instance-type'] = processedModel;
+                output['cpu-util'] = cpuUtil;
+                output['mem-util'] = memUtil;
+                output['total-memoryGB'] = totalRAM;
+                if (res.length > 1) {
+                    output['output-id'] = output_id
+                }
 
-/**
- * @param cloudInstance The original cloud instance to be analyzed.
- * @param cpuUtil The current CPU utilization percentage.
- * @param targetUtil The target CPU utilization percentage.
- * @param targetRAM The target RAM size in GB.
- * @param originalMemUtil The original memory utilization percentage.
- * @param region The region where the cloud instance resides.
- * @returns An array containing the optimal combination of cloud instances along with
- *          their CPU utilization, memory utilization, RAM size, price, and price difference percentage.
- */
-private calculateRightSizing(
-    cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number, targetRAM: number, originalMemUtil: number, region: string
-): [CloudInstance, number, number, number, number, number][] {
-    // Check if the cloud instance is valid
-    if (!cloudInstance) {
-        throw new Error(`Invalid cloud instance: ${cloudInstance}`);
-    }
-    
-    // Retrieve the model family of the cloud instance
-    let family = this.database.getModelFamily(cloudInstance.model);
-    // If no model family is found, return the original instance
-    if (!family || family.length === 0) {
-        return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
-    }
-    
-    // Store original cost, RAM size, and calculate required vCPUs
-    let originalCost = cloudInstance.getPrice(region);
-    let originalRAM = cloudInstance.RAM;
-    let requiredvCPUs = cpuUtil * cloudInstance.vCPUs; 
+                // Determine price change
+                if (priceDifference > 0) {
+                    output['price-change'] = `Price decreased by ${Math.ceil(priceDifference)}%`;
+                } else {
+                    output['price-change'] = `Price has increased by ${Math.ceil(Math.abs(priceDifference))}%`;
+                }
 
-    // Initialize variables for optimal combination
-    let optimalCombination: [CloudInstance, number, number, number, number, number][] = [];
-    let closestCPUUtilizationDiff = Number.MAX_VALUE;
-    let optimalRAM = Number.MAX_VALUE;
-    let lowestCost = Number.MAX_VALUE;
+                // Set recommendation based on processed model
+                if (processedModel === input['old-instance']) {
+                    output['Recommendation'] = "Size already optimal";
+                }
 
-    // Iterate through all possible combinations of instances
-    for (let i = 0; i < (1 << family.length); i++) {
-        let combination: CloudInstance[] = [];
-        let totalvCPUs = 0;
-        let totalRAM = 0;
-        let totalCost = 0;
-
-        // Generate each combination
-        for (let j = 0; j < family.length; j++) {
-            if (i & (1 << j)) {
-                combination.push(family[j]);
-                totalvCPUs += family[j].vCPUs;
-                totalRAM += family[j].RAM;
-                totalCost += family[j].getPrice(region);
-            }
+                outputs.push(output); // Add output to outputs array
+            });
+        } else {
+            outputs.push(input); // Push input unchanged if not processing
         }
 
-        // Skip combinations where total RAM exceeds the original instance's RAM
-        if (totalRAM > originalRAM) {
-            continue;
-        }
+        return outputs;
+    }
 
-        // Check if the combination meets RAM requirements
-        if (totalRAM >= targetRAM) {
-            let cpuUtilizationDiff = Math.abs(requiredvCPUs - totalvCPUs);
-
-            // Update optimal combination if a better one is found
-            if (cpuUtilizationDiff < closestCPUUtilizationDiff || 
-                (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM < optimalRAM && totalRAM >= targetRAM) || 
-                (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM === optimalRAM && totalCost < lowestCost)) { 
-                closestCPUUtilizationDiff = cpuUtilizationDiff;
-                optimalRAM = totalRAM;
-                lowestCost = totalCost;
-                let totalCPUUtil = (totalvCPUs / requiredvCPUs) * 100; 
-                let totalMemUtil = (totalRAM / targetRAM) * 100; 
-                optimalCombination = combination.map(instance => 
-                    [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(region), 0]);
+    /**
+     * Processes a single input to generate multiple outputs, each representing a different instance combination.
+     * @param index The current index in the family array.
+     * @param family The sorted array of CloudInstance objects.
+     * @param originalData With original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance.
+     * @param optimalData The current optimal combination data.
+     * @param currentData The current state of the combination being evaluated.
+     * @returns An object containing optimal combination details, closest CPU utilization difference, optimal RAM, and lowest cost.
+     */
+    private findOptimalCombination(index: number, family: CloudInstance[], originalData: any, optimalData: any, currentData: any
+    ): { optimalCombination: [CloudInstance, number, number, number, number, number][]; closestCPUUtilizationDiff: number; optimalRAM: number; lowestCost: number; } {
+        try {
+            // if index exceeds the length of the family array, return the current optimal data
+            if (index >= family.length) return { ...optimalData }
+            // Check if adding the current instance would exceed the RAM of original instance
+            // If it exceeds, try the next one (family has been sorted in descending order).
+            if (currentData.currentRAM + family[index].RAM > originalData.originalRAM) {
+                return this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
             }
+
+            currentData.currentCPUs += family[index].vCPUs;
+            currentData.currentRAM += family[index].RAM;
+            currentData.currentCost += family[index].getPrice(originalData.region);
+            currentData.combination.push(family[index]);
+
+            // Check if the current combination meets the target requirements
+            if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
+                let cpuUtilizationDiff = currentData.currentCPUs - originalData.requiredvCPUs;
+                // Update optimal combination if the current combination is better
+                if (cpuUtilizationDiff < optimalData.closestCPUUtilizationDiff ||
+                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM < optimalData.optimalRAM) ||
+                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost < optimalData.lowestCost)) {
+                    optimalData.closestCPUUtilizationDiff = cpuUtilizationDiff;
+                    optimalData.optimalRAM = currentData.currentRAM;
+                    optimalData.lowestCost = currentData.currentCost;
+                    let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs) * 100;
+                    let totalMemUtil = (originalData.targetRAM / currentData.currentRAM) * 100;
+                    // Update optimal combination array
+                    optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) =>
+                        [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(originalData.region), 0]);
+                }
+            }
+
+            // Include the instance and recurse
+            optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
+
+            // Backtrack: Exclude the current instance and recurse
+            currentData.currentCPUs -= family[index].vCPUs;
+            currentData.currentRAM -= family[index].RAM;
+            currentData.currentCost -= family[index].getPrice(originalData.region);
+            currentData.combination.pop();
+
+            // Exclude the instance and recurse
+            optimalData = this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
+        } catch (err) {
+            throw (err)
         }
+        // Return the final optimal combination details
+        return {
+            optimalCombination: optimalData.optimalCombination,
+            closestCPUUtilizationDiff: optimalData.closestCPUUtilizationDiff,
+            optimalRAM: optimalData.optimalRAM,
+            lowestCost: optimalData.lowestCost
+        };
     }
 
-    // If an optimal combination is found
-    if (optimalCombination.length > 0) {
-        // Calculate final total cost and price difference
-        let finalTotalCost = optimalCombination.reduce((sum, [instance]) => sum + instance.getPrice(region), 0);
-        let priceDifference = originalCost - finalTotalCost; // This will be positive, indicating savings
-        let priceDifferencePercentage = (priceDifference / originalCost) * 100;
-        console.log(`Final total cost: ${finalTotalCost}, Price difference: ${priceDifference}, Price difference percentage: ${priceDifferencePercentage}`);
-        // Update the optimalCombination to include the price difference percentage
-        optimalCombination = optimalCombination.map(([instance, cpuUtil, memUtil, ram, price]): [CloudInstance, number, number, number, number, number] => [instance, cpuUtil, memUtil, ram, price, priceDifferencePercentage]);
-    } else {
-        // If no better combination found, use the original instance
-        optimalCombination = [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
-    }
+    /**
+     * @param cloudInstance The original cloud instance to be analyzed.
+     * @param cpuUtil The current CPU utilization percentage.
+     * @param targetUtil The target CPU utilization percentage.
+     * @param targetRAM The target RAM size in GB.
+     * @param originalMemUtil The original memory utilization percentage.
+     * @param region The region where the cloud instance resides.
+     * @returns An array containing the optimal combination of cloud instances along with
+     *          their CPU utilization, memory utilization, RAM size, price, and price difference percentage.
+     */
+    private calculateRightSizing(
+        cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number, targetRAM: number, originalMemUtil: number, region: string
+    ): [CloudInstance, number, number, number, number, number][] {
+        // Check if the cloud instance is valid
+        if (!cloudInstance) {
+            throw new Error(`Invalid cloud instance: ${cloudInstance}`);
+        }
 
-    return optimalCombination;
-}
+        // Retrieve the model family of the cloud instance
+        let family = this.database.getModelFamily(cloudInstance.model);
+        // If no model family is found, return the original instance
+        if (!family || family.length === 0) {
+            return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
+        }
+
+        // Sort family in descending order based on RAM size
+        family.sort((a, b) => b.RAM - a.RAM);
+
+        // Prepare parameters for recursive findOptimalCombination.
+        // original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance
+        let originalData = {
+            originalCost: cloudInstance.getPrice(region),
+            originalRAM: cloudInstance.RAM,
+            requiredvCPUs: cpuUtil * cloudInstance.vCPUs,
+            targetUtil: targetUtil,
+            targetRAM: targetRAM,
+            region: region
+        }
+        // Initialize an object to store the optimal data with default values
+        let optimalCombination: [CloudInstance, number, number, number, number, number][] = [];
+        let optimalData = {
+            optimalCombination: optimalCombination,
+            closestCPUUtilizationDiff: Number.MAX_VALUE,
+            optimalRAM: Number.MAX_VALUE,
+            lowestCost: Number.MAX_VALUE
+        }
+        // Initialize variables for the current state of the combination being evaluated
+        let currentData = {
+            combination: [],
+            currentCPUs: 0,
+            currentRAM: 0,
+            currentCost: 0
+        }
+        // Start the recursive search for the optimal combination
+        let index = 0;
+        optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
+
+        // If an optimal combination is found
+        optimalCombination = optimalData.optimalCombination;
+        if (optimalCombination.length > 0) {
+            // Calculate final total cost and price difference
+            let finalTotalCost = optimalCombination.reduce((sum, [instance]) => sum + instance.getPrice(region), 0);
+            let priceDifference = originalData.originalCost - finalTotalCost; // This will be positive, indicating savings
+            let priceDifferencePercentage = (priceDifference / originalData.originalCost) * 100;
+            console.log(`Final total cost: ${finalTotalCost}, Price difference: ${priceDifference}, Price difference percentage: ${priceDifferencePercentage}`);
+            // Update the optimalCombination to include the price difference percentage
+            optimalCombination = optimalCombination.map(([instance, cpuUtil, memUtil, ram, price]): [CloudInstance, number, number, number, number, number] => [instance, cpuUtil, memUtil, ram, price, priceDifferencePercentage]);
+        } else {
+            // If no better combination found, use the original instance
+            optimalCombination = [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
+        }
+
+        return optimalCombination;
+    }
 
     /**
      * Get the databases of cloud instances.
