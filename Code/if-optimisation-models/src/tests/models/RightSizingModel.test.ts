@@ -59,7 +59,6 @@ const ALG_TEST4_INPUTS = [
         "cloud-instance-type": "Test_16_64"
     }
 ];
-
 const ALG_TEST4_EXPECTED_OUTPUTS = [
     {
         "timestamp": "2023-11-02T10:35:00.000Z",
@@ -84,7 +83,6 @@ const ALG_TEST4_EXPECTED_OUTPUTS = [
 // Required cpu: 75% of 16 = 12
 // Required memory: 50% of 32 = 16
 // Fittest combination: [8, 8] + [4, 8] = 12, 16
-// or [6, 8] + [6, 8] = 12, 16 (better cost)
 const ALG_TEST5_INPUTS = [
     {
         "timestamp": "2023-11-02T10:35:00.000Z",
@@ -96,7 +94,6 @@ const ALG_TEST5_INPUTS = [
         "cloud-instance-type": "Test2_16_32"
     }
 ];
-
 const ALG_TEST5_EXPECTED_OUTPUTS = [
     {
         "timestamp": "2023-11-02T10:35:00.000Z",
@@ -105,7 +102,7 @@ const ALG_TEST5_EXPECTED_OUTPUTS = [
         "cpu-util": 100,
         "mem-util": 100,
         "location": "uksouth",
-        "cloud-instance-type": "Test2_6_8"
+        "cloud-instance-type": "Test2_8_8_cheap"
     },
     {
         "timestamp": "2023-11-02T10:35:00.000Z",
@@ -114,7 +111,42 @@ const ALG_TEST5_EXPECTED_OUTPUTS = [
         "cpu-util": 100,
         "mem-util": 100,
         "location": "uksouth",
-        "cloud-instance-type": "Test2_6_8"
+        "cloud-instance-type": "Test2_4_8_cheap"
+    }
+];
+
+// Required cpu: 75% of 16 = 12
+// Required memory: 50% of 32 = 16
+// Fittest combination: [8, 8] + [4, 8] = 12, 16
+const ALG_TEST6_INPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 75,
+        "mem-util": 50,
+        "location": "uksouth",
+        "cloud-instance-type": "Test3_16_32"
+    }
+];
+const ALG_TEST6_EXPECTED_OUTPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test3_6_8"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test3_6_8"
     }
 ];
 
@@ -430,6 +462,13 @@ describe("RightSizingModel", () => {
             const outputs = await model.execute(inputs);
             
             expect(compareWithExpectedCombinedValues(ALG_TEST5_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+        });
+
+        it ("Does the algorithm consider multiple same instance in a combination?", async () => {
+            const inputs = ALG_TEST6_INPUTS;
+            const outputs = await model.execute(inputs);
+            
+            expect(compareWithExpectedCombinedValues(ALG_TEST6_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
         });
     });
 });

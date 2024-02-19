@@ -147,6 +147,14 @@
             }
         },
         {
+            "model": "Test2_4_8_cheap",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 4.0
+            }
+        },
+        {
             "model": "Test2_8_16",
             "vCPUs": 8,
             "RAM": 16.0,
@@ -187,11 +195,77 @@
             }
         },
         {
-            "model": "Test2_6_8",
+            "model": "Test2_8_8_cheap",
+            "vCPUs": 8,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 8.0
+            }
+        }
+    ],
+    "TestFamily3": [
+        {
+            "model": "Test3_2_4",
+            "vCPUs": 2,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 2.4
+            }
+        },
+        {
+            "model": "Test3_4_8",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 4.8
+            }
+        },
+        {
+            "model": "Test3_8_16",
+            "vCPUs": 8,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 9.6
+            }
+        },
+        {
+            "model": "Test3_16_32",
+            "vCPUs": 16,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 19.2
+            }
+        },
+        {
+            "model": "Test3_2_2",
+            "vCPUs": 2,
+            "RAM": 2.0,
+            "Price": {
+                "uksouth": 2.2
+            }
+        },
+        {
+            "model": "Test3_4_4",
+            "vCPUs": 4,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 4.4
+            }
+        },
+        {
+            "model": "Test3_8_8",
+            "vCPUs": 8,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 8.8
+            }
+        },
+        {
+            "model": "Test3_6_8",
             "vCPUs": 6,
             "RAM": 8.0,
             "Price": {
-                "uksouth": 6.0
+                "uksouth": 8.0
             }
         }
     ]
