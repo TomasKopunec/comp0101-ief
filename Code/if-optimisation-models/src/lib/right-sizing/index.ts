@@ -195,6 +195,53 @@ export class RightSizingModel implements ModelPluginInterface {
         return outputs;
     }
 
+    private findOptimalCombination(index: number, family: CloudInstance[], originalData: any, optimalData: any, currentData: any
+    ): { optimalCombination: [CloudInstance, number, number, number, number, number][]; closestCPUUtilizationDiff: number; optimalRAM: number; lowestCost: number; } {
+        try {
+            if (index >= family.length) return { ...optimalData }
+            if (currentData.currentRAM + family[index].RAM > originalData.originalRAM) {
+                return this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
+            }
+            currentData.currentCPUs += family[index].vCPUs;
+            currentData.currentRAM += family[index].RAM;
+            currentData.currentCost += family[index].getPrice(originalData.region);
+            currentData.combination.push(family[index]);
+            if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
+                let cpuUtilizationDiff = currentData.currentCPUs - originalData.requiredvCPUs;
+
+                if (cpuUtilizationDiff < optimalData.closestCPUUtilizationDiff ||
+                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM < optimalData.optimalRAM) ||
+                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost < optimalData.lowestCost)) {
+                    optimalData.closestCPUUtilizationDiff = cpuUtilizationDiff;
+                    optimalData.optimalRAM = currentData.currentRAM;
+                    optimalData.lowestCost = currentData.currentCost;
+                    let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs) * 100;
+                    let totalMemUtil = (originalData.targetRAM / currentData.currentRAM) * 100;
+
+                    optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) =>
+                        [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(originalData.region), 0]);
+                }
+            }
+
+            // Include the instance and recurse
+            optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
+            currentData.currentCPUs -= family[index].vCPUs;
+            currentData.currentRAM -= family[index].RAM;
+            currentData.currentCost -= family[index].getPrice(originalData.region);
+            currentData.combination.pop();
+            // Exclude the instance and recurse
+            optimalData = this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
+        } catch (err) {
+            throw (err)
+        }
+        return {
+            optimalCombination: optimalData.optimalCombination,
+            closestCPUUtilizationDiff: optimalData.closestCPUUtilizationDiff,
+            optimalRAM: optimalData.optimalRAM,
+            lowestCost: optimalData.lowestCost
+        };
+    }
+
     /**
      * @param cloudInstance The original cloud instance to be analyzed.
      * @param cpuUtil The current CPU utilization percentage.
@@ -220,76 +267,42 @@ export class RightSizingModel implements ModelPluginInterface {
             return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
         }
 
+        family.sort((a, b) => b.RAM - a.RAM);
+
         // Store original cost, RAM size, and calculate required vCPUs
-        let originalCost = cloudInstance.getPrice(region);
-        let originalRAM = cloudInstance.RAM;
-        let requiredvCPUs = cpuUtil * cloudInstance.vCPUs;
+        let originalData = {
+            originalCost: cloudInstance.getPrice(region),
+            originalRAM: cloudInstance.RAM,
+            requiredvCPUs: cpuUtil * cloudInstance.vCPUs,
+            targetUtil: targetUtil,
+            targetRAM: targetRAM,
+            region: region
+        }
 
-        // Initialize variables for optimal combination
         let optimalCombination: [CloudInstance, number, number, number, number, number][] = [];
-        let closestCPUUtilizationDiff = Number.MAX_VALUE;
-        let optimalRAM = Number.MAX_VALUE;
-        let lowestCost = Number.MAX_VALUE;
-
-        // find the min RAM in the family and calculate the max repetition of an instance
-        let lessRAM = Number.MAX_VALUE;
-        console.log(family.length);
-        for (let i = 0; i < family.length; i++) {
-            if (family[i].RAM < lessRAM) {
-                lessRAM = family[i].RAM;
-            }
+        let optimalData = {
+            optimalCombination: optimalCombination,
+            closestCPUUtilizationDiff: Number.MAX_VALUE,
+            optimalRAM: Number.MAX_VALUE,
+            lowestCost: Number.MAX_VALUE
         }
-        let maxRep = Math.ceil(originalRAM / lessRAM);
-        let reqBit = Math.floor(Math.log2(Math.abs(maxRep)) + 1);
-        // Iterate through all possible combinations of instances
-        for (let i = 0; i < (1 << family.length * reqBit); i++) {
-            let combination: CloudInstance[] = [];
-            let totalvCPUs = 0;
-            let totalRAM = 0;
-            let totalCost = 0;
-
-            // Generate each combination
-            for (let j = 0; j < family.length; j++) {
-                let count = (i >> (reqBit * j)) & ((1 << reqBit) - 1);
-                // Include the j-th CloudInstance in the combination 'count' times
-                totalRAM += (family[j].RAM * count);
-                if (totalRAM > originalRAM) break;
-                for (let k = 0; k < count; k++) {
-                    combination.push(family[j]);
-                    totalvCPUs += family[j].vCPUs;
-                    totalCost += family[j].getPrice(region);
-                }
-            }
-            // Skip combinations where total RAM exceeds the original instance's RAM
-            if (totalRAM > originalRAM) {
-                continue;
-            }
-
-            // Check if the combination meets RAM requirements
-            if (totalRAM >= targetRAM && totalvCPUs >= requiredvCPUs) {
-                let cpuUtilizationDiff = totalvCPUs - requiredvCPUs;
-                // console.log(`dif: ${cpuUtilizationDiff} | ${i}`);
-                // Update optimal combination if a better one is found
-                if (cpuUtilizationDiff < closestCPUUtilizationDiff ||
-                    (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM < optimalRAM && totalRAM >= targetRAM) ||
-                    (cpuUtilizationDiff === closestCPUUtilizationDiff && totalRAM === optimalRAM && totalCost < lowestCost)) {
-                    closestCPUUtilizationDiff = cpuUtilizationDiff;
-                    optimalRAM = totalRAM;
-                    lowestCost = totalCost;
-                    let totalCPUUtil = (requiredvCPUs / totalvCPUs) * 100;
-                    let totalMemUtil = (targetRAM / totalRAM) * 100;
-                    optimalCombination = combination.map(instance =>
-                        [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(region), 0]);
-                }
-            }
+        // Initialize variables for optimal combination
+        let currentData = {
+            combination: [],
+            currentCPUs: 0,
+            currentRAM: 0,
+            currentCost: 0
         }
+        let index = 0;
+        optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
 
         // If an optimal combination is found
+        optimalCombination = optimalData.optimalCombination;
         if (optimalCombination.length > 0) {
             // Calculate final total cost and price difference
             let finalTotalCost = optimalCombination.reduce((sum, [instance]) => sum + instance.getPrice(region), 0);
-            let priceDifference = originalCost - finalTotalCost; // This will be positive, indicating savings
-            let priceDifferencePercentage = (priceDifference / originalCost) * 100;
+            let priceDifference = originalData.originalCost - finalTotalCost; // This will be positive, indicating savings
+            let priceDifferencePercentage = (priceDifference / originalData.originalCost) * 100;
             console.log(`Final total cost: ${finalTotalCost}, Price difference: ${priceDifference}, Price difference percentage: ${priceDifferencePercentage}`);
             // Update the optimalCombination to include the price difference percentage
             optimalCombination = optimalCombination.map(([instance, cpuUtil, memUtil, ram, price]): [CloudInstance, number, number, number, number, number] => [instance, cpuUtil, memUtil, ram, price, priceDifferencePercentage]);

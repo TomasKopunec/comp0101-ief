@@ -42,7 +42,7 @@ graph:
           old-instance: Standard_D8a_v4
           old-cpu-util: 50
           old-mem-util: 50
-          output-id: ef1a1241-f19b-472c-99d5-55beed593598
+          output-id: b94c6553-4515-4f42-a2e8-c07062f64777
           price-change: Price decreased by 98%
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
@@ -59,5 +59,5 @@ graph:
           old-instance: Standard_D8a_v4
           old-cpu-util: 50
           old-mem-util: 50
-          output-id: ef1a1241-f19b-472c-99d5-55beed593598
+          output-id: b94c6553-4515-4f42-a2e8-c07062f64777
           price-change: Price decreased by 98%
