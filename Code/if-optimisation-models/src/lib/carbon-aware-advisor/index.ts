@@ -56,7 +56,7 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
   private readonly supportedLocations: Set<string> = new Set();
   private hasSampling: boolean = false;
   //number of last days to get average score
-  private lastDaysNumber: number = 500;
+  private lastDaysNumber: number = 5;
   private sampling: number = 0;
   // Use for read from locations.json
   private locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-aware-advisor', 'locations.json');
@@ -229,6 +229,8 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
           time: mutableTimeframe.from,
           toTime: mutableTimeframe.to
         };
+        //if params,time and params.toTime are before now
+        if(params.time < new Date().toISOString() && params.toTime < new Date().toISOString()){
 
         // Returns an array of best EmissionsData objects
         let best = await this.getResponse("/emissions/bylocations", 'GET', params);
@@ -262,10 +264,14 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
         }
           break;
         }
+      }
         // Adjust timeframe by decreasing the year by one
         mutableTimeframe = await this.adjustTimeframeByOneYear(mutableTimeframe);
         //increase the numOfYears we have gone in the pastby 1
         numOfYears++;
+        if(numOfYears > 5){// if you cant find any data 5 years in the past then stop searching
+          break;
+        }
         //if we have reached this part of the code then that means that for this timeframe we are forecasting
         isForecast = true; // Set flag since adjustment is needed
       }
@@ -378,7 +384,7 @@ export class CarbonAwareAdvisor implements ModelPluginInterface {
     }
 
     const finalUrl = `${url}${queryString ? '?' + queryString : ''}`;
-    //console.log(`Sending ${method} request to ${finalUrl}`);
+    console.log(`Sending ${method} request to ${finalUrl}`);
 
     return axios({
       url: finalUrl,

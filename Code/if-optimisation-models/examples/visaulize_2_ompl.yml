@@ -1,0 +1,52 @@
+name: plotter -demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  models:
+    - name: plotter
+      path: '@grnsft/if-models'
+      model: ShellModel
+graph:
+  children:
+    child:
+      pipeline:
+        - plotter
+      config:
+        plotter:
+          command: python3 ./src/lib/visualizer/plotter
+          x_name:
+            - time
+          y_name: energy
+          colour: blue
+          diagram_name: New_diagram
+          x_axis_name: Time in hours minutes and second
+          y_axis_name: Energy in KWh
+          diagram_title: time and Energy comparison
+          graph_type: bar
+      inputs:
+        - plotted_points:
+            - time: '12:00:34'
+              energy: 5
+            - time: '13:01:56'
+              energy: 3
+            - time: '14:20:22'
+              energy: 8
+      outputs:
+        - plotted_points:
+            - time: '12:00:34'
+              energy: 5
+            - time: '13:01:56'
+              energy: 3
+            - time: '14:20:22'
+              energy: 8
+          command: python3 ./src/lib/visualizer/plotter
+          x_name:
+            - time
+          y_name: energy
+          colour: blue
+          diagram_name: New_diagram
+          x_axis_name: Time in hours minutes and second
+          y_axis_name: Energy in KWh
+          diagram_title: time and Energy comparison
+          graph_type: bar
+          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/New_diagram.png
