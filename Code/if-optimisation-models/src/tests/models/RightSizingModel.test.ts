@@ -13,10 +13,29 @@ const ALG_TEST1_INPUTS = [
     {
         "timestamp": "2023-11-02T10:35:00.000Z",
         "duration": 300,
-        "cloud-vendor": "azure",
+        "cloud-vendor": "custom",
         "cpu-util": 75,
+        "mem-util": 75,
         "location": "uksouth",
-        "cloud-instance-type": "Standard_B32s_v2"
+        "cloud-instance-type": "Test1_16_32"
+    }
+];
+const ALG_TEST1_EXPECTED_OUTPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test1_8_16"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test1_4_8"
     }
 ];
 
@@ -24,11 +43,30 @@ const ALG_TEST2_INPUTS = [
     {
         "timestamp": "2023-11-02T10:35:00.000Z",
         "duration": 300,
-        "cloud-vendor": "azure",
+        "cloud-vendor": "custom",
         "cpu-util": 50,
+        "mem-util": 50,
         "target-cpu-util": 80,
         "location": "uksouth",
-        "cloud-instance-type": "Standard_B32s_v2"
+        "cloud-instance-type": "Test_32_64"
+    }
+];
+const ALG_TEST2_EXPECTED_OUTPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 80,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_16_16"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 80,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_4_16"
     }
 ];
 
@@ -37,10 +75,30 @@ const ALG_TEST3_INPUTS = [
         "timestamp": "2023-11-02T10:35:00.000Z",
         "duration": 300,
         "cloud-vendor": "custom",
-        "cpu-util": 50,
+        "cpu-util": 75,
         "mem-util": 100,
         "location": "uksouth",
-        "cloud-instance-type": "Test_16_64"
+        "cloud-instance-type": "Test1_16_32"
+    }
+];
+const ALG_TEST3_EXPECTED_OUTPUTS = [
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_4_16"
+    },
+    {
+        "timestamp": "2023-11-02T10:35:00.000Z",
+        "duration": 300,
+        "cloud-vendor": "custom",
+        "cpu-util": 100,
+        "mem-util": 100,
+        "location": "uksouth",
+        "cloud-instance-type": "Test_8_16"    
     }
 ];
 
@@ -340,7 +398,7 @@ describe("RightSizingModel", () => {
          * For each instance from input, check if: 
          * minimum required CPUs <= Total number of CPUs of combination <= original number of CPUs
          */
-        it("Correct CPU combination with default target utilisation?", async () => {
+        it("Is the number of total vCPUs in a valid range? (default cpu-target-util)", async () => {
             const inputs = ALG_TEST1_INPUTS;
             const outputs = await model.execute(inputs);
 
@@ -373,8 +431,13 @@ describe("RightSizingModel", () => {
                 }
             };
         });
+        it("Is the total number of vCPUs of the combination the fittest? (default cpu-target-util)", async () => {
+            const inputs = ALG_TEST1_INPUTS;
+            const outputs = await model.execute(inputs);
+            expect(compareWithExpected(ALG_TEST1_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+        });
         
-        it("Correct CPU combination with custom target utilisation?", async () => {
+        it("Is the number of total vCPUs in a valid range? (custom cpu-target-util)", async () => {
             const inputs = ALG_TEST2_INPUTS;
             const outputs = await model.execute(inputs);
 
@@ -410,6 +473,11 @@ describe("RightSizingModel", () => {
                 }
             };
         });
+        it("Is the total number of vCPUs of the combination the fittest? (custom cpu-target-util)", async () => {
+            const inputs = ALG_TEST2_INPUTS;
+            const outputs = await model.execute(inputs);
+            expect(compareWithExpected(ALG_TEST2_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+        });
 
         it("Instance combination RAM doesn't below the minimum required?", async () => {
             const inputs = ALG_TEST3_INPUTS;
@@ -444,7 +512,7 @@ describe("RightSizingModel", () => {
             };
         });
 
-        it("Instance combination RAM with the fittest RAM is selected?", async () => {
+        it("Is the total RAM of the combination the fittest?", async () => {
             const inputs = ALG_TEST4_INPUTS;
             const outputs = await model.execute(inputs);
 
@@ -457,7 +525,7 @@ describe("RightSizingModel", () => {
             .toEqual(getCombinedData(ALG_TEST4_EXPECTED_OUTPUTS)[timestamp].vCPUs);
         });
 
-        it ("The instance combination with lowest cost is selected?", async () => {
+        it ("Is the price of the combination the lowest available for this configuration?", async () => {
             const inputs = ALG_TEST5_INPUTS;
             const outputs = await model.execute(inputs);
             
