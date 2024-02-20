@@ -8,10 +8,42 @@ import { validate, atLeastOneDefined } from '../../util/validations';
 
 import * as crypto from 'crypto';
 
+interface Combination {
+    instance: CloudInstance;
+    cpuUtil: number;
+    memUtil: number;
+    price: number;
+    priceDifference: number;
+}
+
+interface CombinationData {
+    optimalRAM: number;
+    closestCPUUtilizationDiff: number;
+    lowestCost: number;
+    optimalCombination: Combination[];
+}
+
+interface CurrentData {
+    combination: CloudInstance[];
+    currentCPUs: number;
+    currentRAM: number;
+    currentCost: number;
+}
+
+interface OriginalData {
+    originalCost: number;
+    originalRAM: number;
+    requiredvCPUs: number;
+    targetUtil: number;
+    targetRAM: number;
+    region: string;
+}
+
 /**
  * Implementation of the ModelPluginInterface for the Right Sizing model.
  */
 export class RightSizingModel implements ModelPluginInterface {
+
     private database: CPUDatabase;
     private Cache: Map<string, CPUDatabase>;
     private builtinDataPath = './data';
@@ -124,7 +156,7 @@ export class RightSizingModel implements ModelPluginInterface {
             }
             let util: number;
             let targetUtil: number;
-            let res: [CloudInstance, number, number, number, number, number][];
+            let res: Combination[];
             let originalMemUtil = input['mem-util'];
             let targetRAM = (originalMemUtil / 100) * instance.RAM;
             let region = input['location'];
@@ -161,24 +193,24 @@ export class RightSizingModel implements ModelPluginInterface {
             let output_id = crypto.randomUUID();
 
             // Create a new output for each instance combination
-            res.forEach(([instance, cpuUtil, memUtil, totalRAM, price, priceDifference]) => {
+            res.forEach((combination) => {
                 let output = { ...input }; // Copy input to create new output
-                let processedModel = instance.model;
+                let processedModel = combination.instance.model;
 
                 // Update output parameters
                 output['cloud-instance-type'] = processedModel;
-                output['cpu-util'] = cpuUtil;
-                output['mem-util'] = memUtil;
-                output['total-memoryGB'] = totalRAM;
+                output['cpu-util'] = combination.cpuUtil;
+                output['mem-util'] = combination.memUtil;
+                output['total-memoryGB'] = combination.instance.RAM;
                 if (res.length > 1) {
                     output['output-id'] = output_id
                 }
 
                 // Determine price change
-                if (priceDifference > 0) {
-                    output['price-change'] = `Price decreased by ${Math.ceil(priceDifference)}%`;
+                if (combination.priceDifference > 0) {
+                    output['price-change'] = `Price decreased by ${Math.ceil(combination.priceDifference)}%`;
                 } else {
-                    output['price-change'] = `Price has increased by ${Math.ceil(Math.abs(priceDifference))}%`;
+                    output['price-change'] = `Price has increased by ${Math.ceil(Math.abs(combination.priceDifference))}%`;
                 }
 
                 // Set recommendation based on processed model
@@ -204,21 +236,23 @@ export class RightSizingModel implements ModelPluginInterface {
      * @param currentData The current state of the combination being evaluated.
      * @returns An object containing optimal combination details, closest CPU utilization difference, optimal RAM, and lowest cost.
      */
-    private findOptimalCombination(index: number, family: CloudInstance[], originalData: any, optimalData: any, currentData: any
-    ): { optimalCombination: [CloudInstance, number, number, number, number, number][]; closestCPUUtilizationDiff: number; optimalRAM: number; lowestCost: number; } {
+    private findOptimalCombination(index: number, family: CloudInstance[], originalData: OriginalData, optimalData: CombinationData, currentData: CurrentData
+    ): CombinationData{
         try {
             // if index exceeds the length of the family array, return the current optimal data
             if (index >= family.length) return { ...optimalData }
+            const instance = family[index];
+
             // Check if adding the current instance would exceed the RAM of original instance
             // If it exceeds, try the next one (family has been sorted in descending order).
-            if (currentData.currentRAM + family[index].RAM > originalData.originalRAM) {
+            if (currentData.currentRAM + instance.RAM > originalData.originalRAM) {
                 return this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
             }
 
-            currentData.currentCPUs += family[index].vCPUs;
-            currentData.currentRAM += family[index].RAM;
-            currentData.currentCost += family[index].getPrice(originalData.region);
-            currentData.combination.push(family[index]);
+            currentData.currentCPUs += instance.vCPUs;
+            currentData.currentRAM += instance.RAM;
+            currentData.currentCost += instance.getPrice(originalData.region);
+            currentData.combination.push(instance);
 
             // Check if the current combination meets the target requirements
             if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
@@ -233,8 +267,15 @@ export class RightSizingModel implements ModelPluginInterface {
                     let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs) * 100;
                     let totalMemUtil = (originalData.targetRAM / currentData.currentRAM) * 100;
                     // Update optimal combination array
-                    optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) =>
-                        [instance, totalCPUUtil, totalMemUtil, instance.RAM, instance.getPrice(originalData.region), 0]);
+                    optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) => {
+                        return {
+                            instance: instance,
+                            cpuUtil: totalCPUUtil,
+                            memUtil: totalMemUtil,
+                            price: instance.getPrice(originalData.region),
+                            priceDifference: 0
+                        }
+                    });
                 }
             }
 
@@ -242,9 +283,9 @@ export class RightSizingModel implements ModelPluginInterface {
             optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
 
             // Backtrack: Exclude the current instance and recurse
-            currentData.currentCPUs -= family[index].vCPUs;
-            currentData.currentRAM -= family[index].RAM;
-            currentData.currentCost -= family[index].getPrice(originalData.region);
+            currentData.currentCPUs -= instance.vCPUs;
+            currentData.currentRAM -= instance.RAM;
+            currentData.currentCost -= instance.getPrice(originalData.region);
             currentData.combination.pop();
 
             // Exclude the instance and recurse
@@ -273,7 +314,7 @@ export class RightSizingModel implements ModelPluginInterface {
      */
     private calculateRightSizing(
         cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number, targetRAM: number, originalMemUtil: number, region: string
-    ): [CloudInstance, number, number, number, number, number][] {
+    ): Combination[] {
         // Check if the cloud instance is valid
         if (!cloudInstance) {
             throw new Error(`Invalid cloud instance: ${cloudInstance}`);
@@ -283,7 +324,13 @@ export class RightSizingModel implements ModelPluginInterface {
         let family = this.database.getModelFamily(cloudInstance.model);
         // If no model family is found, return the original instance
         if (!family || family.length === 0) {
-            return [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
+            return [{
+                instance: cloudInstance,
+                cpuUtil: cpuUtil,
+                memUtil: originalMemUtil,
+                price: cloudInstance.getPrice(region),
+                priceDifference: 0
+            }];
         }
 
         // Sort family in descending order based on RAM size
@@ -291,7 +338,7 @@ export class RightSizingModel implements ModelPluginInterface {
 
         // Prepare parameters for recursive findOptimalCombination.
         // original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance
-        let originalData = {
+        let originalData: OriginalData = {
             originalCost: cloudInstance.getPrice(region),
             originalRAM: cloudInstance.RAM,
             requiredvCPUs: cpuUtil * cloudInstance.vCPUs,
@@ -300,15 +347,15 @@ export class RightSizingModel implements ModelPluginInterface {
             region: region
         }
         // Initialize an object to store the optimal data with default values
-        let optimalCombination: [CloudInstance, number, number, number, number, number][] = [];
-        let optimalData = {
+        let optimalCombination: Combination[] = [];
+        let optimalData: CombinationData = {
             optimalCombination: optimalCombination,
             closestCPUUtilizationDiff: Number.MAX_VALUE,
             optimalRAM: Number.MAX_VALUE,
             lowestCost: Number.MAX_VALUE
         }
         // Initialize variables for the current state of the combination being evaluated
-        let currentData = {
+        let currentData: CurrentData = {
             combination: [],
             currentCPUs: 0,
             currentRAM: 0,
@@ -322,15 +369,24 @@ export class RightSizingModel implements ModelPluginInterface {
         optimalCombination = optimalData.optimalCombination;
         if (optimalCombination.length > 0) {
             // Calculate final total cost and price difference
-            let finalTotalCost = optimalCombination.reduce((sum, [instance]) => sum + instance.getPrice(region), 0);
+            let finalTotalCost = optimalCombination.reduce((sum, combination) => sum + combination.instance.getPrice(region), 0);
             let priceDifference = originalData.originalCost - finalTotalCost; // This will be positive, indicating savings
             let priceDifferencePercentage = (priceDifference / originalData.originalCost) * 100;
             console.log(`Final total cost: ${finalTotalCost}, Price difference: ${priceDifference}, Price difference percentage: ${priceDifferencePercentage}`);
             // Update the optimalCombination to include the price difference percentage
-            optimalCombination = optimalCombination.map(([instance, cpuUtil, memUtil, ram, price]): [CloudInstance, number, number, number, number, number] => [instance, cpuUtil, memUtil, ram, price, priceDifferencePercentage]);
+            optimalCombination.forEach((combination) => {
+                combination.priceDifference = priceDifferencePercentage;
+            });
         } else {
             // If no better combination found, use the original instance
-            optimalCombination = [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
+            //optimalCombination = [[cloudInstance, cpuUtil, originalMemUtil, cloudInstance.RAM, cloudInstance.getPrice(region), 0]];
+            optimalCombination = [{
+                instance: cloudInstance,
+                cpuUtil: cpuUtil,
+                memUtil: originalMemUtil,
+                price: cloudInstance.getPrice(region),
+                priceDifference: 0
+            }];
         }
 
         return optimalCombination;
