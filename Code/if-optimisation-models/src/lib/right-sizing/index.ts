@@ -5,6 +5,7 @@ import { ModelParams } from '@grnsft/if-models/build/types/common';
 
 import { CPUDatabase, CloudInstance } from './CPUFamily';
 import { validate, atLeastOneDefined } from '../../util/validations';
+import { fixFloat } from '../../util/util';
 
 import * as crypto from 'crypto';
 
@@ -18,7 +19,7 @@ interface InstanceData {
 
 interface CombinationData {
     optimalRAM: number;
-    closestCPUUtilizationDiff: number;
+    exceedCPUs: number;
     lowestCost: number;
     optimalCombination: InstanceData[];
 }
@@ -199,8 +200,8 @@ export class RightSizingModel implements ModelPluginInterface {
 
                 // Update output parameters
                 output['cloud-instance-type'] = processedModel;
-                output['cpu-util'] = combination.cpuUtil * 100;
-                output['mem-util'] = combination.memUtil * 100;
+                output['cpu-util'] = fixFloat(combination.cpuUtil * 100, 2);
+                output['mem-util'] = fixFloat(combination.memUtil * 100, 2);
                 output['total-memoryGB'] = combination.instance.RAM;
                 if (res.length > 1) {
                     output['output-id'] = output_id
@@ -256,15 +257,24 @@ export class RightSizingModel implements ModelPluginInterface {
 
             // Check if the current combination meets the target requirements
             if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
-                let cpuUtilizationDiff = currentData.currentCPUs - originalData.requiredvCPUs;
+                const currentExceededCPUs = fixFloat(currentData.currentCPUs - originalData.requiredvCPUs, 5)
+                const currentRAM = fixFloat(currentData.currentRAM, 5);
+                const currentCost = fixFloat(currentData.currentCost, 5);
+                const currentLength = currentData.combination.length;
+
+                const optimalExceedCPU = fixFloat(optimalData.exceedCPUs, 5);
+                const optimalRAM = fixFloat(optimalData.optimalRAM, 5);
+                const lowestCost = fixFloat(optimalData.lowestCost, 5);
+                const optimalLength = optimalData.optimalCombination.length;
+
                 // Update optimal combination if the current combination is better
-                if (cpuUtilizationDiff < optimalData.closestCPUUtilizationDiff ||
-                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM < optimalData.optimalRAM) ||
-                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost < optimalData.lowestCost) ||
-                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost === optimalData.lowestCost && currentData.combination.length < optimalData.optimalCombination.length)) {
-                    optimalData.closestCPUUtilizationDiff = cpuUtilizationDiff;
-                    optimalData.optimalRAM = currentData.currentRAM;
-                    optimalData.lowestCost = currentData.currentCost;
+                if (currentExceededCPUs < optimalExceedCPU ||
+                    (currentExceededCPUs === optimalExceedCPU && currentRAM < optimalRAM) ||
+                    (currentExceededCPUs === optimalExceedCPU && currentRAM === optimalRAM && currentData.currentCost < lowestCost) ||
+                    (currentExceededCPUs === optimalExceedCPU && currentRAM === optimalRAM && currentCost === lowestCost && currentLength < optimalLength)) {
+                    optimalData.exceedCPUs = currentExceededCPUs;
+                    optimalData.optimalRAM = currentRAM;
+                    optimalData.lowestCost = currentCost;
                     let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs);
                     let totalMemUtil = (originalData.targetRAM / currentData.currentRAM);
                     // Update optimal combination array
@@ -295,12 +305,7 @@ export class RightSizingModel implements ModelPluginInterface {
             throw (err)
         }
         // Return the final optimal combination details
-        return {
-            optimalCombination: optimalData.optimalCombination,
-            closestCPUUtilizationDiff: optimalData.closestCPUUtilizationDiff,
-            optimalRAM: optimalData.optimalRAM,
-            lowestCost: optimalData.lowestCost
-        };
+        return { ...optimalData };
     }
 
     /**
@@ -351,7 +356,7 @@ export class RightSizingModel implements ModelPluginInterface {
         let optimalCombination: InstanceData[] = [];
         let optimalData: CombinationData = {
             optimalCombination: optimalCombination,
-            closestCPUUtilizationDiff: Number.MAX_VALUE,
+            exceedCPUs: Number.MAX_VALUE,
             optimalRAM: Number.MAX_VALUE,
             lowestCost: Number.MAX_VALUE
         }

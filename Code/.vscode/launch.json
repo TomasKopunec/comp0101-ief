@@ -23,7 +23,7 @@
             ],
             "args": [
                 "--impl",
-                "./examples/low-util.yml"
+                "./examples/low-util-target.yml"
             ]
         },
         {
@@ -45,7 +45,7 @@
             ],
             "args": [
                 "--impl",
-                "./examples/low-util.yml"
+                "./examples/low-util-target.yml"
             ]
         }
     ]
