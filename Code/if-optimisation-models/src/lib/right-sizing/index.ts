@@ -260,7 +260,8 @@ export class RightSizingModel implements ModelPluginInterface {
                 // Update optimal combination if the current combination is better
                 if (cpuUtilizationDiff < optimalData.closestCPUUtilizationDiff ||
                     (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM < optimalData.optimalRAM) ||
-                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost < optimalData.lowestCost)) {
+                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost < optimalData.lowestCost) ||
+                    (cpuUtilizationDiff === optimalData.closestCPUUtilizationDiff && currentData.currentRAM === optimalData.optimalRAM && currentData.currentCost === optimalData.lowestCost && currentData.combination.length < optimalData.optimalCombination.length)) {
                     optimalData.closestCPUUtilizationDiff = cpuUtilizationDiff;
                     optimalData.optimalRAM = currentData.currentRAM;
                     optimalData.lowestCost = currentData.currentCost;
