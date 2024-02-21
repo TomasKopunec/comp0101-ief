@@ -390,7 +390,7 @@ describe("RightSizingModel", () => {
         expect(output[0]).toHaveProperty('old-cpu-util');
     });
 
-    describe("RightSizingModel-Algorithms", () => {
+    describe("RightSizingModel-Algorithm", () => {
         /**
          * Test if the CPU combination is correct with the default target utilisation (100%)
          * 
@@ -420,7 +420,7 @@ describe("RightSizingModel", () => {
                 let ins = getInstance(out['cloud-vendor'], out['cloud-instance-type']);
                 expect(ins).toBeDefined();
                 expect(ins).not.toBeNull();
-                combinedCPUs += ins?.vCPUs || 0;
+                combinedCPUs += (ins?.vCPUs || 0) * (out['cpu-util'] / 100);
                 if (!next || next['timestamp'] !== out['timestamp']){
                     let oldIns = getInstance(out['cloud-vendor'], out['old-instance']);
                     expect(oldIns).not.toBeNull();
@@ -434,7 +434,7 @@ describe("RightSizingModel", () => {
         it("Is the total number of vCPUs of the combination the fittest? (default cpu-target-util)", async () => {
             const inputs = ALG_TEST1_INPUTS;
             const outputs = await model.execute(inputs);
-            expect(compareWithExpected(ALG_TEST1_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+            expect(compareWithExpectedCombinedValues(ALG_TEST1_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
         });
         
         it("Is the number of total vCPUs in a valid range? (custom cpu-target-util)", async () => {
@@ -461,7 +461,7 @@ describe("RightSizingModel", () => {
                 expect(ins).not.toBeNull();
 
                 expect(out['cpu-util']).toBeLessThanOrEqual(out['target-cpu-util']);
-                combinedCPUs += (ins?.vCPUs || 0) * out['cpu-util'];
+                combinedCPUs += (ins?.vCPUs || 0) * (out['cpu-util'] / 100);
                 if (!next || next['timestamp'] !== out['timestamp']){
                     let oldIns = getInstance(out['cloud-vendor'], out['old-instance']);
                     expect(oldIns).not.toBeNull();
@@ -476,7 +476,7 @@ describe("RightSizingModel", () => {
         it("Is the total number of vCPUs of the combination the fittest? (custom cpu-target-util)", async () => {
             const inputs = ALG_TEST2_INPUTS;
             const outputs = await model.execute(inputs);
-            expect(compareWithExpected(ALG_TEST2_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
+            expect(compareWithExpectedCombinedValues(ALG_TEST2_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
         });
 
         it("Instance combination RAM doesn't below the minimum required?", async () => {
