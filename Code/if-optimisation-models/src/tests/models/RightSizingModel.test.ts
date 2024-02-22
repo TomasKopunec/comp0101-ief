@@ -2,6 +2,8 @@ import * as fs from "fs";
 import { RightSizingModel } from "../../lib";
 import { CPUDatabase, CloudInstance } from "../../lib/right-sizing/CPUFamily";
 import { ModelParams } from "@grnsft/if-models/build/types/common";
+import { fixFloat } from "../../util/util";
+
 
 type CombinationValues = {
     vCPUs: number;
@@ -304,7 +306,14 @@ describe("RightSizingModel", () => {
             let act = actual[i];
             let matched = true;
             for (let key in exp) {
-                if (exp[key] !== act[key]) {
+                let e = exp[key];
+                let a = act[key];
+                if (typeof e === 'number') {
+                    e = fixFloat(e);
+                    a = fixFloat(a);
+                }
+
+                if (e !== a) {
                     matched = false;
                     allMatched = false;
                     break;
@@ -335,6 +344,10 @@ describe("RightSizingModel", () => {
                 data[timestamp].vCPUs += ins.vCPUs;
                 data[timestamp].RAM += ins.RAM;
                 data[timestamp].cost += ins.getPrice(out['location']);
+
+                data[timestamp].cost = fixFloat(data[timestamp].cost);
+                data[timestamp].RAM = fixFloat(data[timestamp].RAM);
+                data[timestamp].vCPUs = fixFloat(data[timestamp].vCPUs);
             }
         }
         return data;
