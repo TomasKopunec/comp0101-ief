@@ -45,7 +45,7 @@
             ],
             "args": [
                 "--impl",
-                "./examples/low-util-target.yml"
+                "./if-optimisation-models/examples/carbon.yml"
             ]
         }
     ]

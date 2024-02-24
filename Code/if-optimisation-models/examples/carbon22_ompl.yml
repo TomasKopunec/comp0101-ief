@@ -1,0 +1,46 @@
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  models:
+    - name: carbon-advisor
+      path: '@grnsft/if-optimisation-models'
+      model: CarbonAwareAdvisor
+graph:
+  children:
+    child:
+      pipeline:
+        - carbon-advisor
+      config:
+        carbon-advisor:
+          allowed-locations:
+            - northeurope
+            - eastus
+            - westus
+          allowed-timeframes:
+            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
+            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          duration: 3600
+          cloud-vendor: azure
+          cloud-instance-type: Standard_NC24s_v3
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          duration: 3600
+          cloud-vendor: azure
+          cloud-instance-type: Standard_NC24s_v3
+          allowed-locations:
+            - northeurope
+            - eastus
+            - westus
+          allowed-timeframes:
+            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
+            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          suggestions:
+            - suggested-location: northeurope
+              suggested-timeframe: '2022-07-21T04:45:11+00:00'
+              suggested-score: 0
+            - suggested-location: eastus
+              suggested-timeframe: '2022-08-02T20:45:11+00:00'
+              suggested-score: 0

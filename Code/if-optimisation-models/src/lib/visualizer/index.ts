@@ -1,56 +1,66 @@
+//This is a copy of the shell model
+import {spawnSync, SpawnSyncReturns} from 'child_process';
+import {loadAll, dump} from 'js-yaml'; //you need to run npm i --save-dev @types/js-yaml
+import {z} from 'zod';
 
-import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
-import { ModelParams } from '@grnsft/if-models/build/types/common';
+import {validate} from '@grnsft/if-models/build/util/validations';
+import {ERRORS} from '@grnsft/if-models/build/util/errors';
 
-import * as dayjs from 'dayjs';
-/*fake*/
+import {ModelPluginInterface} from '@grnsft/if-models/build/interfaces'
+import {ModelParams} from '@grnsft/if-models/build/types/common';
+
+const {InputValidationError} = ERRORS;
+
 export class Visualizer implements ModelPluginInterface {
+  /**
+   * Configures the Visualizer Plugin.
+   */
+  public async configure(): Promise<ModelPluginInterface> {
+    return this;
+  }
 
-    private testVal1: number = 0;
-    private testVal2: string = '';
-    private testVal3: boolean = false;
-    private testVal4: number[] = [];
+  /**
+   * Calculate the total emissions for a list of inputs.
+   */
+  public async execute(inputs: ModelParams[]): Promise<any[]> {
+    const inputAsString: string = dump(inputs, {indent: 2});
 
-    constructor(){
-        
+    const command = this.validateSingleInput(inputs[0]).command;
+    const results = this.runModelInShell(inputAsString, command);
+
+    return results.outputs;
+  }
+
+  /**
+   * Checks for required fields in input.
+   */
+  private validateSingleInput(input: ModelParams) {
+    const schema = z.object({
+      command: z.string(),
+    });
+
+    return validate(schema, input);
+  }
+  
+  /**
+   * Runs the model in a shell. Spawns a child process to run an external IMP,
+   * an executable with a CLI exposing two methods: `--execute` and `--impl`.
+   * The shell command then calls the `--command` method passing var impl as the path to the desired impl file.
+   */
+  private runModelInShell(input: string, command: string) {
+    try {
+      const [executable, ...args] = command.split(' ');
+
+      const result: SpawnSyncReturns<string> = spawnSync(executable, args, {
+        input,
+        encoding: 'utf8',
+      });
+
+      const outputs = loadAll(result.stdout);
+
+      return {outputs};
+    } catch (error: any) {
+      throw new InputValidationError(error.message);
     }
-
-    public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
-        if (configParams){
-            if ('val1' in configParams){
-                this.testVal1 = configParams['val1'] as number;
-            }
-            if ('val2' in configParams){
-                this.testVal2 = configParams['val2'] as string;
-            }
-            if ('val3' in configParams){
-                this.testVal3 = configParams['val3'] as boolean;
-            }
-            if ('val4' in configParams){
-                this.testVal4 = configParams['val4'] as number[];
-            }
-        }
-        return this;
-    }
-    /**
-     * Calculate the total emissions for a list of inputs.
-     */
-    public execute(inputs: ModelParams[]): Promise<ModelParams[]>{
-        return Promise.resolve(inputs.map<ModelParams>((input) => {
-            let dt = dayjs(input.datetime);
-            dt.add(this.testVal1, 'hour');
-            input.newDatetime = dt.toISOString();
-
-            let i = 1;
-            if (input.num){
-                i = input.num;
-            }
-            input.newNum = this.testVal1 * i;
-            input.newStr = this.testVal2 + ' ' + String(i);
-            input.newBool = this.testVal3 || (i % 2 == 0);
-            input.newArr = this.testVal4.map((val) => val * i);
-            return input;
-        }));
-    }
-
+  }
 }

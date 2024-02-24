@@ -1,0 +1,83 @@
+name: plot-demo
+description: example impl invoking carbon advisor and Plotter model
+tags: null
+initialize:
+  models:
+    - name: carbon-advisor
+      path: '@grnsft/if-optimisation-models'
+      model: CarbonAwareAdvisor
+    - name: plotter
+      path: '@grnsft/if-models'
+      model: ShellModel
+graph:
+  children:
+    child:
+      pipeline:
+        - carbon-advisor
+        - plotter
+      config:
+        carbon-advisor:
+          allowed-locations:
+            - northeurope
+            - westus
+          allowed-timeframes:
+            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
+            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          sampling: 6
+        plotter:
+          command: python3 ./src/lib/visualizer/plotter
+          x_name:
+            - location
+            - time
+          y_name: score
+          colour: yellow
+          diagram_name: demo
+          x_axis_name: Date and Location
+          y_axis_name: Carbon score
+          diagram_title: Carbon score in relation to time and location (ascending)
+          graph_type: bar
+      inputs:
+        - null
+      outputs:
+        - allowed-locations:
+            - northeurope
+            - westus
+          allowed-timeframes:
+            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
+            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          sampling: 6
+          command: python3 ./src/lib/visualizer/plotter
+          x_name:
+            - location
+            - time
+          y_name: score
+          colour: yellow
+          diagram_name: demo
+          x_axis_name: Date and Location
+          y_axis_name: Carbon score
+          diagram_title: Carbon score in relation to time and location (ascending)
+          graph_type: bar
+          suggestions:
+            - suggested-location: northeurope
+              suggested-timeframe: '2022-07-21T04:45:11+00:00'
+              suggested-score: 0
+          plotted_points:
+            - location: northeurope
+              time: '2022-07-21T04:45:11+00:00'
+              score: 0
+            - location: northeurope
+              time: '2022-07-23T12:45:11+00:00'
+              score: 3
+            - location: westus
+              time: '2022-07-27T12:45:11+00:00'
+              score: 44
+            - location: westus
+              time: '2022-07-20T04:45:11+00:00'
+              score: 44
+            - location: northeurope
+              time: '2022-07-19T12:45:11+00:00'
+              score: 73
+            - location: northeurope
+              time: '2022-08-03T04:45:11+00:00'
+              score: 9
+          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png

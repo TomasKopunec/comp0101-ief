@@ -1,0 +1,24 @@
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  models:
+    - name: carbon-advisor
+      model: CarbonAwareAdvisor
+      path: "@grnsft/if-optimisation-models"
+graph:
+  children:
+    child:
+      pipeline:
+        - carbon-advisor
+      config:
+        carbon-advisor:
+          allowed-locations:  ['northeurope','eastus','westus']
+          allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
+            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
+          ]
+          sampling: 10
+      inputs:
+        - 
