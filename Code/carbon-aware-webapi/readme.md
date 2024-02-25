@@ -51,7 +51,7 @@ Optional(Can be skipped, as the code provides the token for the test):
     ]
   },
   "DataSources": {
-    "EmissionsDataSource": "test-json",
+    "EmissionsDataSource": "ElectricityMaps",
     "ForecastDataSource": "ElectricityMaps",
     "Configurations": {
       "test-json": {
