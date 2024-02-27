@@ -1,0 +1,25 @@
+name: ccf-demo
+description: example impl invoking CCF model
+tags: null
+initialize:
+  plugins:
+    plotter:
+      method: Visualizer
+      path: "@grnsft/if-optimisation-models"
+tree:
+  children:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/visualizer/plotter'
+        y_name: graph.carbon
+        colour: red
+        diagram_name: Test_diagram2
+        x_axis_name: Date
+        y_axis_name: Carbon
+        diagram_title: Carbon Emission per Date for graph.carbon
+        graph_type: scatter   
+        csv_path: 'helper2.csv'
+      pipeline:
+        - plotter
+      inputs: 
+      -
