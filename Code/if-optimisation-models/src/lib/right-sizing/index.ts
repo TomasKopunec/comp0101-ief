@@ -327,6 +327,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 
     return {
         metadata,
-        execute
+        execute,
+        getDatabases
     };
 }
