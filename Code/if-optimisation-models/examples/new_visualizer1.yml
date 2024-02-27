@@ -1,0 +1,31 @@
+name: ccf-demo
+description: example impl invoking CCF model
+tags: null
+initialize:
+  plugins:
+    plotter:
+      method: Visualizer
+      path: "@grnsft/if-optimisation-models"
+tree:
+  children:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/visualizer/plotter'
+        x_name: ['time']
+        y_name: energy
+        colour: blue
+        diagram_name: New_diagram
+        x_axis_name: Time in hours minutes and second
+        y_axis_name: Energy in KWh
+        diagram_title: time and Energy comparison
+        graph_type: bar  
+      pipeline:
+        - plotter
+      inputs:
+        - plotted_points:
+            - time: 12:00:34
+              energy: 5
+            - time: 13:01:56
+              energy: 3
+            - time: 14:20:22
+              energy: 8 
