@@ -1,4 +1,5 @@
-import * as fs from 'fs/promises';
+import * as fs from 'fs';
+import * as fs_async from 'fs/promises';
 
 /**
  * Represents a cloud instance.
@@ -58,7 +59,7 @@ export class CPUDatabase {
      */
     public async loadModelData(path: string) {
         try {
-            const data = await fs.readFile(path, 'utf8');
+            const data = await fs_async.readFile(path, 'utf8');
             const jsonData = JSON.parse(data);
             for (const familyName in jsonData) {
                 const models = jsonData[familyName];
@@ -73,6 +74,25 @@ export class CPUDatabase {
             console.error('Error reading file:', error);
         }
     }
+
+    public loadModelData_sync(path: string) {
+        try {
+            const data = fs.readFileSync(path, 'utf8');
+            const jsonData = JSON.parse(data);
+            for (const familyName in jsonData) {
+                const models = jsonData[familyName];
+                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM, model.Price));
+                this.familyToModels.set(familyName, cpuModels);
+                models.forEach((model: any) => {
+                    this.modelToFamily.set(model.model, familyName);
+                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM, model.Price));
+                });
+            }
+        } catch (error) {
+            console.error('Error reading file:', error);
+        }
+    }
+
 
     /**
      * Retrieves the model family based on a model name.

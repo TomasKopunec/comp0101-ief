@@ -2,18 +2,20 @@ name: low-cpu-util
 description: example config file for low cpu utility
 tags: null
 initialize:
-  models:
-    - name: right-sizing-target
-      model: RightSizingModel
+  plugins:
+    right-sizing:
       path: "@grnsft/if-optimisation-models"
-graph:
+      method: RightSizingModel
+      global-config:
+        data-path: 'data/test-instances.json'
+      
+tree:
   children:
-    child:
+    child0:
+      defaults:
+        target-cpu-util: 100
       pipeline:
-        - right-sizing-target
-      config:
-        right-sizing-target:
-          data-path: 'data/test-instances.json'
+        - right-sizing
       inputs:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300

@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
+import { PluginInterface } from '../../types/plugin-interface';
 import { ModelParams } from '@grnsft/if-models/build/types/common';
+import { ConfigParams, PluginParams } from '../../types/common';
+import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../types/right-sizing';
 
 import { CPUDatabase, CloudInstance } from './CPUFamily';
 import { validate, atLeastOneDefined } from '../../util/validations';
@@ -9,81 +11,34 @@ import { fixFloat } from '../../util/util';
 
 import * as crypto from 'crypto';
 
-interface InstanceData {
-    instance: CloudInstance;
-    cpuUtil: number;
-    memUtil: number;
-    price: number;
-    priceDifference: number;
-}
+export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 
-interface CombinationData {
-    optimalRAM: number;
-    exceedCPUs: number;
-    lowestCost: number;
-    optimalCombination: InstanceData[];
-}
+    const metadata = {
+        kind: 'execute'
+    };
 
-interface CurrentData {
-    combination: CloudInstance[];
-    currentCPUs: number;
-    currentRAM: number;
-    currentCost: number;
-}
+    let database: CPUDatabase = new CPUDatabase();
+    const Cache: Map<string, CPUDatabase> = new Map();
+    const builtinDataPath = './data';
+    const cpuMetrics = ['cpu-util', 'cloud-vendor', 'cloud-instance-type'];
 
-interface OriginalData {
-    originalCost: number;
-    originalRAM: number;
-    requiredvCPUs: number;
-    targetUtil: number;
-    targetRAM: number;
-    region: string;
-}
-
-/**
- * Implementation of the ModelPluginInterface for the Right Sizing model.
- */
-export class RightSizingModel implements ModelPluginInterface {
-
-    private database: CPUDatabase;
-    private Cache: Map<string, CPUDatabase>;
-    private builtinDataPath = './data';
-    private cpuMetrics = ['cloud-instance-type', 'cloud-vendor', 'cpu-util'];
-
-    /**
-     * Constructs a RightSizingModel instance.
-     * @param database The CPU database to be used. Defaults to a new CPUDatabase instance if not provided.
-     */
-    constructor(database: CPUDatabase = new CPUDatabase()) {
-        this.database = database;
-        this.Cache = new Map<string, CPUDatabase>();
-    }
-
-    /**
-     * Configures the model with the provided parameters.
-     * @param configParams Configuration parameters for the model.
-     * @returns A Promise resolving to the configured RightSizingModel instance.
-     */
-    public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
+    const configure = (configParams: ConfigParams) => {
         // Load model data if 'data-path' is provided in configParams
         if (configParams && 'data-path' in configParams) {
             const instanceDataPath = configParams['data-path'];
             if (typeof instanceDataPath === 'string') {
-                await this.database.loadModelData(instanceDataPath);
-                this.Cache.set('custom', this.database); // Cache the loaded database
+                database.loadModelData_sync(instanceDataPath);
+                Cache.set('custom', database); // Cache the loaded database
             } else {
                 console.error('Error: Invalid instance data path type.');
             }
         }
-        return this; // Return the configured instance
     }
+    
+    
+    configure(params);
 
-    /**
-     * Executes the model with the given inputs and returns the corresponding outputs.
-     * @param inputs The list of input parameters for the models.
-     * @returns A Promise resolving to an array of model parameters representing the outputs.
-     */
-    public async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
+    const execute = async (inputs: ModelParams[]) => {
         let outputs: ModelParams[] = [];
 
         // Process each input
@@ -92,66 +47,39 @@ export class RightSizingModel implements ModelPluginInterface {
             if ('cloud-vendor' in input) {
                 const cloudVendor = input['cloud-vendor'];
                 // Check if database for the cloud vendor is cached
-                if (!this.Cache.has(cloudVendor)) {
+                if (!Cache.has(cloudVendor)) {
                     // If not cached, create a new database instance and load model data for the specific cloud vendor
                     const newDatabase = new CPUDatabase();
                     if (cloudVendor === 'aws') {
-                        await newDatabase.loadModelData(this.builtinDataPath + '/aws-instances.json');
+                        await newDatabase.loadModelData(builtinDataPath + '/aws-instances.json');
                     } else if (cloudVendor === 'azure') {
-                        await newDatabase.loadModelData(this.builtinDataPath + '/azure-instances.json');
+                        await newDatabase.loadModelData(builtinDataPath + '/azure-instances.json');
                     }
-                    this.Cache.set(cloudVendor, newDatabase); // Cache the loaded database
+                    Cache.set(cloudVendor, newDatabase); // Cache the loaded database
                 }
-                this.database = this.Cache.get(cloudVendor)!; // Set database to the cached one
+                database = Cache.get(cloudVendor)!; // Set database to the cached one
             }
 
             // Process input and collect processed outputs
-            let processedOutputs = this.processInput(input);
+            let processedOutputs = processInput(input);
             outputs.push(...processedOutputs); // Append processed outputs to the outputs array
         }
 
         return Promise.resolve(outputs); // Resolve the promise with the outputs array
     }
 
-
-    /**
-     * Validate the input parameters object, check if the necessary parameters are present.
-     * 
-     * @param input Input model parameters object to be validated
-     * @returns True if the input is valid, false otherwise
-     */
-    private validateSingleInput(input: ModelParams) {
-        const schema = z
-            .object({
-                'cloud-instance-type': z.string(),
-                'cloud-vendor': z.string(),
-                'cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
-                'target-cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional()
-            })
-            .refine(atLeastOneDefined, {
-                message: `At least one of ${this.cpuMetrics} should present.`,
-            });
-
-        return validate<z.infer<typeof schema>>(schema, input);
-    }
-
-    /**
-     * Processes a single input to generate multiple outputs, each representing a different instance combination.
-     * @param input The input parameters for the model.
-     * @returns An array of model parameters representing different instance combinations.
-     */
-    private processInput(input: ModelParams): ModelParams[] {
+    const processInput = (input: ModelParams): ModelParams[] => {
         let outputs: ModelParams[] = [];
 
         // Validate input and proceed if valid
-        if (this.validateSingleInput(input)) {
+        if (validateSingleInput(input)) {
             // Store original instance details
             input['old-instance'] = input['cloud-instance-type'];
             input['old-cpu-util'] = input['cpu-util'];
             input['old-mem-util'] = input['mem-util'];
 
             // Retrieve instance details from database
-            let instance = this.database.getInstanceByModel(input['cloud-instance-type']);
+            let instance = database.getInstanceByModel(input['cloud-instance-type']);
             if (!instance) {
                 throw new Error(`Invalid cloud instance: ${input['cloud-instance-type']}, not found in cloud vendor database: ${input['cloud-vendor']}`);
             }
@@ -188,7 +116,7 @@ export class RightSizingModel implements ModelPluginInterface {
             targetUtil = targetUtil / 100; // Convert percentage to decimal
 
             // Calculate right sizing for the instance
-            res = this.calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil, region);
+            res = calculateRightSizing(instance, util, targetUtil, targetRAM, originalMemUtil, region);
 
             // generate unique id to use for cases where many instances replace one
             let output_id = crypto.randomUUID();
@@ -228,106 +156,101 @@ export class RightSizingModel implements ModelPluginInterface {
         return outputs;
     }
 
-    /**
-     * Processes a single input to generate multiple outputs, each representing a different instance combination.
-     * @param index The current index in the family array.
-     * @param family The sorted array of CloudInstance objects.
-     * @param originalData With original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance.
-     * @param optimalData The current optimal combination data.
-     * @param currentData The current state of the combination being evaluated.
-     * @returns An object containing optimal combination details, closest CPU utilization difference, optimal RAM, and lowest cost.
-     */
-    private findOptimalCombination(index: number, family: CloudInstance[], originalData: OriginalData, optimalData: CombinationData, currentData: CurrentData
-    ): CombinationData{
-        try {
-            // if index exceeds the length of the family array, return the current optimal data
-            if (index >= family.length) return { ...optimalData }
-            const instance = family[index];
+    const validateSingleInput = (input: ModelParams) => {
+        const schema = z
+        .object({
+            'cloud-instance-type': z.string(),
+            'cloud-vendor': z.string(),
+            'cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+            'target-cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional()
+        })
+        .refine(atLeastOneDefined, {
+            message: `At least one of ${cpuMetrics} should present.`,
+        });
 
-            // Check if adding the current instance would exceed the RAM of original instance
-            // If it exceeds, try the next one (family has been sorted in descending order).
-            if (currentData.currentRAM + instance.RAM > originalData.originalRAM) {
-                return this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
-            }
-
-            currentData.currentCPUs += instance.vCPUs;
-            currentData.currentRAM += instance.RAM;
-            currentData.currentCost += instance.getPrice(originalData.region);
-            currentData.combination.push(instance);
-
-            // Check if the current combination meets the target requirements
-            if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
-                const currentExceededCPUs = fixFloat(currentData.currentCPUs - originalData.requiredvCPUs, 5)
-                const currentRAM = fixFloat(currentData.currentRAM, 5);
-                const currentCost = fixFloat(currentData.currentCost, 5);
-                const currentLength = currentData.combination.length;
-
-                const optimalExceedCPU = fixFloat(optimalData.exceedCPUs, 5);
-                const optimalRAM = fixFloat(optimalData.optimalRAM, 5);
-                const lowestCost = fixFloat(optimalData.lowestCost, 5);
-                const optimalLength = optimalData.optimalCombination.length;
-
-                // Update optimal combination if the current combination is better
-                if (currentExceededCPUs < optimalExceedCPU ||
-                    (currentExceededCPUs === optimalExceedCPU && currentRAM < optimalRAM) ||
-                    (currentExceededCPUs === optimalExceedCPU && currentRAM === optimalRAM && currentData.currentCost < lowestCost) ||
-                    (currentExceededCPUs === optimalExceedCPU && currentRAM === optimalRAM && currentCost === lowestCost && currentLength < optimalLength)) {
-                    optimalData.exceedCPUs = currentExceededCPUs;
-                    optimalData.optimalRAM = currentRAM;
-                    optimalData.lowestCost = currentCost;
-                    let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs);
-                    let totalMemUtil = (originalData.targetRAM / currentData.currentRAM);
-                    // Update optimal combination array
-                    optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) => {
-                        return {
-                            instance: instance,
-                            cpuUtil: totalCPUUtil,
-                            memUtil: totalMemUtil,
-                            price: instance.getPrice(originalData.region),
-                            priceDifference: 0
-                        }
-                    });
-                }
-            }
-
-            // Include the instance and recurse
-            optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
-
-            // Backtrack: Exclude the current instance and recurse
-            currentData.currentCPUs -= instance.vCPUs;
-            currentData.currentRAM -= instance.RAM;
-            currentData.currentCost -= instance.getPrice(originalData.region);
-            currentData.combination.pop();
-
-            // Exclude the instance and recurse
-            optimalData = this.findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
-        } catch (err) {
-            throw (err)
-        }
-        // Return the final optimal combination details
-        return { ...optimalData };
+        return validate<z.infer<typeof schema>>(schema, input);
     }
 
-    /**
-     * @param cloudInstance The original cloud instance to be analyzed.
-     * @param cpuUtil The current CPU utilization percentage.
-     * @param targetUtil The target CPU utilization percentage.
-     * @param targetRAM The target RAM size in GB.
-     * @param originalMemUtil The original memory utilization percentage.
-     * @param region The region where the cloud instance resides.
-     * @returns An array containing the optimal combination of cloud instances along with
-     *          their CPU utilization, memory utilization, RAM size, price, and price difference percentage.
-     */
-    private calculateRightSizing(
-        cloudInstance: CloudInstance | null, cpuUtil: number, targetUtil: number, targetRAM: number, originalMemUtil: number, region: string
-    ): InstanceData[] {
+    const findOptimalCombination = (index: number, family: CloudInstance[], 
+        originalData: OriginalData, optimalData: CombinationData, currentData: CurrentData): CombinationData => {
+            try {
+                // if index exceeds the length of the family array, return the current optimal data
+                if (index >= family.length) return { ...optimalData }
+                const instance = family[index];
+    
+                // Check if adding the current instance would exceed the RAM of original instance
+                // If it exceeds, try the next one (family has been sorted in descending order).
+                if (currentData.currentRAM + instance.RAM > originalData.originalRAM) {
+                    return findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
+                }
+    
+                currentData.currentCPUs += instance.vCPUs;
+                currentData.currentRAM += instance.RAM;
+                currentData.currentCost += instance.getPrice(originalData.region);
+                currentData.combination.push(instance);
+    
+                // Check if the current combination meets the target requirements
+                if (currentData.currentRAM >= originalData.targetRAM && currentData.currentCPUs >= originalData.requiredvCPUs) {
+                    const currentExceededCPUs = fixFloat(currentData.currentCPUs - originalData.requiredvCPUs, 5)
+                    const currentRAM = fixFloat(currentData.currentRAM, 5);
+                    const currentCost = fixFloat(currentData.currentCost, 5);
+                    const currentLength = currentData.combination.length;
+    
+                    const optimalExceedCPU = fixFloat(optimalData.exceedCPUs, 5);
+                    const optimalRAM = fixFloat(optimalData.optimalRAM, 5);
+                    const lowestCost = fixFloat(optimalData.lowestCost, 5);
+                    const optimalLength = optimalData.optimalCombination.length;
+    
+                    // Update optimal combination if the current combination is better
+                    if (currentExceededCPUs < optimalExceedCPU ||
+                        (currentExceededCPUs === optimalExceedCPU && currentRAM < optimalRAM) ||
+                        (currentExceededCPUs === optimalExceedCPU && currentRAM === optimalRAM && currentData.currentCost < lowestCost) ||
+                        (currentExceededCPUs === optimalExceedCPU && currentRAM === optimalRAM && currentCost === lowestCost && currentLength < optimalLength)) {
+                        optimalData.exceedCPUs = currentExceededCPUs;
+                        optimalData.optimalRAM = currentRAM;
+                        optimalData.lowestCost = currentCost;
+                        let totalCPUUtil = (originalData.requiredvCPUs / currentData.currentCPUs);
+                        let totalMemUtil = (originalData.targetRAM / currentData.currentRAM);
+                        // Update optimal combination array
+                        optimalData.optimalCombination = currentData.combination.map((instance: CloudInstance) => {
+                            return {
+                                instance: instance,
+                                cpuUtil: totalCPUUtil,
+                                memUtil: totalMemUtil,
+                                price: instance.getPrice(originalData.region),
+                                priceDifference: 0
+                            }
+                        });
+                    }
+                }
+    
+                // Include the instance and recurse
+                optimalData = findOptimalCombination(index, family, originalData, optimalData, currentData);
+    
+                // Backtrack: Exclude the current instance and recurse
+                currentData.currentCPUs -= instance.vCPUs;
+                currentData.currentRAM -= instance.RAM;
+                currentData.currentCost -= instance.getPrice(originalData.region);
+                currentData.combination.pop();
+    
+                // Exclude the instance and recurse
+                optimalData = findOptimalCombination(index + 1, family, originalData, optimalData, currentData);
+            } catch (err) {
+                throw (err)
+            }
+            // Return the final optimal combination details
+            return { ...optimalData };
+        }
+
+    const calculateRightSizing = (cloudInstance: CloudInstance, cpuUtil: number, targetUtil: number, 
+        targetRAM: number, originalMemUtil: number, region: string): InstanceData[] => {
         // Check if the cloud instance is valid
         if (!cloudInstance) {
             throw new Error(`Invalid cloud instance: ${cloudInstance}`);
         }
 
         // Retrieve the model family of the cloud instance
-        let family = this.database.getModelFamily(cloudInstance.model);
+        let family = database.getModelFamily(cloudInstance.model);
         // If no model family is found, return the original instance
         if (!family || family.length === 0) {
             return [{
@@ -369,7 +292,7 @@ export class RightSizingModel implements ModelPluginInterface {
         }
         // Start the recursive search for the optimal combination
         let index = 0;
-        optimalData = this.findOptimalCombination(index, family, originalData, optimalData, currentData);
+        optimalData = findOptimalCombination(index, family, originalData, optimalData, currentData);
 
         // If an optimal combination is found
         optimalCombination = optimalData.optimalCombination;
@@ -398,14 +321,13 @@ export class RightSizingModel implements ModelPluginInterface {
 
         return optimalCombination;
     }
-
-    /**
-     * Get the databases of cloud instances.
-     * This method is used for testing purposes.
-     * 
-     * @returns The databases of cloud instances
-     */
-    public getDatabases(): Map<string, CPUDatabase> {
-        return this.Cache;
+    
+    const getDatabases = (): Map<string, CPUDatabase> => {
+        return Cache;
     }
+
+    return {
+        metadata,
+        execute
+    };
 }
