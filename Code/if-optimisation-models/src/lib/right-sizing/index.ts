@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { PluginInterface } from '../../types/plugin-interface';
-import { ModelParams } from '@grnsft/if-models/build/types/common';
+import { ModelParams } from '../../types/common';
 import { ConfigParams, PluginParams } from '../../types/common';
 import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../types/right-sizing';
 

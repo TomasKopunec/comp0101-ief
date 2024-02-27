@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
-import { ModelParams } from '@grnsft/if-models/build/types/common';
 import { PluginInterface } from '../../types/plugin-interface';
 import { ConfigParams, PluginParams } from '../../types/common';
 
@@ -16,7 +14,7 @@ import * as crypto from 'crypto';
 /**
  * Implementation of the ModelPluginInterface for the Right Sizing model.
  */
-class RightSizingModelClass implements ModelPluginInterface {
+class RightSizingModelClass{
 
     private database: CPUDatabase;
     private Cache: Map<string, CPUDatabase>;
@@ -37,21 +35,7 @@ class RightSizingModelClass implements ModelPluginInterface {
      * @param configParams Configuration parameters for the model.
      * @returns A Promise resolving to the configured RightSizingModel instance.
      */
-    public async configure(configParams: object | undefined): Promise<ModelPluginInterface> {
-        // Load model data if 'data-path' is provided in configParams
-        if (configParams && 'data-path' in configParams) {
-            const instanceDataPath = configParams['data-path'];
-            if (typeof instanceDataPath === 'string') {
-                await this.database.loadModelData(instanceDataPath);
-                this.Cache.set('custom', this.database); // Cache the loaded database
-            } else {
-                console.error('Error: Invalid instance data path type.');
-            }
-        }
-        return this; // Return the configured instance
-    }
-
-    public configure_sync(configParams: object | undefined) {
+    public configure(configParams: object | undefined) {
         // Load model data if 'data-path' is provided in configParams
         if (configParams && 'data-path' in configParams) {
             const instanceDataPath = configParams['data-path'];
@@ -69,8 +53,8 @@ class RightSizingModelClass implements ModelPluginInterface {
      * @param inputs The list of input parameters for the models.
      * @returns A Promise resolving to an array of model parameters representing the outputs.
      */
-    public async execute(inputs: ModelParams[]): Promise<ModelParams[]> {
-        let outputs: ModelParams[] = [];
+    public async execute(inputs: PluginParams[]): Promise<PluginParams[]> {
+        let outputs: PluginParams[] = [];
 
         // Process each input
         for (const input of inputs) {
@@ -106,7 +90,7 @@ class RightSizingModelClass implements ModelPluginInterface {
      * @param input Input model parameters object to be validated
      * @returns True if the input is valid, false otherwise
      */
-    private validateSingleInput(input: ModelParams) {
+    private validateSingleInput(input: PluginParams) {
         const schema = z
             .object({
                 'cloud-instance-type': z.string(),
@@ -126,8 +110,8 @@ class RightSizingModelClass implements ModelPluginInterface {
      * @param input The input parameters for the model.
      * @returns An array of model parameters representing different instance combinations.
      */
-    private processInput(input: ModelParams): ModelParams[] {
-        let outputs: ModelParams[] = [];
+    private processInput(input: PluginParams): PluginParams[] {
+        let outputs: PluginParams[] = [];
 
         // Validate input and proceed if valid
         if (this.validateSingleInput(input)) {
@@ -405,7 +389,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
     const execute = model.execute.bind(model);
 
     if (params) {
-        model.configure_sync(params);
+        model.configure(params);
     }
 
     return {
