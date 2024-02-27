@@ -60,7 +60,8 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   let supportedLocations: Set<string> = new Set();
   let hasSampling: boolean = false;
   //number of last days to get average score
-  let lastDaysNumber: number = 5;
+  const lastDaysNumber: number = 10;
+  const weights = [0.5, 0.5];
   let sampling: number = 0;
   // Use for read from locations.json
   let locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-aware-advisor', 'locations.json');
@@ -215,7 +216,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   ): EmissionsData[] => {
     return emissionsData.map(data => {
       const averageRating = averageScoresByLocation[data.location];
-      const adjustedRating = averageRating !== null ? (data.rating*0.8 + averageRating*0.2)  : data.rating; // Handle null values
+      const adjustedRating = averageRating !== null ? (data.rating*weights[0] + averageRating*weights[1])  : data.rating; // Handle null values
       const time = new Date(data.time);
       time.setFullYear(time.getFullYear() + yearsToAdd);
       return { ...data, rating: adjustedRating, time: time.toISOString() };
