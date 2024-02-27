@@ -48,6 +48,7 @@ def plot_values(x_values, y_values, filename, graph_title, x_axis_label, y_axis_
 yaml_input = ''.join(sys.stdin.readlines())
 try:
     data = yaml.safe_load(yaml_input)[0]
+    
     if not data:
         raise ValueError("YAML input is empty or invalid.")
 
