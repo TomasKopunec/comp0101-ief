@@ -4,8 +4,8 @@ tags: null
 initialize:
   plugins:
     plotter:
-      method: Visualizer
-      path: "@grnsft/if-optimisation-models"
+      method: Shell
+      path: "@grnsft/if-models"
 tree:
   children:
     child0:

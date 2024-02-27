@@ -5,12 +5,10 @@ import {z} from 'zod';
 import { PluginInterface } from '../../types/plugin-interface';
 import {ConfigParams, PluginParams} from '../../types/common';
 
-<<<<<<< HEAD
+
 import {validate} from '../../util/validations';
 import {ERRORS} from '../../util/errors';
-=======
-import { ModelParams, ModelPluginInterface } from '../../types/legacy';
->>>>>>> e1ed6250577c2918c59afab8f6c0810594675d71
+
 
 const {InputValidationError} = ERRORS;
 
