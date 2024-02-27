@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { RightSizingModel } from "../../lib/right-sizing/index.old"; // This is a temp fix, will be removed once the new model is ready
+import { RightSizingModel } from "../../lib/right-sizing/index.wrapper"; // This is a temp fix, will be removed once the new model is ready
 import { CPUDatabase, CloudInstance } from "../../lib/right-sizing/CPUFamily";
 import { PluginParams } from "../../types/common";
 import { fixFloat } from "../../util/util";
@@ -276,10 +276,9 @@ describe("RightSizingModel", () => {
         }
     ];
 
-    let model = new RightSizingModel();
+    let model = RightSizingModel(config);
     let output : PluginParams[] = [];
     beforeAll(async () => {
-        model = await model.configure(config) as RightSizingModel;
         output = await model.execute(inputs);
     });
 

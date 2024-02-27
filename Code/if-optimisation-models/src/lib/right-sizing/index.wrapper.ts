@@ -386,14 +386,17 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
     };
 
     const model = new RightSizingModelClass();
-    const execute = model.execute.bind(model);
 
     if (params) {
         model.configure(params);
     }
 
+    const execute = model.execute.bind(model);
+    const getDatabases = model.getDatabases.bind(model);
+
     return {
         execute,
-        metadata
+        metadata,
+        getDatabases
     };
 };
