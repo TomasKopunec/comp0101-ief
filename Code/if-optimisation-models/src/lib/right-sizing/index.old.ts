@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
-import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
-import { ModelParams } from '@grnsft/if-models/build/types/common';
+import { ModelParams, ModelPluginInterface } from '../../types/legacy';
 
 import { CPUDatabase, CloudInstance } from './CPUFamily';
 import { validate, atLeastOneDefined } from '../../util/validations';

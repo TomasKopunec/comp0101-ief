@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import { RightSizingModel } from "../../lib";
+import { RightSizingModel } from "../../lib/right-sizing/index.old"; // This is a temp fix, will be removed once the new model is ready
 import { CPUDatabase, CloudInstance } from "../../lib/right-sizing/CPUFamily";
-import { ModelParams } from "@grnsft/if-models/build/types/common";
+import { PluginParams } from "../../types/common";
 import { fixFloat } from "../../util/util";
 
 
@@ -277,7 +277,7 @@ describe("RightSizingModel", () => {
     ];
 
     let model = new RightSizingModel();
-    let output : ModelParams[] = [];
+    let output : PluginParams[] = [];
     beforeAll(async () => {
         model = await model.configure(config) as RightSizingModel;
         output = await model.execute(inputs);
@@ -293,7 +293,7 @@ describe("RightSizingModel", () => {
         return null;
     };
 
-    const compareWithExpected = (expected: ModelParams[], actual: ModelParams[]) => {
+    const compareWithExpected = (expected: PluginParams[], actual: PluginParams[]) => {
 
         if (expected.length !== actual.length) {
             console.error('Count of expected and actual outputs are different');
@@ -326,7 +326,7 @@ describe("RightSizingModel", () => {
         return allMatched;
     };
 
-    const getCombinedData = (outputs: ModelParams[]) => {
+    const getCombinedData = (outputs: PluginParams[]) => {
         let data: { [timestamp: string]: CombinationValues } = {};
 
         for (let i = 0; i < outputs.length; i++) {
@@ -353,7 +353,7 @@ describe("RightSizingModel", () => {
         return data;
     };
 
-    const compareWithExpectedCombinedValues = (expected: { [timestamp: string]: CombinationValues } | ModelParams[], actual: { [timestamp: string]: CombinationValues } | ModelParams[]) => {
+    const compareWithExpectedCombinedValues = (expected: { [timestamp: string]: CombinationValues } | PluginParams[], actual: { [timestamp: string]: CombinationValues } | PluginParams[]) => {
 
         if (Array.isArray(expected)) {
             expected = getCombinedData(expected);
@@ -415,7 +415,7 @@ describe("RightSizingModel", () => {
             const inputs = ALG_TEST1_INPUTS;
             const outputs = await model.execute(inputs);
 
-            const requiredCPU = inputs.map((input: ModelParams) => {
+            const requiredCPU = inputs.map((input: PluginParams) => {
                 let vCPUs = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.vCPUs;
                 if (vCPUs) {
                     return input['cpu-util'] / 100 * vCPUs;
@@ -454,7 +454,7 @@ describe("RightSizingModel", () => {
             const inputs = ALG_TEST2_INPUTS;
             const outputs = await model.execute(inputs);
 
-            const requiredCPU = inputs.map((input: ModelParams) => {
+            const requiredCPU = inputs.map((input: PluginParams) => {
                 let vCPUs = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.vCPUs;
                 if (vCPUs) {
                     return input['cpu-util'] / 100 * vCPUs;
@@ -496,7 +496,7 @@ describe("RightSizingModel", () => {
             const inputs = ALG_TEST3_INPUTS;
             const outputs = await model.execute(inputs);
 
-            const requiredRAM = inputs.map((input: ModelParams) => {
+            const requiredRAM = inputs.map((input: PluginParams) => {
                 let RAM = getInstance(input['cloud-vendor'], input['cloud-instance-type'])?.RAM;
                 if (RAM) {
                     return input['mem-util'] / 100 * RAM;

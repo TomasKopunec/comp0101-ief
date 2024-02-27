@@ -6,8 +6,7 @@ import {z} from 'zod';
 import {validate} from '@grnsft/if-models/build/util/validations';
 import {ERRORS} from '@grnsft/if-models/build/util/errors';
 
-import {ModelPluginInterface} from '@grnsft/if-models/build/interfaces'
-import {ModelParams} from '@grnsft/if-models/build/types/common';
+import { ModelParams, ModelPluginInterface } from '../../types/legacy';
 
 const {InputValidationError} = ERRORS;
 
