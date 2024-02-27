@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { PluginInterface } from '../../types/plugin-interface';
-import { ModelParams } from '../../types/common';
 import { ConfigParams, PluginParams } from '../../types/common';
 import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../types/right-sizing';
 
@@ -38,8 +37,8 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
     
     configure(params);
 
-    const execute = async (inputs: ModelParams[]) => {
-        let outputs: ModelParams[] = [];
+    const execute = async (inputs: PluginParams[]) => {
+        let outputs: PluginParams[] = [];
 
         // Process each input
         for (const input of inputs) {
@@ -68,8 +67,8 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         return Promise.resolve(outputs); // Resolve the promise with the outputs array
     }
 
-    const processInput = (input: ModelParams): ModelParams[] => {
-        let outputs: ModelParams[] = [];
+    const processInput = (input: PluginParams): PluginParams[] => {
+        let outputs: PluginParams[] = [];
 
         // Validate input and proceed if valid
         if (validateSingleInput(input)) {
@@ -156,7 +155,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         return outputs;
     }
 
-    const validateSingleInput = (input: ModelParams) => {
+    const validateSingleInput = (input: PluginParams) => {
         const schema = z
         .object({
             'cloud-instance-type': z.string(),

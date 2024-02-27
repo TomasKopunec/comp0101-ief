@@ -1,6 +1,5 @@
 
-import { ModelPluginInterface } from '@grnsft/if-models/build/interfaces';
-import { ModelParams } from '@grnsft/if-models/build/types/common';
+import { ModelParams, ModelPluginInterface } from '../../types/legacy';
 
 import * as dayjs from 'dayjs';
 /*fake*/
