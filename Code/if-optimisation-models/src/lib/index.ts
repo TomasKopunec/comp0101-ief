@@ -1,4 +1,4 @@
-export * from './right-sizing';
+export * from './right-sizing/index.wrapper';
 export * from './time-location';
 export * from './visualizer';
 export * from './fake-model';
