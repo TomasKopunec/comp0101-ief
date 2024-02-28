@@ -5,7 +5,7 @@ initialize:
   models:
     - name: carbon-advisor
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
 graph:
   children:
     child:

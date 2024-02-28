@@ -5,7 +5,7 @@ initialize:
   models:
     - name: carbon-advisor
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
     - name: plotter
       path: '@grnsft/if-optimisation-models'
       model: Visualizer

@@ -1,0 +1,28 @@
+name: plotter -demo
+description: example impl invoking plotter model
+tags:
+initialize:
+  models:
+    - name: plotter
+      model: ShellModel
+      path: '@grnsft/if-models'
+graph:
+  children:
+    child:
+      pipeline:
+        - plotter
+      config:
+        plotter:
+          command: 'python3 ./src/lib/visualizer/plotter'
+          y_name: graph.carbon
+          colour: red
+          diagram_name: Test_diagram2
+          x_axis_name: Date
+          y_axis_name: Carbon
+          diagram_title: Carbon Emission per Date for graph.carbon
+          graph_type: scatter   
+          csv_path: 'helper2.csv'     
+      inputs:
+        - 
+           
+        

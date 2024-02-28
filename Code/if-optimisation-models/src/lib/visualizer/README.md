@@ -2,7 +2,9 @@
 # Plotter Model
 
 ## Overview
-The Plotter model created for the Impact Engine Framework is designed to visualize data through various types of graphs such as bar, line, and scatter plots. It takes input in YAML format, defining the x and y values along with additional parameters to customize the plots.
+The Plotter model created for the Impact Engine Framework is designed to visualize data through various types of graphs such as bar, line, and scatter plots. It takes input in YAML format or csv format , defining the x and y values along with additional parameters to customize the plots.
+
+## Type 1 : Read from Impl file
 
 ## Usage
 This model is typically used in a pipeline following data-enrichment models like `carbon-advisor`, which populates the `plotted_points` parameter required by Plotter. If the user prefers he can specify the `plotted_points` parameter himself in the Impl file but the main value of the model is its ability to visualize the data provided by other models of the Impact Engine Framework.
@@ -124,7 +126,7 @@ tags:
 initialize:
   models:
     - name: carbon-advisor
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
     - name: plotter
       model: ShellModel
@@ -165,7 +167,7 @@ initialize:
   models:
     - name: carbon-advisor
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAdvisor
+      model: CarbonAwareAdvisor
     - name: plotter
       path: '@grnsft/if-models'
       model: ShellModel
@@ -253,9 +255,106 @@ And we can see the following diagram being created:
 ## Running
 The model reads YAML input from stdin and outputs a graph image along with updated YAML data to stdout or to the ompl file. Ensure the preceding model in the pipeline enriches the input with `plotted_values` or the user must insert them directly to the Impl file. The diagram parameter in the Ompl file shows ehere the created diagram has been saved on your local computer.
 
+
+## Type 2 : Read from csv file
+
+## Usage
+This model can also be used to plot data currently stored in csv file format. The user is rewuired to specify the `y_value` parameter in the Impl file which will be the row of the csv to plot.
+
+## Configuration
+Required parameters include:
+- `csv_path`: The csv file to read from. Give relative path compared to Code/if-optimisation-models directory.
+- `y_name`: One attributes  which will be the first element of a row in the csv. This row will then be plotted.\
+
+Optional parameters with defaults:
+- `colour`: Default is `light-blue`.
+- `diagram_name`: Defaults to `combinations_diagram.png`.
+- `x_axis_name`, `y_axis_name`: Axis labels, auto-generated if not provided. Default 'x_axis_name' is Carbon Date or Type. Default 'y_axis_name' is the 'y_name' attribute.
+- `diagram_title`: Auto-generated if not provided. Default diagram_title is  'x_axis_name' vs 'y_axis_name'.
+- `graph_type`: Can be `bar`, `line`, or `scatter`. Default is `bar`.
+
+## Simple Example Impl and corresponding Ompl
+Impl:
+```yaml
+name: plotter -demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  models:
+    - name: plotter
+      path: '@grnsft/if-models'
+      model: ShellModel
+graph:
+  children:
+    child:
+      pipeline:
+        - plotter
+      config:
+        plotter:
+          command: python3 ./src/lib/visualizer/plotter
+          y_name: graph.carbon
+          colour: red
+          diagram_name: Test_diagram2
+          x_axis_name: Date
+          y_axis_name: Carbon
+          diagram_title: Carbon Emission per Date for graph.carbon
+          graph_type: scatter
+          csv_path: helper2.csv
+      inputs:
+        - null
+```
+Ompl:
+```yaml
+name: plotter -demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  models:
+    - name: plotter
+      path: '@grnsft/if-models'
+      model: ShellModel
+graph:
+  children:
+    child:
+      pipeline:
+        - plotter
+      config:
+        plotter:
+          command: python3 ./src/lib/visualizer/plotter
+          y_name: graph.carbon
+          colour: red
+          diagram_name: Test_diagram2
+          x_axis_name: Date
+          y_axis_name: Carbon
+          diagram_title: Carbon Emission per Date for graph.carbon
+          graph_type: scatter
+          csv_path: helper2.csv
+      inputs:
+        - null
+      outputs:
+        - command: python3 ./src/lib/visualizer/plotter
+          y_name: graph.carbon
+          colour: red
+          diagram_name: Test_diagram2
+          x_axis_name: Date
+          y_axis_name: Carbon
+          diagram_title: Carbon Emission per Date for graph.carbon
+          graph_type: scatter
+          csv_path: helper2.csv
+          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/Test_diagram2.png
+
+```
+And we can see the following diagram being created:
+![Alt text](example3.png)
+
+## Running
+The model reads YAML input  from stdin and opens the csv file specified . In the ennd it outputs a graph image along with updated YAML data to stdout or to the ompl file. Ensure that the csv file exists and is in the correct path. Also make sure that the 'y_name value' is a value in the first column of the csv. The diagram parameter in the Ompl file shows ehere the created diagram has been saved on your local computer.
+
+
 ## Dependencies
 - `matplotlib`
 - `PyYAML`
+- `Pandas`
 
 Ensure these Python libraries are installed in your environment to use the Plotter model.
 

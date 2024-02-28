@@ -1,0 +1,322 @@
+{
+    "TestFamily": [
+        {
+            "model": "Test_2_8",
+            "vCPUs": 2,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 2.8
+            }
+        },
+        {
+            "model": "Test_4_16",
+            "vCPUs": 4,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 5.6
+            }
+        },
+        {
+            "model": "Test_8_32",
+            "vCPUs": 8,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 11.2
+            }
+        },
+        {
+            "model": "Test_16_64",
+            "vCPUs": 16,
+            "RAM": 64.0,
+            "Price": {
+                "uksouth": 22.4
+            }
+        },
+        {
+            "model": "Test_2_4",
+            "vCPUs": 2,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 2.4
+            }
+        },
+        {
+            "model": "Test_4_8",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 4.8
+            }
+        },
+        {
+            "model": "Test_8_16",
+            "vCPUs": 8,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 9.6
+            }
+        },
+        {
+            "model": "Test_16_32",
+            "vCPUs": 16,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 19.2
+            }
+        },
+        {
+            "model": "Test_32_64",
+            "vCPUs": 32,
+            "RAM": 64.0,
+            "Price": {
+                "uksouth": 38.4
+            }
+        },
+        {
+            "model": "Test_2_2",
+            "vCPUs": 2,
+            "RAM": 2.0,
+            "Price": {
+                "uksouth": 2.2
+            }
+        },
+        {
+            "model": "Test_4_4",
+            "vCPUs": 4,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 4.4
+            }
+        },
+        {
+            "model": "Test_8_8",
+            "vCPUs": 8,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 8.8
+            }
+        },
+        {
+            "model": "Test_16_16",
+            "vCPUs": 16,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 17.6
+            }
+        },
+        {
+            "model": "Test_2_16",
+            "vCPUs": 2,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 3.6
+            }
+        },
+        {
+            "model": "Test_4_32",
+            "vCPUs": 4,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 7.2
+            }
+        },
+        {
+            "model": "Test_8_64",
+            "vCPUs": 8,
+            "RAM": 64.0,
+            "Price": {
+                "uksouth": 14.4
+            }
+        },
+        {
+            "model": "Test_16_128",
+            "vCPUs": 16,
+            "RAM": 128.0,
+            "Price": {
+                "uksouth": 28.8
+            }
+        }
+    ],
+    "TestFamily1":[
+        {
+            "model": "Test1_2_4",
+            "vCPUs": 2,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 2.8
+            }
+        },
+        {
+            "model": "Test1_4_8",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 5.6
+            }
+        },
+        {
+            "model": "Test1_8_16",
+            "vCPUs": 8,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 11.2
+            }
+        },
+        {
+            "model": "Test1_16_32",
+            "vCPUs": 16,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 19.2
+            }
+        },
+        {
+            "model": "Test1_32_128",
+            "vCPUs": 16,
+            "RAM": 64.0,
+            "Price": {
+                "uksouth": 22.4
+            }
+        }
+    ],
+    "TestFamily2": [
+        {
+            "model": "Test2_2_4",
+            "vCPUs": 2,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 2.4
+            }
+        },
+        {
+            "model": "Test2_4_8",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 4.8
+            }
+        },
+        {
+            "model": "Test2_4_8_cheap",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 4.0
+            }
+        },
+        {
+            "model": "Test2_8_16",
+            "vCPUs": 8,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 9.6
+            }
+        },
+        {
+            "model": "Test2_16_32",
+            "vCPUs": 16,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 19.2
+            }
+        },
+        {
+            "model": "Test2_2_2",
+            "vCPUs": 2,
+            "RAM": 2.0,
+            "Price": {
+                "uksouth": 2.2
+            }
+        },
+        {
+            "model": "Test2_4_4",
+            "vCPUs": 4,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 4.4
+            }
+        },
+        {
+            "model": "Test2_8_8",
+            "vCPUs": 8,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 8.8
+            }
+        },
+        {
+            "model": "Test2_8_8_cheap",
+            "vCPUs": 8,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 8.0
+            }
+        }
+    ],
+    "TestFamily3": [
+        {
+            "model": "Test3_2_4",
+            "vCPUs": 2,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 2.4
+            }
+        },
+        {
+            "model": "Test3_4_8",
+            "vCPUs": 4,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 4.8
+            }
+        },
+        {
+            "model": "Test3_8_16",
+            "vCPUs": 8,
+            "RAM": 16.0,
+            "Price": {
+                "uksouth": 9.6
+            }
+        },
+        {
+            "model": "Test3_16_32",
+            "vCPUs": 16,
+            "RAM": 32.0,
+            "Price": {
+                "uksouth": 19.2
+            }
+        },
+        {
+            "model": "Test3_2_2",
+            "vCPUs": 2,
+            "RAM": 2.0,
+            "Price": {
+                "uksouth": 2.2
+            }
+        },
+        {
+            "model": "Test3_4_4",
+            "vCPUs": 4,
+            "RAM": 4.0,
+            "Price": {
+                "uksouth": 4.4
+            }
+        },
+        {
+            "model": "Test3_8_8",
+            "vCPUs": 8,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 8.8
+            }
+        },
+        {
+            "model": "Test3_6_8",
+            "vCPUs": 6,
+            "RAM": 8.0,
+            "Price": {
+                "uksouth": 6.0
+            }
+        }
+    ]
+}

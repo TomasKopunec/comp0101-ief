@@ -54,10 +54,6 @@ Optional(Can be skipped, as the code provides the token for the test):
     "EmissionsDataSource": "ElectricityMaps",
     "ForecastDataSource": "ElectricityMaps",
     "Configurations": {
-      "test-json": {
-        "Type": "JSON",
-        "DataFileLocation": "test-data-azure-emissions.json"
-      },
       "ElectricityMaps": {
         "Type": "ElectricityMaps",
         "APITokenHeader": "auth-token",

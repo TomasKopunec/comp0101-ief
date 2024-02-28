@@ -1,131 +1,116 @@
-export class CPUDatabase {
-    private families = new Map<string, CPUFamily>();
+import * as fs from 'fs';
+import * as fs_async from 'fs/promises';
 
-    public addFamily(family: CPUFamily) {
-        this.families.set(family.name, family);
-    }
-
-    public getFamily(familyName: string): CPUFamily | null {
-        if (this.families.has(familyName)) {
-            let res = this.families.get(familyName);
-            if (res !== undefined) {
-                return res;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    public hasFamily(familyName: string): boolean {
-        return this.families.has(familyName);
-    }
-
-    // load CPU data from json file
-    public loadDatabase(path: string) {
-        let CPUData : any = import(path);
-        this.families.clear();
-        this.families = new Map<string, CPUFamily>(CPUData.Families.map((family: CPUFamily) => {
-            let cpuFamily = new CPUFamily(family.name, family.generation);
-            family.models.forEach((model: any) => {
-                cpuFamily.addModel(new CPU(model.model, cpuFamily, model.cores, model.threads, model.clock, model.turbo));
-            });
-            return [cpuFamily.name, cpuFamily];
-        }));
-    }
-}
-
-export class CPUFamily {
-    public name: string;
-    public generation: number;
-
-    public models = new Map<string, CPU>();
-
-    constructor(name: string, generation: number, models: Map<string, CPU> = new Map<string, CPU>()) {
-        this.name = name;
-        this.generation = generation;
-        this.models = models;
-    }
-
-    public addModel(cpu: CPU) {
-        cpu.family = this;
-        this.models.set(cpu.model, cpu);
-    }
-
-    public getModel(modelName: string): CPU | null {
-        if (this.models.has(modelName)) {
-            let res = this.models.get(modelName);
-            if (res !== undefined) {
-                return res;
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    public hasModel(modelName: string): boolean {
-        return this.models.has(modelName);
-    }
-
-    public getModelNames(): string[] {
-        return Array.from(this.models.keys());
-    }
-
-    public getRightSizingModel(currentModel: CPU|string, cpuUtil: number): CPU | null {
-        if (cpuUtil > 1){
-            throw new Error('CPU utilization must be between 0 and 1');
-        }
-        let currentCPU: CPU | undefined | null = null;
-        if (typeof currentModel === 'string') {
-            if (this.models.has(currentModel)){
-                if (this.models.get(currentModel) !== undefined) {
-                    currentCPU = this.models.get(currentModel)!;
-                }
-            } 
-        }else{
-            currentCPU = currentModel;
-        }
-
-        if (!currentCPU) {
-            throw new Error('Current CPU model not found');
-        }
-
-        let rightSizingModel: CPU | null = null;
-        let utiledCores = Math.ceil(currentCPU.cores * cpuUtil);
-        let currentCores = currentCPU.cores;
-
-        if (utiledCores < currentCores) {
-
-            Array.from(this.models.values()).forEach((model) => {
-                if (model.cores >= utiledCores && model.cores < currentCores) {
-                    currentCores = model.cores;
-                    rightSizingModel = model;
-                }
-            });
-            return rightSizingModel;
-        }else{
-            return currentCPU;
-        }
-    }
-}
-
-export class CPU {
+/**
+ * Represents a cloud instance.
+ */
+export class CloudInstance {
     public model: string;
-    public family: CPUFamily;
-    public cores: number;
-    public threads: number;
-    public clockSpeed: number;
-    public turboSpeed: number;
+    public vCPUs: number;
+    public RAM: number;
+    public Price: { [region: string]: number };
 
-    constructor(model: string, family: CPUFamily, cores: number, threads: number, clockSpeed: number, turboSpeed: number) {
+    /**
+     * Constructs a CloudInstance.
+     * @param model The model of the instance.
+     * @param vCPUs The number of virtual CPUs.
+     * @param RAM The amount of RAM in GB.
+     * @param Price The price of the instance in different regions.
+     */
+    constructor(model: string, vCPUs: number, RAM: number, Price: { [region: string]: number }) {
         this.model = model;
-        this.family = family;
-        this.cores = cores;
-        this.threads = threads;
-        this.clockSpeed = clockSpeed;
-        this.turboSpeed = turboSpeed;
+        this.vCPUs = vCPUs;
+        this.RAM = RAM;
+        this.Price = Price;
+    }
+
+    public getPrice(region: string): number {
+        if (this.Price) {
+            if (this.Price[region]){
+                return this.Price[region];
+            }
+        }
+        // return 0 will cause the division by 0 error
+        return 0.0001;
+    }
+}
+
+/**
+ * Represents a CPU database.
+ */
+export class CPUDatabase {
+    private modelToFamily = new Map<string, string>();
+    private familyToModels = new Map<string, CloudInstance[]>();
+    private nameToInstance = new Map<string, CloudInstance>();
+
+    /**
+     * Retrieves an instance by model name.
+     * @param modelName The model name of the instance.
+     * @returns The CloudInstance corresponding to the model name, or null if not found.
+     */
+    public getInstanceByModel(modelName: string): CloudInstance | null {
+        const model = this.nameToInstance.get(modelName);
+        return model || null;
+    }
+
+    /**
+     * Loads model data from the specified path.
+     * @param path The path to the JSON file containing model data.
+     */
+    public async loadModelData(path: string) {
+        try {
+            const data = await fs_async.readFile(path, 'utf8');
+            const jsonData = JSON.parse(data);
+            for (const familyName in jsonData) {
+                const models = jsonData[familyName];
+                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM, model.Price));
+                this.familyToModels.set(familyName, cpuModels);
+                models.forEach((model: any) => {
+                    this.modelToFamily.set(model.model, familyName);
+                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM, model.Price));
+                });
+            }
+        } catch (error) {
+            console.error('Error reading file:', error);
+        }
+    }
+
+    public loadModelData_sync(path: string) {
+        try {
+            const data = fs.readFileSync(path, 'utf8');
+            const jsonData = JSON.parse(data);
+            for (const familyName in jsonData) {
+                const models = jsonData[familyName];
+                const cpuModels = models.map((model: any) => new CloudInstance(model.model, model.vCPUs, model.RAM, model.Price));
+                this.familyToModels.set(familyName, cpuModels);
+                models.forEach((model: any) => {
+                    this.modelToFamily.set(model.model, familyName);
+                    this.nameToInstance.set(model.model, new CloudInstance(model.model, model.vCPUs, model.RAM, model.Price));
+                });
+            }
+        } catch (error) {
+            console.error('Error reading file:', error);
+        }
+    }
+
+
+    /**
+     * Retrieves the model family based on a model name.
+     * @param modelName The model name of the instance.
+     * @returns The array of CloudInstance instances representing the model family, or null if not found.
+     */
+    public getModelFamily(modelName: string): CloudInstance[] | null {
+        const familyName = this.modelToFamily.get(modelName);
+        return familyName ? this.familyToModels.get(familyName) || null : null;
+    }
+
+    /**
+     * Get all the instance families in the database.
+     * This method is for testing purposes only.
+     * 
+     * @returns An array of the family names.
+     */
+    public getFamilies(): Map<string, CloudInstance[]> {
+        return this.familyToModels;
     }
 }

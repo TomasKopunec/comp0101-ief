@@ -1,53 +1,55 @@
-//This is a copy of the shell model
 import {spawnSync, SpawnSyncReturns} from 'child_process';
-import {loadAll, dump} from 'js-yaml'; //you need to run npm i --save-dev @types/js-yaml
+import {loadAll, dump} from 'js-yaml';
 import {z} from 'zod';
 
-import {validate} from '@grnsft/if-models/build/util/validations';
-import {ERRORS} from '@grnsft/if-models/build/util/errors';
+import { PluginInterface } from '../../types/plugin-interface';
+import {ConfigParams, PluginParams} from '../../types/common';
 
-import {ModelPluginInterface} from '@grnsft/if-models/build/interfaces'
-import {ModelParams} from '@grnsft/if-models/build/types/common';
+
+import {validate} from '../../util/validations';
+import {ERRORS} from '../../util/errors';
+
 
 const {InputValidationError} = ERRORS;
 
-export class Visualizer implements ModelPluginInterface {
-  /**
-   * Configures the Visualizer Plugin.
-   */
-  public async configure(): Promise<ModelPluginInterface> {
-    return this;
-  }
+export const Visualizer = (globalConfig: ConfigParams): PluginInterface => {
+  const metadata = {
+    kind: 'execute',
+  };
 
   /**
    * Calculate the total emissions for a list of inputs.
    */
-  public async execute(inputs: ModelParams[]): Promise<any[]> {
+  const execute = async (inputs: PluginParams[]): Promise<any[]> => {
+    const inputWithConfig: PluginParams = Object.assign(
+      {},
+      inputs[0],
+      globalConfig
+    );
+    const command = validateSingleInput(inputWithConfig).command;
     const inputAsString: string = dump(inputs, {indent: 2});
-
-    const command = this.validateSingleInput(inputs[0]).command;
-    const results = this.runModelInShell(inputAsString, command);
+    const results = runModelInShell(inputAsString, command);
 
     return results.outputs;
-  }
+  };
 
   /**
    * Checks for required fields in input.
    */
-  private validateSingleInput(input: ModelParams) {
+  const validateSingleInput = (input: PluginParams) => {
     const schema = z.object({
       command: z.string(),
     });
 
-    return validate(schema, input);
-  }
-  
+    return validate<z.infer<typeof schema>>(schema, input);
+  };
+
   /**
    * Runs the model in a shell. Spawns a child process to run an external IMP,
-   * an executable with a CLI exposing two methods: `--execute` and `--impl`.
-   * The shell command then calls the `--command` method passing var impl as the path to the desired impl file.
+   * an executable with a CLI exposing two methods: `--execute` and `--manifest`.
+   * The shell command then calls the `--command` method passing var manifest as the path to the desired manifest file.
    */
-  private runModelInShell(input: string, command: string) {
+  const runModelInShell = (input: string, command: string) => {
     try {
       const [executable, ...args] = command.split(' ');
 
@@ -55,12 +57,16 @@ export class Visualizer implements ModelPluginInterface {
         input,
         encoding: 'utf8',
       });
-
       const outputs = loadAll(result.stdout);
 
-      return {outputs};
+      return {outputs: outputs};
     } catch (error: any) {
       throw new InputValidationError(error.message);
     }
-  }
-}
+  };
+
+  return {
+    metadata,
+    execute,
+  };
+};
