@@ -2,9 +2,8 @@ import {spawnSync, SpawnSyncReturns} from 'child_process';
 import {loadAll, dump} from 'js-yaml';
 import {z} from 'zod';
 
-import { PluginInterface } from '../../types/plugin-interface';
+import { PluginInterface } from '../../interfaces';
 import {ConfigParams, PluginParams} from '../../types/common';
-
 
 import {validate} from '../../util/validations';
 import {ERRORS} from '../../util/errors';

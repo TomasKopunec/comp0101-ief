@@ -1,16 +1,13 @@
 import { z } from 'zod';
-
-import { PluginInterface } from '../../types/plugin-interface';
-import { ConfigParams, PluginParams } from '../../types/common';
-
-import { InstanceData, OriginalData, CombinationData, CurrentData } from '../../types/right-sizing';
-
-import { CPUDatabase, CloudInstance } from './CPUFamily';
-import { validate, atLeastOneDefined } from '../../util/validations';
-import { fixFloat } from '../../util/util';
-
 import * as crypto from 'crypto';
 
+import { fixFloat } from '../../util/util';
+import { PluginInterface } from '../../interfaces';
+import { ConfigParams, PluginParams } from '../../types/common';
+import { validate, atLeastOneDefined } from '../../util/validations';
+import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../types/right-sizing';
+
+import { CPUDatabase, CloudInstance } from './CPUFamily';
 /**
  * Implementation of the ModelPluginInterface for the Right Sizing model.
  */

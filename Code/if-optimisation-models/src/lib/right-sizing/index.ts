@@ -1,14 +1,13 @@
 import { z } from 'zod';
+import * as crypto from 'crypto';
 
-import { PluginInterface } from '../../types/plugin-interface';
+import { fixFloat } from '../../util/util';
+import { PluginInterface } from '../../interfaces';
 import { ConfigParams, PluginParams } from '../../types/common';
+import { validate, atLeastOneDefined } from '../../util/validations';
 import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../types/right-sizing';
 
 import { CPUDatabase, CloudInstance } from './CPUFamily';
-import { validate, atLeastOneDefined } from '../../util/validations';
-import { fixFloat } from '../../util/util';
-
-import * as crypto from 'crypto';
 
 export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 

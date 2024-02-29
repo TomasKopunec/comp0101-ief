@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { PluginInterface } from '../../types/plugin-interface';
+import { PluginInterface } from '../../interfaces';
 import { ConfigParams, PluginParams } from '../../types/common';
-import { buildErrorMessage } from '@grnsft/if-unofficial-models/build/util/helpers';
 
-import { ERRORS } from '@grnsft/if-unofficial-models/build/util/errors';
+import { buildErrorMessage } from '../../util/helpers';
+import { ERRORS } from '../../util/errors';
 
 import { promises as fsPromises } from 'fs';
 import * as path from 'path';
@@ -69,7 +69,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   /**
    * Error builder function that is used to build error messages.
    */
-  let errorBuilder = buildErrorMessage(CarbonAwareAdvisor);
+  let errorBuilder = buildErrorMessage('CarbonAwareAdvisor');
 
 
   //this is the function that performs all the api calls and returns the actual results, it is the core of the CarbonAware Advisor model
