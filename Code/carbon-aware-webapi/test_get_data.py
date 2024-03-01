@@ -82,10 +82,10 @@ for location in world_azure_locations:
 # Transform the data to match the requested format
 transformed_data = [
     {
-        "Location": item["location"],
-        "Time": item["time"],
-        "Rating": item["rating"],
-        "Duration": item["duration"]
+        "location": item["location"],
+        "time": item["time"],
+        "rating": item["rating"],
+        "duration": item["duration"]
     } for item in all_results
 ]
 
