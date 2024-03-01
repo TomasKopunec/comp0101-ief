@@ -302,9 +302,10 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   }
 
   const  validateInputs = async (inputs: PluginParams[]): Promise<void> => {
+    console.log('Validating Inputs:')
+    console.log(JSON.stringify(inputs, null, 2));
     await setSupportedLocations();
     validateParams(inputs)
-    console.log(JSON.stringify(inputs));
 
     // Check null
     if (inputs === undefined) {
@@ -317,17 +318,13 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   }
 
   const validateParams =(params: object | undefined): void => {
-    console.log(JSON.stringify(params));
-
     // Check null
     if (params === undefined) {
       throwError(InputValidationError, 'Required Parameters not provided');
     }
-    
 
     // Parse parameters as map
     const map = new Map(Object.entries(params!));
-    
    
     validateLocations(map);
     validateTimeframes(map);
@@ -466,11 +463,9 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
 
 
 
-  const execute= async (inputs: PluginParams[]): Promise<PluginParams[]>=>{
+  const execute = async (inputs: PluginParams[]): Promise<PluginParams[]> => {
+    console.log('Executing CarbonAware Advisor')
     await validateInputs(inputs);
-    //echo that you are in the execute function
-    console.log('You are in the execute function');
-    // Use aggregatedMatchingValues to store all matching values from localData
     let aggregatedMatchingValues: Set<string> = new Set();
 
     // For each input, get the allowed locations and check if they are in the list of supported locations
