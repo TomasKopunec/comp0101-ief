@@ -178,7 +178,7 @@ tree:
             "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
         sampling: 10
-        command: 'python3 ./src/lib/visualizer/plotter'
+        command: 'python3 ./src/lib/plotter/plotter'
         x_name:  [location,time]
         y_name: score
         colour: yellow
@@ -219,7 +219,7 @@ tree:
           - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
           - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
         sampling: 10
-        command: python3 ./src/lib/visualizer/plotter
+        command: python3 ./src/lib/plotter/plotter
         x_name:
           - location
           - time

@@ -11,7 +11,7 @@ import {ERRORS} from '../../util/errors';
 
 const {InputValidationError} = ERRORS;
 
-export const Visualizer = (globalConfig: ConfigParams): PluginInterface => {
+export const Plotter = (globalConfig: ConfigParams): PluginInterface => {
   const metadata = {
     kind: 'execute',
   };
