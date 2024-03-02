@@ -6,16 +6,9 @@ url = "http://localhost:5073/emissions/bylocation"
 
 # List of locations to query
 world_azure_locations = [
-    "southafricanorth", "southafricawest", "australiacentral", "australiacentral2",
-    "australiaeast", "australiasoutheast", "centralindia", "eastasia", "japaneast",
-    "japanwest", "jioindiacentral", "jioindiawest", "koreacentral", "koreasouth",
-    "southeastasia", "southindia", "westindia", "francecentral", "francesouth",
-    "germanynorth", "germanywestcentral", "italynorth", "northeurope", "norwayeast",
-    "norwaywest", "polandcentral", "swedencentral", "switzerlandnorth",
-    "switzerlandwest", "uksouth", "ukwest", "westeurope", "israelcentral", "qatarcentral",
-    "uaecentral", "uaenorth", "brazilsouth", "brazilsoutheast", "centralus", "eastus",
-    "eastus2", "northcentralus", "southcentralus", "westcentralus", "westus", "westus2",
-    "westus3", "canadacentral", "canadaeast","centraluseuap","eastus2euap"
+    "southafricanorth", "eastasia","uksouth", "ukwest", 
+    "westeurope", "uaecentral", "brazilsouth", "eastus",
+    "eastus2", "westus", "canadacentral","centraluseuap"
 ]
 
 
@@ -92,7 +85,7 @@ transformed_data = [
 # Encapsulate the transformed data within an "Emissions" key
 output_data = {"Emissions": transformed_data}
 
-file_path = "emissions_data.json"
+file_path = "emissions_data_core_locations.json"
 
 # Write the data to the file
 with open(file_path, 'w') as file:
