@@ -62,7 +62,10 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   const weights = [0.5, 0.5];
   let sampling: number = 0;
   // Use for read from locations.json
-  let locationsFilePath = path.join(__dirname, '../../../../../..', 'src', 'lib', 'carbon-aware-advisor', 'locations.json');
+  // let locationsFilePath = path.join(__dirname, '../../../../../..', 'src', 'lib', 'carbon-aware-advisor', 'locations.json');
+  let locationsFilePath = path.join(process.cwd(),'src', 'lib', 'carbon-aware-advisor', 'locations.json');
+  // console.log('current file:', (process.cwd()));
+  // console.log('Locations File Path:', locationsFilePath);
 
   /**
    * Error builder function that is used to build error messages.
