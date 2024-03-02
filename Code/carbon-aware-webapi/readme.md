@@ -81,8 +81,8 @@ curl "http://localhost:5073/emissions/forecasts/current?location=westus"
 ```
 
 ## Locations.json
-italynorth, Polandcentral, Israelcentral, and Qatarcentral: These 4 locations api will return "Unknown Location: 'xxx' not found.
-uaecentral, uaenorth: These 2 locations api can't return anything.
+1. italynorth, Polandcentral, Israelcentral, and Qatarcentral: These 4 locations api will return "Unknown Location: 'xxx' not found.
+2. uaecentral, uaenorth: These 2 locations api can't return anything.
 
 ## More
 The python script here is just a simple demonstration, a more scientific approach would be to go through the default Calling the Web API via client libraries of this docus: https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/docs/quickstart.md.
