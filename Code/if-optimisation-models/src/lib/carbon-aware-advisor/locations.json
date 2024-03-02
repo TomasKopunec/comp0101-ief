@@ -40,11 +40,9 @@
       "francesouth",
       "germanynorth",
       "germanywestcentral",
-      "italynorth",
       "northeurope",
       "norwayeast",
       "norwaywest",
-      "polandcentral",
       "swedencentral",
       "switzerlandnorth",
       "switzerlandwest",
@@ -61,12 +59,6 @@
         "eu-north-1",
         "eu-south-1",
         "eu-south-2"
-    ],
-    "middleeast_azure": [
-      "israelcentral",
-      "qatarcentral",
-      "uaecentral",
-      "uaenorth"
     ],
     "middleeast_aws": [
       "me-south-1",
@@ -105,6 +97,10 @@
     "israel_aws": [
       "il-central-1"
     ],
+    "special_canary_azure": [
+      "centraluseuap",
+      "eastus2euap"
+    ],
     "world_azure": [
       "southafricanorth",
       "southafricawest",
@@ -127,21 +123,15 @@
       "francesouth",
       "germanynorth",
       "germanywestcentral",
-      "italynorth",
       "northeurope",
       "norwayeast",
       "norwaywest",
-      "polandcentral",
       "swedencentral",
       "switzerlandnorth",
       "switzerlandwest",
       "uksouth",
       "ukwest",
       "westeurope",
-      "israelcentral",
-      "qatarcentral",
-      "uaecentral",
-      "uaenorth",
       "brazilsouth",
       "brazilsoutheast",
       "centralus",
@@ -154,7 +144,9 @@
       "westus2",
       "westus3",
       "canadacentral",
-      "canadaeast"
+      "canadaeast",
+      "centraluseuap",
+      "eastus2euap"
     ],
     "world_aws": [
       "af-south-1",
