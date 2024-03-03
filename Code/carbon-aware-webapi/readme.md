@@ -71,9 +71,19 @@ Optional(Can be skipped, as the code provides the token for the test):
 Also available via Python or postman, etc. Listed below are the terminal codes.
 It may fail the first time you run it, run it again.
 
-### Emissions
+###  Single Location Emissions 
 ```
+curl "http://localhost:5073/emissions/bylocation?location=westus&time=2022-08-23&toTime=2022-08-24"
 curl "http://localhost:5073/emissions/bylocation?location=westus&time=2022-08-23T14%3A00&toTime=2022-08-23T14%3A30"
+```
+###  Multiple Location Emissions
+```
+curl "http://localhost:5073/emissions/bylocations?location=eastus&location=westus&time=2022-05-01&toTime=2022-05-02"
+curl "http://localhost:5073/emissions/bylocations?location=eastus&location=westus&time=2022-05-01T14%3A00&toTime=2022-05-02T14%3A30"
+```
+### Best
+```
+curl "http://localhost:5073/emissions/bylocations/best?location=westus&location=eastus&location=westus3&time=2021-03-19&toTime=2021-03-20"
 ```
 ### Forecasts
 ```
