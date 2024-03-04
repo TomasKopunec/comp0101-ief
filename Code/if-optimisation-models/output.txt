@@ -15028,3 +15028,1943 @@ tree:
           diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png
 [The output is saved in results/performance_sci_carbon4_2024-03-04-T14-08-49.yml]
 Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-18-49.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-18-49.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-18-49.yml
+[2024-03-04 02:18:52.395 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.23s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-18-49.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-19-02.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-02.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-02.yml
+[2024-03-04 02:19:05.000 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.22s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-19-02.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-19-15.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-15.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-15.yml
+[2024-03-04 02:19:17.616 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.22s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-19-15.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-19-27.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-27.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-27.yml
+[2024-03-04 02:19:30.251 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.19s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-19-27.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-19-40.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-40.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-40.yml
+[2024-03-04 02:19:42.860 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.20s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-19-40.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-19-52.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-52.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-19-52.yml
+[2024-03-04 02:19:55.501 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.20s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-19-52.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-20-05.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-05.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-05.yml
+[2024-03-04 02:20:08.177 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.22s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-20-05.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-20-18.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-18.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-18.yml
+[2024-03-04 02:20:20.774 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.19s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-20-18.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-20-30.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-30.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-30.yml
+[2024-03-04 02:20:33.406 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.20s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-20-30.yml]
+Done
+--manifest=examples/performance_sci.yml
+--output=results/performance_sci_2024-03-04-T14-20-43.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-43.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci.yml --output results/performance_sci_2024-03-04-T14-20-43.yml
+[2024-03-04 02:20:45.964 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+Done in 0.19s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+      outputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          carbon: 5.02
+          sci: 15.06
+[The output is saved in results/performance_sci_2024-03-04-T14-20-43.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-20-56.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-20-56.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-20-56.yml
+[2024-03-04 02:20:58.641 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:20:58.667 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.31s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: ca51523b-e963-4c07-8ce0-e201bdabe3ee
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: ca51523b-e963-4c07-8ce0-e201bdabe3ee
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: ca51523b-e963-4c07-8ce0-e201bdabe3ee
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-20-56.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-21-08.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-08.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-08.yml
+[2024-03-04 02:21:11.376 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:21:11.402 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.27s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: c5e26a40-35c3-462c-aae3-9b358c3ba2ea
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: c5e26a40-35c3-462c-aae3-9b358c3ba2ea
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: c5e26a40-35c3-462c-aae3-9b358c3ba2ea
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-21-08.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-21-21.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-21.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-21.yml
+[2024-03-04 02:21:24.095 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:21:24.121 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.30s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: 55ff5639-3bdc-4faa-ad66-43ff86926231
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 55ff5639-3bdc-4faa-ad66-43ff86926231
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 55ff5639-3bdc-4faa-ad66-43ff86926231
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-21-21.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-21-34.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-34.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-34.yml
+[2024-03-04 02:21:36.775 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:21:36.802 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.27s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: 4369e5fc-757f-4c46-9d2f-3386f2aa29c8
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 4369e5fc-757f-4c46-9d2f-3386f2aa29c8
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 4369e5fc-757f-4c46-9d2f-3386f2aa29c8
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-21-34.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-21-46.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-46.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-46.yml
+[2024-03-04 02:21:49.486 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:21:49.514 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.29s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: 40006950-35cc-4dad-bef0-51dd8763613a
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 40006950-35cc-4dad-bef0-51dd8763613a
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 40006950-35cc-4dad-bef0-51dd8763613a
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-21-46.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-21-59.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-59.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-21-59.yml
+[2024-03-04 02:22:02.159 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:22:02.185 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.27s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: b0c1c4e2-789f-47c9-9ad4-3121b58bdf30
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: b0c1c4e2-789f-47c9-9ad4-3121b58bdf30
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: b0c1c4e2-789f-47c9-9ad4-3121b58bdf30
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-21-59.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-22-12.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-12.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-12.yml
+[2024-03-04 02:22:14.797 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:22:14.824 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.29s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: 95feba05-78bb-4b0d-b5db-4c21c21bfdc5
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 95feba05-78bb-4b0d-b5db-4c21c21bfdc5
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 95feba05-78bb-4b0d-b5db-4c21c21bfdc5
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-22-12.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-22-24.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-24.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-24.yml
+[2024-03-04 02:22:27.512 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:22:27.538 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.27s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: 282ca79d-4207-40bf-94b2-04db41c4b3d0
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 282ca79d-4207-40bf-94b2-04db41c4b3d0
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 282ca79d-4207-40bf-94b2-04db41c4b3d0
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-22-24.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-22-37.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-37.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-37.yml
+[2024-03-04 02:22:40.266 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:22:40.292 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.29s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: 908e4e40-8008-4f69-b0e7-d9c59915647e
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 908e4e40-8008-4f69-b0e7-d9c59915647e
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: 908e4e40-8008-4f69-b0e7-d9c59915647e
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-22-37.yml]
+Done
+--manifest=examples/performance_sci_low_util_target.yml
+--output=results/performance_sci_low_util_target_2024-03-04-T14-22-50.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-50.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/if --manifest examples/performance_sci_low_util_target.yml --output results/performance_sci_low_util_target_2024-03-04-T14-22-50.yml
+[2024-03-04 02:22:52.914 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+[32m[39m
+
+
+[2024-03-04 02:22:52.940 PM] [33mwarn[39m: 	[33m[39m
+[33m[!important][39m
+
+[33mYou are using plugins that are not part of the Impact Framework standard library. You should do your own research to ensure the plugins are up to date and accurate. They may not be actively maintained.  [39m
+[33m[39m
+
+
+Final total cost: 25.200000000000003, Price difference: 13.199999999999996, Price difference percentage: 34.374999999999986
+Done in 0.28s.
+[Output]
+name: sci-demo
+description: example invoking sci plugin
+tags: null
+initialize:
+  plugins:
+    sci:
+      path: '@grnsft/if-models'
+      method: Sci
+      global-config:
+        functional-unit-time: 5 minutes
+    right-sizing:
+      path: '@grnsft/if-optimisation-models'
+      method: RightSizingModel
+      global-config:
+        data-path: data/test-instances.json
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: Test_32_64
+      outputs:
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_16_16
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 16
+          output-id: bba22ddb-1178-42ac-8a57-000eb23e4c83
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_2_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: bba22ddb-1178-42ac-8a57-000eb23e4c83
+          price-change: Price decreased by 35%
+        - target-cpu-util: 90
+          timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 87.27
+          mem-util: 100
+          location: uksouth
+          cloud-instance-type: Test_4_8
+          carbon: 0.016733333333333333
+          sci: 0.050199999999999995
+          old-instance: Test_32_64
+          old-cpu-util: 60
+          old-mem-util: 50
+          total-memoryGB: 8
+          output-id: bba22ddb-1178-42ac-8a57-000eb23e4c83
+          price-change: Price decreased by 35%
+[The output is saved in results/performance_sci_low_util_target_2024-03-04-T14-22-50.yml]
+Done
