@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Check if two arguments are provided (impl and ompl files)
+# Check if two arguments are provided (impl and option)
 if [ "$#" -eq 2 ]; then
     option="$2"
 elif [ "$#" -eq 1 ]; then

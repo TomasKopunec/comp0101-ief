@@ -33,7 +33,7 @@ Optional(Can be skipped, as the code provides the token for the test):
 
 1. git clone https://github.com/Green-Software-Foundation/carbon-aware-sdk.git
 2. Open VSCode and Docker
-3. Open VSCode Command Palette: (Linux/Windows: `ctrl + shift + P`, MacOS: `cmd + shift + P`), and run the command: `Dev Containers: Open Folder in Container` to open carbon-aware-sdk folder you just cloned (Starting Dev Container for the first time will take a while)
+3. Open VSCode Command Palette: (Linux/Windows: `ctrl + shift + P`, MacOS: `cmd + shift + P`), and run the command: `Dev Containers: Open Folder in Container` to open carbon-aware-sdk (Starting Dev Container for the first time will take a while)
 4. Change directory to: `cd src/CarbonAware.WebApi/src`
 5. Replace the appsettings.json file with the following
 ```
@@ -71,14 +71,32 @@ Optional(Can be skipped, as the code provides the token for the test):
 Also available via Python or postman, etc. Listed below are the terminal codes.
 It may fail the first time you run it, run it again.
 
-### Emissions
+###  Single Location Emissions 
 ```
+curl "http://localhost:5073/emissions/bylocation?location=westus&time=2022-08-23&toTime=2022-08-24"
 curl "http://localhost:5073/emissions/bylocation?location=westus&time=2022-08-23T14%3A00&toTime=2022-08-23T14%3A30"
+```
+###  Multiple Location Emissions
+```
+curl "http://localhost:5073/emissions/bylocations?location=eastus&location=westus&time=2022-05-01&toTime=2022-05-02"
+curl "http://localhost:5073/emissions/bylocations?location=eastus&location=westus&time=2022-05-01T14%3A00&toTime=2022-05-02T14%3A30"
+```
+### Best
+```
+curl "http://localhost:5073/emissions/bylocations/best?location=westus&location=eastus&location=westus3&time=2021-03-19&toTime=2021-03-20"
 ```
 ### Forecasts
 ```
 curl "http://localhost:5073/emissions/forecasts/current?location=westus"
 ```
+
+## Locations.json
+1. italynorth, Polandcentral, Israelcentral, and Qatarcentral: These 4 locations api will return "Unknown Location: 'xxx' not found.
+2. uaecentral, uaenorth: These 2 locations api can't return anything.
+
+## Download emissions_data.json
+Prerequisites: install Git Large File Storage, See [Installation Guide](https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md)<br />
+Because emissions_data.json is a file over 100mb, the following code needs to be executed to download it  `git lfs pull`
 
 ## More
 The python script here is just a simple demonstration, a more scientific approach would be to go through the default Calling the Web API via client libraries of this docus: https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/docs/quickstart.md.

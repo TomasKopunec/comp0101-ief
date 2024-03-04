@@ -1,0 +1,36 @@
+./overhead.sh performance_sci performance_sci_visualizer_simple
+Average time taken for command 1: 2594 milliseconds
+Average time taken for command 2: 3552 milliseconds
+Time difference of averages: 958 milliseconds
+Percentage change: 36%
+
+
+./overhead.sh performance_sci performance_sci_visualizer_csv
+Average time taken for command 1: 2713 milliseconds
+Average time taken for command 2: 3623 milliseconds
+Time difference of averages: 910 milliseconds
+Percentage change: 33%
+
+./overhead.sh performance_sci performance_sci_carbon2
+Average time taken for command 1: 2594 milliseconds
+Average time taken for command 2: 5323 milliseconds
+Time difference of averages: 2729 milliseconds
+Percentage change: 105%
+
+./overhead.sh performance_sci performance_sci_carbon3
+Average time taken for command 1: 2590 milliseconds
+Average time taken for command 2: 5622 milliseconds
+Time difference of averages: 3032 milliseconds
+Percentage change: 117%
+
+/overhead.sh performance_sci performance_sci_carbon5
+Average time taken for command 1: 2645 milliseconds
+Average time taken for command 2: 3959 milliseconds
+Time difference of averages: 1314 milliseconds
+Percentage change: 49%
+
+
+Average time taken for command 1: 2706 milliseconds
+Average time taken for command 2: 6777 milliseconds
+Time difference of averages: 4071 milliseconds
+Percentage change: 150%
