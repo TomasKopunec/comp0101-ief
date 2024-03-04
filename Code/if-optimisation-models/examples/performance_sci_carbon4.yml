@@ -1,0 +1,54 @@
+name: sci-demo
+description: example invoking sci plugin
+tags:
+initialize:
+  plugins:
+    sci:
+      method: Sci
+      path: '@grnsft/if-models'
+      global-config:
+        functional-unit-time: '5 minutes'
+    carbon-aware-advisor:
+      method: CarbonAwareAdvisor
+      path: "@grnsft/if-optimisation-models"
+    plotter:
+      method: Shell
+      path: "@grnsft/if-models"
+      global-config:
+        command: 'python3 ./src/lib/plotter/plotter'
+        
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - carbon-aware-advisor
+        - plotter
+      defaults:
+        allowed-locations:  ['northeurope','eastus','westus']
+        allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
+            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
+          ]
+        sampling: 10
+        command: 'python3 ./src/lib/plotter/plotter'
+        x_name:  [location,time]
+        y_name: score
+        colour: green
+        diagram_name: demo
+        x_axis_name: Date and Location
+        y_axis_name: Carbon score
+        diagram_title: Carbon score in relation to time and location (ascending)
+        graph_type: line # bar line or scatter
+      config:
+        sci:
+          functional-unit: requests # factor to convert per time to per f.unit
+                 
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          

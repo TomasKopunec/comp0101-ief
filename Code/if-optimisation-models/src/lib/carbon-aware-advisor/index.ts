@@ -16,7 +16,7 @@ interface EmissionsData {
   duration: string;
 }
 // Make sure you have the 'qs' library installed
-export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
+export const CarbonAwareAdvisor = (): PluginInterface => {
 
   const metadata = {
     kind: 'execute'

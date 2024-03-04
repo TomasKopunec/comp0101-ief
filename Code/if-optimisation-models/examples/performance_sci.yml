@@ -1,0 +1,24 @@
+name: sci-demo
+description: example invoking sci plugin
+tags:
+initialize:
+  plugins:
+    sci:
+      method: Sci
+      path: '@grnsft/if-models'
+      global-config:
+        functional-unit-time: '5 minutes'
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+      config:
+        sci:
+          functional-unit: requests # factor to convert per time to per f.unit
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
