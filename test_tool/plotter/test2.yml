@@ -1,0 +1,9 @@
+command: 'python3 ./src/lib/plotter/plotter'
+y_name: graph.carbon
+colour: red
+diagram_name: results/test2
+x_axis_name: Date
+y_axis_name: Carbon
+diagram_title: Carbon Emission per Date for graph.carbon
+graph_type: scatter   
+csv_path: '../../Code/if-optimisation-models/helper2.csv'

@@ -13,7 +13,7 @@ tree:
         command: 'python3 ./src/lib/plotter/plotter'
         y_name: graph.carbon
         colour: red
-        diagram_name: ../Test_diagram2
+        diagram_name: ../../test_tool/plotter/results/test2_if
         x_axis_name: Date
         y_axis_name: Carbon
         diagram_title: Carbon Emission per Date for graph.carbon
