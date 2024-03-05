@@ -17,6 +17,8 @@ initialize:
     plotter:
       method: Shell
       path: "@grnsft/if-models"
+      global-config:
+        command: 'python3 ./src/lib/plotter/plotter'
 tree:
   children:
     child0:
@@ -24,7 +26,6 @@ tree:
         - carbon-aware-advisor
         - plotter
       defaults:
-        command: 'python3 ./src/lib/visualizer/plotter'
         x_name:  [location,time]
         y_name: score
         colour: yellow

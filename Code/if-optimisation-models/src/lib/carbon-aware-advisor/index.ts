@@ -93,6 +93,7 @@ export const CarbonAwareAdvisor =async  (params: ConfigParams): Promise<PluginIn
   const calculate = async (inputs: PluginParams[]): Promise<PluginParams[]> =>{
     //depending on if we have sampling or not the result map that will be returned will be different. 
     //if hassampling =true then we need plotted points as well
+      
     let results: PluginParams[] = []
     if (hasSampling) {
       results = inputs.map(input => ({
@@ -416,6 +417,7 @@ export const CarbonAwareAdvisor =async  (params: ConfigParams): Promise<PluginIn
     if (params && params['sampling'] !== undefined) {
       const sample = params['sampling'];
       // Further processing with locs
+      console.log('`sampling` provided:', sample);
       validateSampling(sample);
     } else {
         console.log('`sampling` is undefined, and thus will not be used.');
@@ -429,9 +431,11 @@ export const CarbonAwareAdvisor =async  (params: ConfigParams): Promise<PluginIn
   * @throws InputValidationError if the sampling parameter is invalid and stops the execution of the model.
   * @returns void
   */
-  const validateSampling = (sampling: any): void => {
-    // Check if sampling is a positive number  
-    const hasSampling = sampling > 0;
+  const validateSampling = (sample: any): void => {
+    // Check if sampling is a positive number  and populate the global params hasSampling and sampling
+    hasSampling = sample > 0;
+    sampling =sample;
+    
   
     if (!hasSampling || typeof sampling !== 'number' || sampling <= 0) {
       console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
