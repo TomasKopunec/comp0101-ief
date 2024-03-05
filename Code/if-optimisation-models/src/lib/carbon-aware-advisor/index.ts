@@ -32,8 +32,8 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * The arguments are stored in a set to avoid duplicates.
    * the actual locations will populate this set during execution after certain checks
    */
- 
-   let allowedLocations: Set<string> = new Set();
+
+  let allowedLocations: Set<string> = new Set();
 
   /**
    * Allowed timeframe parameter that is passed in the config of the model.
@@ -49,7 +49,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    */
   let supportedLocations: Set<string> = new Set();
   // Use for read from locations.json . We need to be careful when we commit to the impact framework dir for this path
-  let locationsFilePath = path.join(process.cwd(),'src', 'lib', 'carbon-aware-advisor', 'locations.json');
+  let locationsFilePath = path.join(process.cwd(), 'src', 'lib', 'carbon-aware-advisor', 'locations.json');
 
 
   //flag to check if the model has sampling, the sampling value is originally set to 0
@@ -63,38 +63,36 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   //the weights must sum to 1
   const weights = [0.5, 0.5];
 
-  
+
   //Error builder function that is used to build error messages. 
   let errorBuilder = buildErrorMessage('CarbonAwareAdvisor');
 
 
+  /**
+  * this function is the main function of the model, it is called by the impl file
+  * it takes the inputs from the impl file and returns the results of the model
+  * it validates them that all the required parameters are provided and are of the correct type
+  * and then calls the calculate function to perform the actual calculations
+  * @param inputs the inputs from the impl file
+  * @returns the results of the model
+  */
+  const execute = async (inputs: PluginParams[]) => {
+    // await validateInputs(configs);
+    //echo that you are in the execute function
+    await validateInputs();
+    console.log('You are in the execute function');
+    //call the calculate function to perform the actual calculations
+    return await calculate(inputs);
+  }
 
-  
-    /**
-   * this function is the main function of the model, it is called by the impl file
-   * it takes the inputs from the impl file and returns the results of the model
-   * it validates them that all the required parameters are provided and are of the correct type
-   * and then calls the calculate function to perform the actual calculations
-   * @param inputs the inputs from the impl file
-   * @returns the results of the model
-   */ 
-    const execute= async (inputs: PluginParams[])=>{
-      // await validateInputs(configs);
-      //echo that you are in the execute function
-      await validateInputs();
-      console.log('You are in the execute function');
-      //call the calculate function to perform the actual calculations
-      return await calculate(inputs);
-    }
-
-   /**
-   * this is the function that performs all the api calls and returns the actual results, 
-   * it is the core of the CarbonAware Advisor model and it is called by the execute function
-   */
-  const calculate = async (inputs: PluginParams[]): Promise<PluginParams[]> =>{
+  /**
+  * this is the function that performs all the api calls and returns the actual results, 
+  * it is the core of the CarbonAware Advisor model and it is called by the execute function
+  */
+  const calculate = async (inputs: PluginParams[]): Promise<PluginParams[]> => {
     //depending on if we have sampling or not the result map that will be returned will be different. 
     //if hassampling =true then we need plotted points as well
-      
+
     let results: PluginParams[] = []
     if (hasSampling) {
       results = inputs.map(input => ({
@@ -114,7 +112,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     let BestData: any[] = [];
     let plotted_points: any[] = [];
     let AllBestData: any[] = [];
-    
+
     // We define a map averageScoresByLocation to find the average score for each location for the last lastDaysNumber days
     const averageScoresByLocation: { [key: string]: number | null } = {};
 
@@ -127,10 +125,10 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       // Store the average score in the dictionary with the location as the key
       averageScoresByLocation[location] = averageScore;
     }
-  
+
     //if we have sampling then calculate the allocations of the plotted points per timeframe
     const allocations: any[] = hasSampling ? calculateSubrangeAllocation(sampling) : [1];
-    
+
     //Print the allocations and the average scores by location
     console.log('Allocations:', allocations);
     console.log("Average Scores by Location:", averageScoresByLocation);
@@ -142,9 +140,9 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       //isForecast is a variable telling us if the current timeframe is in the future (meanin that there is no data from the APi for that timeframe)
       let isForecast = false;
       //numOfYears is a variable that tells us how many years we have gone in the past to find data for that forecast
-      let numOfYears=0;
+      let numOfYears = 0;
       let mutableTimeframe: Timeframe = timeframe;
-      while(true){
+      while (true) {
         // Prepare parameters for the API call
         const params = {
           location: locationsArray,
@@ -152,7 +150,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
           toTime: mutableTimeframe.to
         };
         //if params,time and params.toTime are before now we dont have a forecast
-        if(params.time < new Date().toISOString() && params.toTime < new Date().toISOString()){
+        if (params.time < new Date().toISOString() && params.toTime < new Date().toISOString()) {
 
           // Returns an array of all EmissionsData objects for that timeframe and locations
           let api_response = await getResponse("/emissions/bylocations", 'GET', params);
@@ -160,7 +158,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
             console.log(`API call succeeded for timeframe starting at ${timeframe.from} `);
             //if the api call is a forecast then we need to normalize the values to change the year and the rating
             //for example if we made a forecat for 2025 and we are in 2023 then we need to adjust the year back to 2025 and the rating based on the weights
-            if(isForecast){
+            if (isForecast) {
               api_response = adjustRatingsAndYears(api_response, numOfYears, averageScoresByLocation);
             }
             //the minRating is the rating from the EmissionsData  of the response that is the lowest
@@ -168,17 +166,17 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
 
             // here we find all the EmissionsData objects from the response that have the lowest rating
             const itemsWithMinRating = api_response.filter((item: EmissionsData) => item.rating === minRating);
-            
+
             // We store  that  EmissionsData objects from the response that have the lowest rating
-            BestData = BestData.concat(itemsWithMinRating); 
+            BestData = BestData.concat(itemsWithMinRating);
 
             //if we have sampling then we need to store the one (at random) of the minimum EmissionsData objects to be returned in the plotted points
             const randomIndex = Math.floor(Math.random() * itemsWithMinRating.length);
-            plotted_points.push(itemsWithMinRating[randomIndex]); 
+            plotted_points.push(itemsWithMinRating[randomIndex]);
 
             // All of the EmissionsData objects from the response that have the lowest rating are stored in AllBestData, where the best of all api calls will be stored
             AllBestData = [...AllBestData, ...itemsWithMinRating];
-            
+
             //if hasSampling is true  then we need more than the best value, we need some extra values to be returned in the plotted points (as many as the allocation says)
             if (hasSampling) {
               //remove from best array all the elements that are in itemsWithMinRating, we have already stored one of them
@@ -189,12 +187,12 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
                 const randIndex = Math.floor(Math.random() * api_response.length);
                 plotted_points.push(api_response.splice(randIndex, 1)[0]);
               }
-          }
+            }
             break; // Break the loop if we have found data for the current timeframe and locations and search for the next timeframe
           }
         }
         //if we have reached this part of the code then that means that for this timeframe we are forecasting
-        isForecast = true; 
+        isForecast = true;
         // Adjust timeframe by decreasing the year by one to do an API call for the previous year the enxt time
         mutableTimeframe = await adjustTimeframeByOneYear(mutableTimeframe);
         //increase the numOfYears we have gone in the past by 1
@@ -202,9 +200,9 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
         if (numOfYears > 5) {// if you cant find any data 5 years in the past then stop searching
           break;
         }
-      }  
+      }
     }
-    
+
     // In the AllBestData we have the best values from all the api calls (so for each timeframe), we need to return the best of the best.
     const lowestRating = Math.min(...AllBestData.map(item => item.rating));
     // Filter all responses to get items with the lowest rating (i.e. the best responses)
@@ -232,7 +230,6 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     return results;
   }
 
-
   /**
   * this function adjusts the ratings and years of the forecasted data
   * it takes the forecasted data, the number of years to add and the average scores by location
@@ -252,7 +249,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       //if the average rating is null then we dont have data for the last 10 days for that location
       //and we will base the rating only on the old value (not normalise based on the last 10 days average rating)
       //adjust the rating of this location based on the weights
-      const adjustedRating = averageRating !== null ? (data.rating*weights[0] + averageRating*weights[1])  : data.rating; // Handle null values
+      const adjustedRating = averageRating !== null ? (data.rating * weights[0] + averageRating * weights[1]) : data.rating; // Handle null values
       //create the new date by making the year equal to the year of the forecast(by adding the years we have gone in the past)
       const time = new Date(data.time);
       time.setFullYear(time.getFullYear() + yearsToAdd);
@@ -267,7 +264,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * @returns The adjusted timeframe which is one year in the past
    * we need this function to adjust the timeframe if the timeframe is in the future and we need to perform an api call in the past
    */
-  const adjustTimeframeByOneYear= (timeframe: Timeframe): Timeframe => {
+  const adjustTimeframeByOneYear = (timeframe: Timeframe): Timeframe => {
     // Adjust the year of the timeframe by decreasing it by one
     const adjustYear = (dateString: string): string => {
       const date = new Date(dateString);
@@ -286,19 +283,19 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * the supported locations are the locations that the model can perform api calls for
    * but also include key word regions (such as europe) that are sets of multiple locations
    */
-  const setSupportedLocations= async(): Promise<void> =>{
+  const setSupportedLocations = async (): Promise<void> => {
     // Get the list of supported locations from the locarions.json file
-      const localData = await loadLocations(); 
-      // For each region in localData,  and the locations of that region to the set of supported locations
-      Object.keys(localData).forEach(key => {
-          const locationsArray = localData[key];
-          locationsArray.forEach((location: string) => {
-            // Add each server to the set of supported locations
-              supportedLocations.add(location);   
-          });
-          // Add each region itself to the set of supported locations
-          supportedLocations.add(key);
+    const localData = await loadLocations();
+    // For each region in localData,  and the locations of that region to the set of supported locations
+    Object.keys(localData).forEach(key => {
+      const locationsArray = localData[key];
+      locationsArray.forEach((location: string) => {
+        // Add each server to the set of supported locations
+        supportedLocations.add(location);
       });
+      // Add each region itself to the set of supported locations
+      supportedLocations.add(key);
+    });
   }
 
   /**
@@ -368,12 +365,12 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * @param inputs The inputs provided by the user.
    * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
    */
-  const  validateInputs = async () => {
+  const validateInputs = async () => {
     console.log('Input validation: ', JSON.stringify(params, null, 2));
     if (params === undefined) {
       throwError(InputValidationError, 'Required Parameters not provided');
     }
-    
+
     await setSupportedLocations(); // Set the supported locations based on the locations.json file to see if the locations we got as inputs are among them
     validateParams(); // Validate params
     console.log('Validation complete.')
@@ -388,14 +385,15 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   const validateParams = () => {
     //print the params received from the impl file for debugging puproses
     //console.log("The params received from the impl:",JSON.stringify(params));
-    
+
     // Check if the 'allowed-locations' property exists in the impl file
     if (params && params['allowed-locations'] !== undefined) {
-        const locs = params['allowed-locations'];
-        // validate that the locations are corect
-        validateLocations(locs);}
-     else {
-        throwError(InputValidationError, `Required Parameter allowed-locations not provided`);
+      const locs = params['allowed-locations'];
+      // validate that the locations are corect
+      validateLocations(locs);
+    }
+    else {
+      throwError(InputValidationError, `Required Parameter allowed-locations not provided`);
     }
     // Check if the 'allowed-timeframes' property exists in the impl file
     if (params && params['allowed-timeframes'] !== undefined) {
@@ -403,7 +401,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       // validate that the timeframes are correct
       validateTimeframes(times);
     } else {
-        throwError(InputValidationError, `Required Parameter allowed-timeframes not provided`);
+      throwError(InputValidationError, `Required Parameter allowed-timeframes not provided`);
     }
 
     // Check if the 'sampling' property exists in the impl file
@@ -413,23 +411,22 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       console.log('`sampling` provided:', sample);
       validateSampling(sample);
     } else {
-        console.log('`sampling` is undefined, and thus will not be used.');
+      console.log('`sampling` is undefined, and thus will not be used.');
     }
-};
+  };
 
-   
- /**
-  * Validate the sampling parameter to make sure that it is a positive number.
-  * @param sampling The sampling parameter provided by the user.
-  * @throws InputValidationError if the sampling parameter is invalid and stops the execution of the model.
-  * @returns void
-  */
+  /**
+   * Validate the sampling parameter to make sure that it is a positive number.
+   * @param sampling The sampling parameter provided by the user.
+   * @throws InputValidationError if the sampling parameter is invalid and stops the execution of the model.
+   * @returns void
+   */
   const validateSampling = (sample: any): void => {
     // Check if sampling is a positive number  and populate the global params hasSampling and sampling
     hasSampling = sample > 0;
-    sampling =sample;
-    
-  
+    sampling = sample;
+
+
     if (!hasSampling || typeof sampling !== 'number' || sampling <= 0) {
       console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
     }
@@ -446,7 +443,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     if (!Array.isArray(locs) || locs.length === 0) {
       throwError(InputValidationError, `Required Parameter 'allowed-locations' is empty`);
     }
-  
+
     locs.forEach((location: string) => {
       //check that the locations in the impl are some of the supported locations
       if (!supportedLocations.has(location)) {
@@ -454,7 +451,6 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       }
       allowedLocations.add(location); // populate the global set of allowedLocations
     });
-
   };
 
   /**
@@ -465,7 +461,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   * @returns void
   */
   const validateTimeframes = (timeframes: any): void => {
-    
+
     if (!Array.isArray(timeframes) || timeframes.length === 0) {
       throwError(InputValidationError,
         `Required Parameter allowed-timeframes is empty`);
@@ -491,7 +487,6 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     });
   }
 
-  
   /**
    * this function calculates the allocation of the samples to the timeframes
    * there must be at least one sample per timeframe
@@ -501,7 +496,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * in order to have a unifrom distribution of the samples 
    * (for example if one timeframe is very long we will select more samples from it than from a shorter timeframe)
    */
-  const calculateSubrangeAllocation = (sampling: number) =>{
+  const calculateSubrangeAllocation = (sampling: number) => {
     //if samples < number of timeframes then an error is thrown
     const timeframesCount = allowedTimeframes.size;
     if (sampling < timeframesCount) {
@@ -551,7 +546,6 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     return allocations;
   }
 
-  
   /**
    * this function throws an error of a specific type and message
    * @param type the type of the error
@@ -559,15 +553,15 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * @throws the error of the specific type and message
    * @returns void
    */
-  const throwError= (type: ErrorConstructor, message: string) =>{
+  const throwError = (type: ErrorConstructor, message: string) => {
     throw new type(errorBuilder({ message }));
   }
-  
+
   /**
    * this function loads the locations from the locations.json file
    * @returns the locations object from the locations.json file
    */
-  const loadLocations= async () => {
+  const loadLocations = async () => {
     try {
       //get the data from the locations.json file
       const data = await fsPromises.readFile(locationsFilePath, 'utf-8');
@@ -578,21 +572,20 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     }
   }
 
-
-   /**
-   * Calculates the average score for a given location over the last days days.
-   * 
-   * @param days The number of days to look back from the current date.
-   * @param location The location for which to calculate the average score.
-   * @returns The average score for the specified location over the last days days.
-   */
-  const getAverageScoreForLastXDays = async (days: number, location: string): Promise<number | null> =>{
+  /**
+  * Calculates the average score for a given location over the last days days.
+  * 
+  * @param days The number of days to look back from the current date.
+  * @param location The location for which to calculate the average score.
+  * @returns The average score for the specified location over the last days days.
+  */
+  const getAverageScoreForLastXDays = async (days: number, location: string): Promise<number | null> => {
     // Calculate the start date by subtracting days number of days from the current date
     const toTime = new Date();
     const time = new Date(toTime.getTime() - days * 24 * 60 * 60 * 1000);
     //print the start and finish time
-    console.log('Start time for the average score of the last:',days,'number of days is: ', time.toISOString());
-    console.log('Finish time for the average score of the last:',days,'number of days is: ',toTime.toISOString());
+    console.log('Start time for the average score of the last:', days, 'number of days is: ', time.toISOString());
+    console.log('Finish time for the average score of the last:', days, 'number of days is: ', toTime.toISOString());
     // Prepare parameters for the API call
     const params = {
       location: location,
@@ -603,7 +596,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     try {
       // Make the API call to retrieve emissions data for the last 10 days for the specified location
       const response = await getResponse('/emissions/bylocations', 'GET', params);
-      
+
       // Check if the response contains data
       if (response && response.length > 0) {
         // Calculate the average score from the response data
@@ -616,19 +609,18 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
         console.log('Returning null so potential issue if you perfom forecasting for this location');
         return null;
       }
-    } 
+    }
     catch (error) {
       console.error('Failed to retrieve emissions data:', error);
       throw error;
-    } 
+    }
   }
-
 
   // the CarbonAwareAdvisor returns the metadata and the execute function
   // so that eans that every time this model is run the execute function will be called
   return {
     metadata,
-    execute, 
+    execute,
     getAverageScoreForLastXDays
   };
 }
