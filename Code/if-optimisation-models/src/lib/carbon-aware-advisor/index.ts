@@ -8,7 +8,7 @@ import * as path from 'path';
 
 
 // Make sure you have the 'qs' library installed
-export const CarbonAwareAdvisor = async (params: ConfigParams): Promise<PluginInterface> => {
+export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   const { InputValidationError } = ERRORS; //used for exceptions
 
   interface EmissionsData { //interface for the emissions data returned by the API
@@ -81,6 +81,7 @@ export const CarbonAwareAdvisor = async (params: ConfigParams): Promise<PluginIn
     const execute= async (inputs: PluginParams[])=>{
       // await validateInputs(configs);
       //echo that you are in the execute function
+      await validateInputs();
       console.log('You are in the execute function');
       //call the calculate function to perform the actual calculations
       return await calculate(inputs);
@@ -367,22 +368,15 @@ export const CarbonAwareAdvisor = async (params: ConfigParams): Promise<PluginIn
    * @param inputs The inputs provided by the user.
    * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
    */
-  const  validateInputs = async (inputs: ConfigParams): Promise<void> => {
-    console.log('You are in the validateInputs function');
-    console.log('The inputs received from the impl:',JSON.stringify(inputs));
-    // Set the supported locations based on the locations.json file to see if the locations we got as inputs are among them
-    await setSupportedLocations();
-       
-    // First lets check that indeed inputs have been provided
-    if (inputs === undefined) {
+  const  validateInputs = async () => {
+    console.log('Input validation: ', JSON.stringify(params, null, 2));
+    if (params === undefined) {
       throwError(InputValidationError, 'Required Parameters not provided');
     }
-       
-
-    //now that we have set the supported locations and he have checked that some inputs are provided
-    //we can call the fucntion to validate those inputs
-    validateParams(inputs);
-        
+    
+    await setSupportedLocations(); // Set the supported locations based on the locations.json file to see if the locations we got as inputs are among them
+    validateParams(); // Validate params
+    console.log('Validation complete.')
   };
 
   /**
@@ -391,7 +385,7 @@ export const CarbonAwareAdvisor = async (params: ConfigParams): Promise<PluginIn
    * @param params The inputs provided by the user in the impl file
    * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
    */
-  const validateParams = async (params: ConfigParams): Promise<void> => {
+  const validateParams = () => {
     //print the params received from the impl file for debugging puproses
     //console.log("The params received from the impl:",JSON.stringify(params));
     
@@ -628,10 +622,10 @@ export const CarbonAwareAdvisor = async (params: ConfigParams): Promise<PluginIn
       throw error;
     } 
   }
-  //first we validate the inuts and then we return the metadata and the execute function
-  await validateInputs(params);
+
+
   // the CarbonAwareAdvisor returns the metadata and the execute function
-  //so that eans that every time this model is run the execute function will be called
+  // so that eans that every time this model is run the execute function will be called
   return {
     metadata,
     execute, 
