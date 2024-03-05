@@ -11,6 +11,12 @@ initialize:
     carbon-aware-advisor:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
+      global-config:
+        allowed-locations:  ['northeurope','eastus']
+        allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z"
+          ]
+        sampling: 3
         
 tree:
   children:
@@ -18,12 +24,6 @@ tree:
       pipeline:
         - sci
         - carbon-aware-advisor
-      defaults:
-        allowed-locations:  ['northeurope','eastus']
-        allowed-timeframes: [
-            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z"
-          ]
-        sampling: 3
       config:
         sci:
           functional-unit: requests # factor to convert per time to per f.unit
