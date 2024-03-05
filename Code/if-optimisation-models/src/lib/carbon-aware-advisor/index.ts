@@ -1,202 +1,223 @@
 import axios from 'axios';
 import { PluginInterface } from '../../interfaces';
-import { ConfigParams, PluginParams } from '../../types/common';
-
+import { PluginParams } from '../../types/common';
 import { buildErrorMessage } from '../../util/helpers';
 import { ERRORS } from '../../util/errors';
-
 import { promises as fsPromises } from 'fs';
 import * as path from 'path';
 
-const { InputValidationError } = ERRORS;
-interface EmissionsData {
-  location: string;
-  time: string;
-  rating: number;
-  duration: string;
-}
+
 // Make sure you have the 'qs' library installed
 export const CarbonAwareAdvisor = (): PluginInterface => {
+  const { InputValidationError } = ERRORS; //used for exceptions
 
-  const metadata = {
+  interface EmissionsData { //interface for the emissions data returned by the API
+    location: string;
+    time: string;
+    rating: number;
+    duration: string;
+  }
+
+  const metadata = {  //necessary metadata returrned by the new version of the impact engine interface
     kind: 'execute'
   };
+
   /**
    * Route to the carbon-aware-sdk API. Localhost for now.
    */
   const API_URL = "http://localhost:5073";
 
   /**
-   * Route to the carbon-aware-sdk API to get the list of supported locations.
-   * {@link https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/docs/carbon-aware-webapi.md#get-locations}
-   */
-  const LOCATIONS_ROUTE = "/locations";
-
-  /**
-   * Route to the carbon-aware-sdk API to get the forecast.
-   * {@link https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/docs/carbon-aware-webapi.md#get-emissionsforecastscurrent}
-   */
-  const FORECAST_ROUTE = "/emissions/forecasts/current";
-
-  /**
    * Allowed location parameter that is passed in the config of the model.
    * The arguments are stored in a set to avoid duplicates.
+   * the actual locations will populate this set during execution after certain checks
    */
-   const ALLOWED_LOCATIONS_PARAM_NAME = 'allowed-locations';
+ 
    let allowedLocations: Set<string> = new Set();
 
   /**
    * Allowed timeframe parameter that is passed in the config of the model.
    * The arguments are stored in a set to avoid duplicates.
+   * the actual timeframes will populate this set during execution after certain checks
    */
-  const ALLOWED_TIMEFRAMES_PARAM_NAME = 'allowed-timeframes';
   let allowedTimeframes: Set<Timeframe> = new Set();
 
   /**
    * List of all locations that are supported by the carbon-aware-sdk.
    * This is used to validate the inputs provided by the user.
-   * Initialized during configure() using the GET /locations API call.
+   * Initialized by reading the locations.json file in the setSupportedLocations() function.
    */
   let supportedLocations: Set<string> = new Set();
-  let hasSampling: boolean = false;
-  //number of last days to get average score
-  const lastDaysNumber: number = 10;
-  const weights = [0.5, 0.5];
-  let sampling: number = 0;
-  // Use for read from locations.json
+  // Use for read from locations.json . We need to be careful when we commit to the impact framework dir for this path
   let locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-aware-advisor', 'locations.json');
 
-  /**
-   * Error builder function that is used to build error messages.
-   */
+
+  //flag to check if the model has sampling, the sampling value is originally set to 0
+  let hasSampling: boolean = false;
+  let sampling: number = 0;
+
+  //number of last days to get average score
+  const lastDaysNumber: number = 10;
+
+  //weights for the forecasting, the first weight is that of the average of last 10 days and the second weight is that of the last available year on that date
+  //the weights must sum to 1
+  const weights = [0.5, 0.5];
+
+  
+  //Error builder function that is used to build error messages. 
   let errorBuilder = buildErrorMessage('CarbonAwareAdvisor');
 
 
-  //this is the function that performs all the api calls and returns the actual results, it is the core of the CarbonAware Advisor model
+    /**
+   * this function is the main function of the model, it is called by the impl file
+   * it takes the inputs from the impl file and returns the results of the model
+   * it validates them that all the required parameters are provided and are of the correct type
+   * and then calls the calculate function to perform the actual calculations
+   * @param inputs the inputs from the impl file
+   * @returns the results of the model
+   */ 
+    const execute= async (inputs: PluginParams[]): Promise<PluginParams[]>=>{
+      await validateInputs(inputs);
+      //echo that you are in the execute function
+      console.log('You are in the execute function');
+      //call the calculate function to perform the actual calculations
+      return await calculate(inputs);
+    }
+
+   /**
+   * this is the function that performs all the api calls and returns the actual results, 
+   * it is the core of the CarbonAware Advisor model and it is called by the execute function
+   */
   const calculate = async (inputs: PluginParams[]): Promise<PluginParams[]> =>{
-  // Initialize an empty array to hold all suggestions
-  // if this.hassampling =true then we need plotted points as well
+    //depending on if we have sampling or not the result map that will be returned will be different. 
+    //if hassampling =true then we need plotted points as well
     let results: PluginParams[] = []
     if (hasSampling) {
-    results = inputs.map(input => ({
-      ...input,
-      suggestions: [],
-      plotted_points: []
-    }));
-  }
-  else {
-    results = inputs.map(input => ({
-      ...input,
-      suggestions: []
-    }));
-  }
-  // Assuming inputs is an array of objects, and each object has a property 'allowed-locations' which is an array of location strings
-  const locationsArray = inputs.map(input => input['allowed-locations']).flat();
-  //print the locationsArray
-  // console.log('Locations:', locationsArray);
-    let byLocationsBestArr: any[] = [];
-    let bestArr: any[] = [];
-    let suggestedArr: any[] = [];
+      results = inputs.map(input => ({
+        ...input,
+        suggestions: [],
+        plotted_points: []
+      }));
+    }
+    else {
+      results = inputs.map(input => ({
+        ...input,
+        suggestions: []
+      }));
+    }
+    // create an array from the global locationsArray set that was populated during the validation of the inputs
+    const locationsArray = [...allowedLocations];
+    let BestData: any[] = [];
+    let plotted_points: any[] = [];
+    let AllBestData: any[] = [];
     
-  
-// Define the object with an index signature
-  const averageScoresByLocation: { [key: string]: number | null } = {};
-  // For each location, get the average score for the last lastDaysNumber days
-  //print the locationsArray
-  // console.log('Locations:', locationsArray);
-  for (const location of locationsArray) {
+    // We define a map averageScoresByLocation to find the average score for each location for the last lastDaysNumber days
+    const averageScoresByLocation: { [key: string]: number | null } = {};
 
-    console.log(`Getting average score for location ${location} over the last ${lastDaysNumber} days`);
-    // Get the average score for the location for lastDaysNumber days
-    const averageScore = await getAverageScoreForLastXDays(lastDaysNumber, location);
+    // For each location, get the average score for the last lastDaysNumber days
+    for (const location of locationsArray) {
+      console.log(`Getting average score for location ${location} over the last ${lastDaysNumber} days`);
+      // Get the average score for the location for lastDaysNumber days
+      const averageScore = await getAverageScoreForLastXDays(lastDaysNumber, location);
 
-    // Store the average score in the dictionary with the location as the key
-    averageScoresByLocation[location] = averageScore;
-  }
+      // Store the average score in the dictionary with the location as the key
+      averageScoresByLocation[location] = averageScore;
+    }
   
-  //if this.hasSampling is true then calculate the allocations
-  const allocations: any[] = hasSampling ? calculateSubrangeAllocation(sampling) : [1];
-  
-  console.log('Allocations:', allocations);
-  console.log("Average Scores by Location:", averageScoresByLocation);
-  // For each timeframe, get the best response from the API
+    //if we have sampling then calculate the allocations of the plotted points per timeframe
+    const allocations: any[] = hasSampling ? calculateSubrangeAllocation(sampling) : [1];
+    
+    //Print the allocations and the average scores by location
+    console.log('Allocations:', allocations);
+    console.log("Average Scores by Location:", averageScoresByLocation);
+
+    // For each timeframe, get the response from the API
     for (const [index, timeframe] of Array.from(allowedTimeframes).entries()) {
+      // Get the current allocation for that timeframe (how many plotted points we need to extract from that specific timeframe)
       const currAllocation = allocations[index] - 1;
+      //isForecast is a variable telling us if the current timeframe is in the future (meanin that there is no data from the APi for that timeframe)
       let isForecast = false;
+      //numOfYears is a variable that tells us how many years we have gone in the past to find data for that forecast
       let numOfYears=0;
       let mutableTimeframe: Timeframe = timeframe;
       while(true){
+        // Prepare parameters for the API call
         const params = {
           location: locationsArray,
           time: mutableTimeframe.from,
           toTime: mutableTimeframe.to
         };
-        //if params,time and params.toTime are before now
+        //if params,time and params.toTime are before now we dont have a forecast
         if(params.time < new Date().toISOString() && params.toTime < new Date().toISOString()){
 
-        // Returns an array of best EmissionsData objects
-        let best = await getResponse("/emissions/bylocations", 'GET', params);
-        if (best.length > 0) {
-          console.log(`API call succeeded for timeframe starting at ${timeframe.from} `);
-          //if the api call is a forecast then we need to normalize the values
-          if(isForecast){
-            best = adjustRatingsAndYears(best, numOfYears, averageScoresByLocation);
-          }
-          
-          const minRating = Math.min(...best.map((item: EmissionsData) => item.rating));
-
-          // Step 2: Filter the array to keep only items with the minimum rating
-          const itemsWithMinRating = best.filter((item: EmissionsData) => item.rating === minRating);
-          byLocationsBestArr = byLocationsBestArr.concat(itemsWithMinRating); // Store minimum response items
-          const randomIndex = Math.floor(Math.random() * itemsWithMinRating.length);
-          bestArr.push(itemsWithMinRating[randomIndex]); // Store a random best response
-          // add all of the items in itemsWithMinRating to the suggestedArr
-          suggestedArr = [...suggestedArr, ...itemsWithMinRating];
-          
-          //if this.hasSampling is true  then we need more than the best value
-          if (hasSampling) {
-            //remove from best array all the elements that are in itemsWithMinRating
-            best = best.filter((item: EmissionsData) => !itemsWithMinRating.includes(item));
-            //select currAllocation eleemnets at random from the best array
-            //and add them to the bestArr
-            for (let i = 0; i < currAllocation; i++) {
-              const randIndex = Math.floor(Math.random() * best.length);
-              bestArr.push(best.splice(randIndex, 1)[0]);
+          // Returns an array of all EmissionsData objects for that timeframe and locations
+          let api_response = await getResponse("/emissions/bylocations", 'GET', params);
+          if (api_response.length > 0) {
+            console.log(`API call succeeded for timeframe starting at ${timeframe.from} `);
+            //if the api call is a forecast then we need to normalize the values to change the year and the rating
+            //for example if we made a forecat for 2025 and we are in 2023 then we need to adjust the year back to 2025 and the rating based on the weights
+            if(isForecast){
+              api_response = adjustRatingsAndYears(api_response, numOfYears, averageScoresByLocation);
             }
+            //the minRating is the rating from the EmissionsData  of the response that is the lowest
+            const minRating = Math.min(...api_response.map((item: EmissionsData) => item.rating));
+
+            // here we find all the EmissionsData objects from the response that have the lowest rating
+            const itemsWithMinRating = api_response.filter((item: EmissionsData) => item.rating === minRating);
+            
+            // We store  that  EmissionsData objects from the response that have the lowest rating
+            BestData = BestData.concat(itemsWithMinRating); 
+
+            //if we have sampling then we need to store the one (at random) of the minimum EmissionsData objects to be returned in the plotted points
+            const randomIndex = Math.floor(Math.random() * itemsWithMinRating.length);
+            plotted_points.push(itemsWithMinRating[randomIndex]); 
+
+            // All of the EmissionsData objects from the response that have the lowest rating are stored in AllBestData, where the best of all api calls will be stored
+            AllBestData = [...AllBestData, ...itemsWithMinRating];
+            
+            //if hasSampling is true  then we need more than the best value, we need some extra values to be returned in the plotted points (as many as the allocation says)
+            if (hasSampling) {
+              //remove from best array all the elements that are in itemsWithMinRating, we have already stored one of them
+              api_response = api_response.filter((item: EmissionsData) => !itemsWithMinRating.includes(item));
+              //select currAllocation elemnets at random from the remaining items in the api_response array
+              //and add them to the plotted_points
+              for (let i = 0; i < currAllocation; i++) {
+                const randIndex = Math.floor(Math.random() * api_response.length);
+                plotted_points.push(api_response.splice(randIndex, 1)[0]);
+              }
+          }
+            break; // Break the loop if we have found data for the current timeframe and locations and search for the next timeframe
+          }
         }
-          break;
-        }
-      }
-        // Adjust timeframe by decreasing the year by one
+        //if we have reached this part of the code then that means that for this timeframe we are forecasting
+        isForecast = true; 
+        // Adjust timeframe by decreasing the year by one to do an API call for the previous year the enxt time
         mutableTimeframe = await adjustTimeframeByOneYear(mutableTimeframe);
-        //increase the numOfYears we have gone in the pastby 1
+        //increase the numOfYears we have gone in the past by 1
         numOfYears++;
         if(numOfYears > 5){// if you cant find any data 5 years in the past then stop searching
           break;
         }
-        //if we have reached this part of the code then that means that for this timeframe we are forecasting
-        isForecast = true; // Set flag since adjustment is needed
-      }
-      
-
+      }  
     }
     
-    // Find the lowest rating among all responses
-    const lowestRating = Math.min(...suggestedArr.map(item => item.rating));
-
+    // In the AllBestData we have the best values from all the api calls (so for each timeframe), we need to return the best of the best.
+    const lowestRating = Math.min(...AllBestData.map(item => item.rating));
     // Filter all responses to get items with the lowest rating (i.e. the best responses)
-    const lowestRatingItems = suggestedArr.filter(item => item.rating === lowestRating);
+    const finalSuggestions = AllBestData.filter(item => item.rating === lowestRating);
 
-    lowestRatingItems.forEach(async item => {
+    //for each suggestion create the results key suggestions to return  it to the impl file 
+    finalSuggestions.forEach(async item => {
       results[0].suggestions.push({
         'suggested-location': item.location,
         'suggested-timeframe': item.time,
         'suggested-score': item.rating
       });
     });
+
+    // if we have sampling in the result we return the plotted points as well which have samples from different timeframe and locations
     if (hasSampling) {
-      // Set plotted points (all responses from both API calls) if the sampling param has been defined
-      bestArr.forEach(async item => {
+      plotted_points.forEach(async item => {
         results[0].plotted_points.push({
           'location': item.location,
           'time': item.time,
@@ -206,19 +227,32 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
     }
     return results;
   }
-  //this function adjusts the ratings and years of the forecasted data
-  //it takes the forecasted data, the number of years to add and the average scores by location
-  //it returns the adjusted forecasted data
+
+
+  /**
+  * this function adjusts the ratings and years of the forecasted data
+  * it takes the forecasted data, the number of years to add and the average scores by location
+  * it returns the adjusted forecasted data 
+  @param emissionsData The emissions that need  to be adjustes.
+  @param yearsToAdd how many years in the future the forecast is
+  @param averageScoresByLocation the average scores by location for the last 10 days
+  */
   const adjustRatingsAndYears = (
     emissionsData: EmissionsData[], 
     yearsToAdd: number, 
     averageScoresByLocation: { [key: string]: number | null }
   ): EmissionsData[] => {
     return emissionsData.map(data => {
+      //get the average rating for the specific location
       const averageRating = averageScoresByLocation[data.location];
+      //if the average rating is null then we dont have data for the last 10 days for that location
+      //and we will base the rating only on the old value (not normalise based on the last 10 days average rating)
+      //adjust the rating of this location based on the weights
       const adjustedRating = averageRating !== null ? (data.rating*weights[0] + averageRating*weights[1])  : data.rating; // Handle null values
+      //create the new date by making the year equal to the year of the forecast(by adding the years we have gone in the past)
       const time = new Date(data.time);
       time.setFullYear(time.getFullYear() + yearsToAdd);
+      //return the adjusted data
       return { ...data, rating: adjustedRating, time: time.toISOString() };
     });
   }
@@ -226,15 +260,17 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
   /**
    * Adjust the timeframe by decreasing the year by one.
    * @param timeframe The timeframe to adjust.
-   * @returns The adjusted timeframe.
+   * @returns The adjusted timeframe which is one year in the past
+   * we need this function to adjust the timeframe if the timeframe is in the future and we need to perform an api call in the past
    */
   const adjustTimeframeByOneYear= (timeframe: Timeframe): Timeframe => {
+    // Adjust the year of the timeframe by decreasing it by one
     const adjustYear = (dateString: string): string => {
       const date = new Date(dateString);
       date.setFullYear(date.getFullYear() - 1);
       return date.toISOString();
     };
-
+    //return the adjusted timeframe by decreasing the year by one for the start of the timeframe and the end of the timeframe
     return {
       from: adjustYear(timeframe.from),
       to: adjustYear(timeframe.to),
@@ -242,29 +278,29 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
   }
 
   /**
-   * Send a request to the carbon-aware-sdk API to get the list of supported locations.
+   * Set the supported locations based on the locations.json file
+   * the supported locations are the locations that the model can perform api calls for
+   * but also include key word regions (such as europe) that are sets of multiple locations
    */
   const setSupportedLocations= async(): Promise<void> =>{
-    // Get the list of supported locations from the carbon-aware-sdk API
+    // Get the list of supported locations from the locarions.json file
       const localData = await loadLocations(); 
-      // console.log('Local Data:', localData);
-      // For each key in localData, add the key and its values to the set of supported locations
+      // For each region in localData,  and the locations of that region to the set of supported locations
       Object.keys(localData).forEach(key => {
           const locationsArray = localData[key];
           locationsArray.forEach((location: string) => {
             // Add each server to the set of supported locations
               supportedLocations.add(location);   
           });
-          // Add each region to the set of supported locations
+          // Add each region itself to the set of supported locations
           supportedLocations.add(key);
       });
-      // console.log('Supported Locations:', supportedLocations);
   }
 
   
   /**
    * Send a request to the carbon-aware-sdk API.
-   * @param route The route to send the request to.
+   * @param route The route to send the request to. We mostly use '/emissions/bylocations' to get the emissions data
    * @param method The HTTP method to use.
    * @param params The map of parameters to send with the request.
    * @returns The response from the API of any type.
@@ -286,27 +322,54 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
         }
       }).join('&');
     }
-
+    //the final url is the url of the api call we will be performing
     const finalUrl = `${url}${queryString ? '?' + queryString : ''}`;
     console.log(`Sending ${method} request to ${finalUrl}`);
 
-    return axios({
-      url: finalUrl,
-      method: method,
-    }).then((response) => {
-      return response.data;
-    }).catch((error) => {
-      console.error(error);
-      throwError(Error, error.message);
-    });
-  }
+    let attempts = 0;
+    const maxAttempts = 3; // Initial attempt + 2 retries if we get error 500 from the API
 
+    while (attempts < maxAttempts) {
+      try {
+        const response = await axios({
+          url: finalUrl,
+          method: method,
+        });
+        //if the api call is successful then return the data
+        return response.data;
+      } catch (error) {
+        //if we get an error from the api
+        attempts++;
+
+        // Use a type guard to check if the error is an AxiosError
+        if (axios.isAxiosError(error)) {
+          const axiosError = error;
+          console.error(axiosError.message);
+          //if we get error 500 then retry the api call up to 2 more times
+          if (axiosError.response && axiosError.response.status === 500 && attempts < maxAttempts) {
+            console.log(`Attempt ${attempts} failed with status 500. Retrying...`);
+          } else {
+            console.log()
+            throwError(Error, axiosError.message);
+          }
+        } else {
+          // If it's not an AxiosError, it might be some other error (like a network error, etc.)
+          throwError(Error, 'An unexpected error occurred');
+        }
+      }
+    }
+  };
+
+  /**
+   * Validate the inputs provided by the user to make sure that all required parameters are provided and are of the correct type.
+   * @param inputs The inputs provided by the user.
+   * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
+   */
   const  validateInputs = async (inputs: PluginParams[]): Promise<void> => {
+    // Set the supported locations based on the locations.json file to see if the locations we got as inputs are among them
     await setSupportedLocations();
-    validateParams(inputs)
-    console.log(JSON.stringify(inputs));
-
-    // Check null
+       
+    // First lets check that indeed inputs have been provided
     if (inputs === undefined) {
       throwError(InputValidationError, 'Required Parameters not provided');
     }
@@ -314,71 +377,145 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
     if (!Array.isArray(inputs)) {
       throwError(InputValidationError, 'Inputs must be an array');
     }
+
+    //now that we have set the supported locations and he have checked that some inputs are provided
+    //we can call the fucntion to validate those inputs
+    validateParams(inputs);
   }
 
-  const validateParams =(params: object | undefined): void => {
-    console.log(JSON.stringify(params));
-
-    // Check null
-    if (params === undefined) {
-      throwError(InputValidationError, 'Required Parameters not provided');
+  /**
+   * Validate the inputs provided by the user to make sure that all required parameters are provided and are of the correct type.
+   * Here we are sure that some inputs have been provided and we have set the supported locations
+   * @param params The inputs provided by the user in the impl file
+   * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
+   */
+  const validateParams = async (params: PluginParams[]): Promise<void> => {
+    //print the params received from the impl file for debugging puproses
+    //console.log("The params received from the impl:",JSON.stringify(params));
+    
+    // Check if the 'allowed-locations' property exists in the impl file
+    if (params[0] && params[0]['allowed-locations'] !== undefined) {
+        const locs = params[0]['allowed-locations'];
+        // validate that the locations are corect
+        validateLocations(locs);}
+     else {
+        throwError(InputValidationError, `Required Parameter allowed-locations not provided`);
     }
-    
+    // Check if the 'allowed-timeframes' property exists in the impl file
+    if (params[0] && params[0]['allowed-timeframes'] !== undefined) {
+      const times = params[0]['allowed-timeframes'];
+      // validate that the timeframes are correct
+      validateTimeframes(times);
+    } else {
+        throwError(InputValidationError, `Required Parameter allowed-timeframes not provided`);
+    }
 
-    // Parse parameters as map
-    const map = new Map(Object.entries(params!));
-    
+    // Check if the 'sampling' property exists in the impl file
+    if (params[0] && params[0]['sampling'] !== undefined) {
+      const sample = params[0]['sampling'];
+      // Further processing with locs
+      validateSampling(sample);
+    } else {
+        console.log('`sampling` is undefined, and thus will not be used.');
+    }
+};
+
    
-    validateLocations(map);
-    validateTimeframes(map);
-    validateSampling(map);
-  }
-
-  const validateSampling= (map: Map<string, any>): void =>{
-    sampling =  map.get('0')['sampling'];
-    hasSampling = sampling > 0; // Set the global flag based on the presence of 'sampling'
-
-    if (hasSampling && (typeof sampling !== 'number' || sampling <= 0)) {
+ /**
+  * Validate the sampling parameter to make sure that it is a positive number.
+  * @param sampling The sampling parameter provided by the user.
+  * @throws InputValidationError if the sampling parameter is invalid and stops the execution of the model.
+  * @returns void
+  */
+  const validateSampling = (sampling: any): void => {
+    // Check if sampling is a positive number  
+    const hasSampling = sampling > 0;
+  
+    if (!hasSampling || typeof sampling !== 'number' || sampling <= 0) {
       console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
     }
-  }
+  };
 
-  const validateLocations= (map: Map<string, any>): void =>{
-    let locs = map.get('0')['allowed-locations'];
-    if (locs === undefined) {
-      throwError(InputValidationError,
-        `Required Parameter ${ALLOWED_LOCATIONS_PARAM_NAME} not provided`);
-    }
+  /**
+  * Validate the allowed-locations parameter to make sure that it is an array of locations
+  * and that those locations are supported
+  * @param locs The array of allowed locations provided by the user in the impl
+  * @throws InputValidationError if the allowed locations parameter is invalid or some of the locations are unsupported and stops the execution of the model.
+  * @returns void
+  */
+  const validateLocations = (locs: any): void => {
     if (!Array.isArray(locs) || locs.length === 0) {
+      throwError(InputValidationError, `Required Parameter 'allowed-locations' is empty`);
+    }
+  
+    locs.forEach((location: string) => {
+      //check that the locations in the impl are some of the supported locations
+      if (!supportedLocations.has(location)) {
+        throwError(InputValidationError, `Location ${location} is not supported`);
+      }
+      allowedLocations.add(location); // populate the global set of allowedLocations
+    });
+  };
+
+  /**
+  * Validate the allowed-timeframes parameter to make sure that it is an array of timeframes
+  * and that those timeframes are valid
+  * @param timeframes The array of allowed timeframes provided by the user in the impl
+  * @throws InputValidationError if the allowed timeframes parameter is invalid or some of the timeframes are invalid and stops the execution of the model.
+  * @returns void
+  */
+  const validateTimeframes = (timeframes: any): void => {
+    
+    if (!Array.isArray(timeframes) || timeframes.length === 0) {
       throwError(InputValidationError,
-        `Required Parameter ${ALLOWED_LOCATIONS_PARAM_NAME} is empty`);
+        `Required Parameter allowed-timeframes is empty`);
     }
 
-    // For each location provided, check if it is supported (i.e. in the list of supported locations)
-    locs.forEach((location: string) => {
-      if (!supportedLocations.has(location)) {
+    // For each timeframe provided, check if it is valid and add it to the set of allowed timeframes
+    timeframes.forEach((timeframe: string) => {
+      // For each timeframe provided, check if it is valid
+      const [from, to] = timeframe.split(' - ');
+      if (from === undefined || to === undefined) {
         throwError(InputValidationError,
-          `Location ${location} is not supported`);
+          `Timeframe ${timeframe} is invalid`);
       }
-      allowedLocations.add(location);
+      // Check if start is before end
+      if (from >= to) {
+        throwError(InputValidationError,
+          `Start time ${from} must be before end time ${to}`);
+      }
+      allowedTimeframes.add({  //add this valid timeframe to the global set allowedTimeframes
+        from: from,
+        to: to
+      });
     });
   }
 
-  //this function calculates the allocation of the samples to the timeframes
-  //there must be at least one sample per timeframe
-  //if samples < timeframes then an error is thrown
+  
+  /**
+   * this function calculates the allocation of the samples to the timeframes
+   * there must be at least one sample per timeframe
+   * if samples < number of timeframes then an error is thrown
+   * @param sampling the number of samples needed
+   * @returns the allocation of the samples to the timeframes meaning how many samples we must select from each timeframe 
+   * in order to have a unifrom distribution of the samples 
+   * (for example if one timeframe is very long we will select more samples from it than from a shorter timeframe)
+   */
   const calculateSubrangeAllocation = (sampling: number) =>{
+    //if samples < number of timeframes then an error is thrown
     const timeframesCount = allowedTimeframes.size;
     if (sampling < timeframesCount) {
         throw new Error("Sampling number too small for the number of timeframes.");
     }
 
+    //returns the duration of each timeframe
     const durations = Array.from(allowedTimeframes).map(timeframe => {
       const start = new Date(timeframe.from).getTime();
       const end = new Date(timeframe.to).getTime();
       return (end - start) / 1000; // Duration in seconds
     });
 
+    //the total duration is the sum of all the durations
     const totalDuration = durations.reduce((a, b) => a + b, 0);
 
     // Initial allocation of 1 sample per timeframe
@@ -416,146 +553,84 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
 
 
 
-  const validateTimeframes = (map: Map<string, any>): void => {
-    
-    let timeframes = map.get('0')['allowed-timeframes'];
-    if (timeframes === undefined) {
-      throwError(InputValidationError,
-        `Required Parameter ${ALLOWED_TIMEFRAMES_PARAM_NAME} not provided`);
-    }
-    if (!Array.isArray(timeframes) || timeframes.length === 0) {
-      throwError(InputValidationError,
-        `Required Parameter ${ALLOWED_TIMEFRAMES_PARAM_NAME} is empty`);
-    }
-
-    // For each timeframe provided, check if it is valid and add it to the set of allowed timeframes
-    timeframes.forEach((timeframe: string) => {
-      // For each timeframe provided, check if it is valid
-      const [from, to] = timeframe.split(' - ');
-      if (from === undefined || to === undefined) {
-        throwError(InputValidationError,
-          `Timeframe ${timeframe} is invalid`);
-      }
-      // Check if start is before end
-      if (from >= to) {
-        throwError(InputValidationError,
-          `Start time ${from} must be before end time ${to}`);
-      }
-      allowedTimeframes.add({
-        from: from,
-        to: to
-      });
-    });
-  }
-
+  
+  /**
+   * this function throws an error of a specific type and message
+   * @param type the type of the error
+   * @param message the message of the error
+   * @throws the error of the specific type and message
+   * @returns void
+   */
   const throwError= (type: ErrorConstructor, message: string) =>{
     throw new type(errorBuilder({ message }));
   }
   
+  /**
+   * this function loads the locations from the locations.json file
+   * @returns the locations object from the locations.json file
+   */
   const loadLocations= async () => {
     try {
+      //get the data from the locations.json file
       const data = await fsPromises.readFile(locationsFilePath, 'utf-8');
       const locationsObject = JSON.parse(data);
-    return locationsObject;
+      return locationsObject;
     } catch (error) {
-      console.error('Error reading from locations.json:', error);
-      // Return an empty set in case of error
-      return new Set(); 
+      throw new Error("Failed to read from locations.json. Please check the file and its path and try again.");
     }
   }
 
-
-
-  const execute= async (inputs: PluginParams[]): Promise<PluginParams[]>=>{
-    await validateInputs(inputs);
-    //echo that you are in the execute function
-    console.log('You are in the execute function');
-    // Use aggregatedMatchingValues to store all matching values from localData
-    let aggregatedMatchingValues: Set<string> = new Set();
-
-    // For each input, get the allowed locations and check if they are in the list of supported locations
-    for (const input of inputs) {
-        let allowedLocations = input['allowed-locations'];
-      const localData = await loadLocations(); 
-      let matchingValues: any[] = [];
-      
-      // For each key in localData, check if it is in the list of allowedLocations
-      Object.keys(localData).forEach(key => {
-        if (allowedLocations.includes(key)) {
-          // If the key is within allowedLocations, store its corresponding value
-          matchingValues.push(localData[key]);
-        }
-      });
-      // Flatten the list of localData values
-      const flattenedLocalDataValues = Object.values(localData).flat(Infinity);
-
-      // For each allowedLocation, check if it is found in the flattened list of localData values
-      allowedLocations.forEach((allowedLocation: unknown) => {
-        // Check if allowedLocation is found in the flattened list of localData values
-        if (flattenedLocalDataValues.includes(allowedLocation)) {
-          // If a match is found, add it to matchingValues
-          matchingValues.push(allowedLocation);
-        }
-      });
-      // Flatten the matchingValues array and remove duplicates
-      matchingValues = [...new Set(matchingValues.flat())];
-
-      // Add all matching values to the set of aggregatedMatchingValues
-      matchingValues.forEach(value => aggregatedMatchingValues.add(value));
-      // Set the allowedLocations to the aggregatedMatchingValues
-      allowedLocations = aggregatedMatchingValues;
-
-      input['allowed-locations'] = matchingValues;
-    }
-
-    return await calculate(inputs);
-  }
 
    /**
-   * Calculates the average score for a given location over the last x days.
+   * Calculates the average score for a given location over the last days days.
    * 
-   * @param x The number of days to look back from the current date.
+   * @param days The number of days to look back from the current date.
    * @param location The location for which to calculate the average score.
-   * @returns The average score for the specified location over the last x days.
+   * @returns The average score for the specified location over the last days days.
    */
- const getAverageScoreForLastXDays = async (x: number, location: string): Promise<number | null> =>{
-  // Calculate the start date by subtracting x days from the current date
-  const toTime = new Date();
-  const time = new Date(toTime.getTime() - x * 24 * 60 * 60 * 1000);
-  //print the start and finish time
-  console.log('Start time:', time.toISOString());
-  console.log('Finish time:', toTime.toISOString());
-  // Prepare parameters for the API call
-  const params = {
-    location: location,
-    time: time.toISOString(),
-    toTime: toTime.toISOString(),
-  };
+  const getAverageScoreForLastXDays = async (days: number, location: string): Promise<number | null> =>{
+    // Calculate the start date by subtracting days number of days from the current date
+    const toTime = new Date();
+    const time = new Date(toTime.getTime() - days * 24 * 60 * 60 * 1000);
+    //print the start and finish time
+    console.log('Start time for the average score of the last:',days,'number of days is: ', time.toISOString());
+    console.log('Finish time for the average score of the last:',days,'number of days is: ',toTime.toISOString());
+    // Prepare parameters for the API call
+    const params = {
+      location: location,
+      time: time.toISOString(),
+      toTime: toTime.toISOString(),
+    };
 
-  try {
-    // Make the API call to retrieve emissions data
-    const response = await getResponse('/emissions/bylocations', 'GET', params);
-    
-    // Check if the response contains data
-    if (response && response.length > 0) {
-      // Calculate the average score from the response data
-      const totalrating = response.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0);
-      const averagerating = totalrating / response.length;
-      return averagerating;
-    } else {
-      console.log('No data available for the specified location and time frame.');
-      return null;
-    }
-  } catch (error) {
-    console.error('Failed to retrieve emissions data:', error);
-    throw error;
+    try {
+      // Make the API call to retrieve emissions data for the last 10 days for the specified location
+      const response = await getResponse('/emissions/bylocations', 'GET', params);
+      
+      // Check if the response contains data
+      if (response && response.length > 0) {
+        // Calculate the average score from the response data
+        const totalrating = response.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0);
+        const averagerating = totalrating / response.length;
+        return averagerating;
+      } else {
+        // no data available for the specified location and time frame
+        console.log('No data available for thethe last ', days, 'days for location:', location,);
+        console.log('Returning null so potential issue if you perfom forecasting for this location');
+        return null;
+      }
+    } 
+    catch (error) {
+      console.error('Failed to retrieve emissions data:', error);
+      throw error;
+    } 
   }
-  
-}
-return {
-  metadata,
-  execute
-};
+
+  // the CarbonAwareAdvisor returns the metadata and the execute function
+  //so that eans that every time this model is run the execute function will be called
+  return {
+    metadata,
+    execute
+  };
 }
 
   
