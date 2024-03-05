@@ -1,0 +1,471 @@
+c6in.4xlarge	$1.0752	16	32 GiB	EBS Only	Up to 50000 Megabit
+t3.micro	$0.0118	2	1 GiB	EBS Only	Up to 5 Gigabit
+t4g.nano	$0.0047	2	0.5 GiB	EBS Only	Up to 5 Gigabit
+t3.2xlarge	$0.3776	8	32 GiB	EBS Only	Up to 5 Gigabit
+t3.small	$0.0236	2	2 GiB	EBS Only	Up to 5 Gigabit
+t4g.2xlarge	$0.3008	8	32 GiB	EBS Only	Up to 5 Gigabit
+t4g.xlarge	$0.1504	4	16 GiB	EBS Only	Up to 5 Gigabit
+t3.nano	$0.0059	2	0.5 GiB	EBS Only	Up to 5 Gigabit
+t3a.nano	$0.0053	2	0.5 GiB	EBS Only	Up to 5 Gigabit
+t3a.medium	$0.0425	2	4 GiB	EBS Only	Up to 5 Gigabit
+t3.large	$0.0944	2	8 GiB	EBS Only	Up to 5 Gigabit
+t3a.2xlarge	$0.3398	8	32 GiB	EBS Only	Up to 5 Gigabit
+t4g.large	$0.0752	2	8 GiB	EBS Only	Up to 5 Gigabit
+t3a.small	$0.0212	2	2 GiB	EBS Only	Up to 5 Gigabit
+t3a.large	$0.085	2	8 GiB	EBS Only	Up to 5 Gigabit
+t3a.xlarge	$0.1699	4	16 GiB	EBS Only	Up to 5 Gigabit
+t3.xlarge	$0.1888	4	16 GiB	EBS Only	Up to 5 Gigabit
+t3.medium	$0.0472	2	4 GiB	EBS Only	Up to 5 Gigabit
+t4g.small	$0.0188	2	2 GiB	EBS Only	Up to 5 Gigabit
+t4g.medium	$0.0376	2	4 GiB	EBS Only	Up to 5 Gigabit
+t3a.micro	$0.0106	2	1 GiB	EBS Only	Up to 5 Gigabit
+t4g.micro	$0.0094	2	1 GiB	EBS Only	Up to 5 Gigabit
+c6in.2xlarge	$0.5376	8	16 GiB	EBS Only	Up to 40000 Megabit
+c6in.xlarge	$0.2688	4	8 GiB	EBS Only	Up to 30000 Megabit
+c6in.large	$0.1344	2	4 GiB	EBS Only	Up to 25000 Megabit
+is4gen.2xlarge	$1.3413	8	48 GiB	1 x 7500 SSD	Up to 25 Gigabit
+i3en.3xlarge	$1.578	12	96 GiB	1 x 7500 NVMe SSD	Up to 25 Gigabit
+c5n.xlarge	$0.256	4	10.5 GiB	EBS Only	Up to 25 Gigabit
+inf1.2xlarge	$0.424	8	16 GiB	EBS Only	Up to 25 Gigabit
+is4gen.large	$0.33533	2	12 GiB	1 x 1875 SSD	Up to 25 Gigabit
+c6gn.medium	$0.05125	1	2 GiB	EBS Only	Up to 25 Gigabit
+is4gen.xlarge	$0.67065	4	24 GiB	1 x 3750 SSD	Up to 25 Gigabit
+i3en.xlarge	$0.526	4	32 GiB	1 x 2500 NVMe SSD	Up to 25 Gigabit
+g4dn.4xlarge	$1.409	16	64 GiB	225 GB NVMe SSD	Up to 25 Gigabit
+r5n.2xlarge	$0.70	8	64 GiB	EBS Only	Up to 25 Gigabit
+g4dn.xlarge	$0.615	4	16 GiB	125 GB NVMe SSD	Up to 25 Gigabit
+i3en.2xlarge	$1.052	8	64 GiB	2 x 2500 NVMe SSD	Up to 25 Gigabit
+r5n.xlarge	$0.35	4	32 GiB	EBS Only	Up to 25 Gigabit
+g4dn.2xlarge	$0.88	8	32 GiB	225 GB NVMe SSD	Up to 25 Gigabit
+im4gn.2xlarge	$0.84418	8	32 GiB	1 x 3750 SSD	Up to 25 Gigabit
+c6gn.2xlarge	$0.41	8	16 GiB	EBS Only	Up to 25 Gigabit
+r5n.4xlarge	$1.40	16	128 GiB	EBS Only	Up to 25 Gigabit
+c5n.4xlarge	$1.024	16	42 GiB	EBS Only	Up to 25 Gigabit
+i4i.4xlarge	$1.593	16	128 GiB	1 x 3750 NVMe SSD	Up to 25 Gigabit
+c5n.large	$0.128	2	5.25 GiB	EBS Only	Up to 25 Gigabit
+i3en.large	$0.263	2	16 GiB	1 x 1250 NVMe SSD	Up to 25 Gigabit
+is4gen.medium	$0.16766	1	6 GiB	1 x 937 SSD	Up to 25 Gigabit
+x2iedn.xlarge	$1.05038	4	128 GiB	1 x 118 NVMe SSD	Up to 25 Gigabit
+x2iedn.2xlarge	$2.10075	8	256 GiB	1 x 237 NVMe SSD	Up to 25 Gigabit
+im4gn.xlarge	$0.42209	4	16 GiB	1 x 1875 SSD	Up to 25 Gigabit
+c6gn.large	$0.1025	2	4 GiB	EBS Only	Up to 25 Gigabit
+c5n.2xlarge	$0.512	8	21 GiB	EBS Only	Up to 25 Gigabit
+g5.4xlarge	$2.06148	16	64 GiB	1 x 600 GB NVMe SSD	Up to 25 Gigabit
+r5n.large	$0.175	2	16 GiB	EBS Only	Up to 25 Gigabit
+inf1.xlarge	$0.267	4	8 GiB	EBS Only	Up to 25 Gigabit
+im4gn.large	$0.21105	2	8 GiB	1 x 937 SSD	Up to 25 Gigabit
+c6gn.xlarge	$0.205	4	8 GiB	EBS Only	Up to 25 Gigabit
+x2iedn.4xlarge	$4.2015	16	512 GiB	1 x 475 NVMe SSD	Up to 25 Gigabit
+d3.4xlarge	$2.559	16	128 GiB	12 x 2000 HDD	Up to 15 Gigabit
+r7g.4xlarge	$1.0064	16	128 GiB	EBS Only	Up to 15 Gigabit
+r7g.2xlarge	$0.5032	8	64 GiB	EBS Only	Up to 15 Gigabit
+d3.xlarge	$0.64	4	32 GiB	3 x 2000 HDD	Up to 15 Gigabit
+c7g.2xlarge	$0.3434	8	16 GiB	EBS Only	Up to 15 Gigabit
+d3.2xlarge	$1.28	8	64 GiB	6 x 2000 HDD	Up to 15 Gigabit
+c7g.4xlarge	$0.6869	16	32 GiB	EBS Only	Up to 15 Gigabit
+m7g.2xlarge	$0.3774	8	32 GiB	EBS Only	Up to 15 Gigabit
+m7g.4xlarge	$0.7549	16	64 GiB	EBS Only	Up to 15 Gigabit
+r7g.medium	$0.0629	1	8 GiB	EBS Only	Up to 12500 Megabit
+c6a.4xlarge	$0.7272	16	32 GiB	EBS Only	Up to 12500 Megabit
+r6i.4xlarge	$1.184	16	128 GiB	EBS Only	Up to 12500 Megabit
+r7i.xlarge	$0.3108	4	32 GiB	EBS Only	Up to 12500 Megabit
+m7g.medium	$0.0472	1	4 GiB	EBS Only	Up to 12500 Megabit
+c7g.xlarge	$0.1717	4	8 GiB	EBS Only	Up to 12500 Megabit
+r7i.4xlarge	$1.2432	16	128 GiB	EBS Only	Up to 12500 Megabit
+c6i.2xlarge	$0.404	8	16 GiB	EBS Only	Up to 12500 Megabit
+c6i.4xlarge	$0.808	16	32 GiB	EBS Only	Up to 12500 Megabit
+c6id.xlarge	$0.2415	4	8 GiB	1 x 237 NVMe SSD	Up to 12500 Megabit
+c6id.2xlarge	$0.483	8	16 GiB	1 x 474 NVMe SSD	Up to 12500 Megabit
+c7i.4xlarge	$0.8484	16	32 GiB	EBS Only	Up to 12500 Megabit
+m7i-flex.xlarge	$0.22144	4	16 GiB	EBS Only	Up to 12500 Megabit
+m7i.large	$0.11655	2	8 GiB	EBS Only	Up to 12500 Megabit
+c6i.large	$0.101	2	4 GiB	EBS Only	Up to 12500 Megabit
+m6i.xlarge	$0.222	4	16 GiB	EBS Only	Up to 12500 Megabit
+r7g.large	$0.1258	2	16 GiB	EBS Only	Up to 12500 Megabit
+c6id.large	$0.12075	2	4 GiB	1 x 118 NVMe SSD	Up to 12500 Megabit
+c7i.2xlarge	$0.4242	8	16 GiB	EBS Only	Up to 12500 Megabit
+r7i.large	$0.1554	2	16 GiB	EBS Only	Up to 12500 Megabit
+m6i.4xlarge	$0.888	16	64 GiB	EBS Only	Up to 12500 Megabit
+r6id.large	$0.17745	2	16 GiB	1 x 118 NVMe SSD	Up to 12500 Megabit
+m7i-flex.4xlarge	$0.88576	16	64 GiB	EBS Only	Up to 12500 Megabit
+r6id.2xlarge	$0.7098	8	64 GiB	1 x 474 NVMe SSD	Up to 12500 Megabit
+m6i.2xlarge	$0.444	8	32 GiB	EBS Only	Up to 12500 Megabit
+c6a.xlarge	$0.1818	4	8 GiB	EBS Only	Up to 12500 Megabit
+m6a.2xlarge	$0.3996	8	32 GiB	EBS Only	Up to 12500 Megabit
+c6a.large	$0.0909	2	4 GiB	EBS Only	Up to 12500 Megabit
+c7i.large	$0.10605	2	4 GiB	EBS Only	Up to 12500 Megabit
+c7g.large	$0.0859	2	4 GiB	EBS Only	Up to 12500 Megabit
+m7i.2xlarge	$0.4662	8	32 GiB	EBS Only	Up to 12500 Megabit
+m6a.4xlarge	$0.7992	16	64 GiB	EBS Only	Up to 12500 Megabit
+c7i.xlarge	$0.2121	4	8 GiB	EBS Only	Up to 12500 Megabit
+c7g.medium	$0.0429	1	2 GiB	EBS Only	Up to 12500 Megabit
+m7g.xlarge	$0.1887	4	16 GiB	EBS Only	Up to 12500 Megabit
+m6a.xlarge	$0.1998	4	16 GiB	EBS Only	Up to 12500 Megabit
+c6a.2xlarge	$0.3636	8	16 GiB	EBS Only	Up to 12500 Megabit
+m7i-flex.large	$0.11072	2	8 GiB	EBS Only	Up to 12500 Megabit
+m6a.large	$0.0999	2	8 GiB	EBS Only	Up to 12500 Megabit
+m7g.large	$0.0944	2	8 GiB	EBS Only	Up to 12500 Megabit
+r6i.2xlarge	$0.592	8	64 GiB	EBS Only	Up to 12500 Megabit
+m6i.large	$0.111	2	8 GiB	EBS Only	Up to 12500 Megabit
+m7i-flex.8xlarge	$1.77152	32	128 GiB	EBS Only	Up to 12500 Megabit
+m7i-flex.2xlarge	$0.44288	8	32 GiB	EBS Only	Up to 12500 Megabit
+r6i.xlarge	$0.296	4	32 GiB	EBS Only	Up to 12500 Megabit
+m7i.xlarge	$0.2331	4	16 GiB	EBS Only	Up to 12500 Megabit
+r7i.2xlarge	$0.6216	8	64 GiB	EBS Only	Up to 12500 Megabit
+r6id.4xlarge	$1.4196	16	128 GiB	1 x 950 NVMe SSD	Up to 12500 Megabit
+m7i.4xlarge	$0.9324	16	64 GiB	EBS Only	Up to 12500 Megabit
+r6id.xlarge	$0.3549	4	32 GiB	1 x 237 NVMe SSD	Up to 12500 Megabit
+c6i.xlarge	$0.202	4	8 GiB	EBS Only	Up to 12500 Megabit
+r7g.xlarge	$0.2516	4	32 GiB	EBS Only	Up to 12500 Megabit
+c6id.4xlarge	$0.966	16	32 GiB	1 x 950 NVMe SSD	Up to 12500 Megabit
+r6i.large	$0.148	2	16 GiB	EBS Only	Up to 12500 Megabit
+i4i.2xlarge	$0.796	8	64 GiB	1 x 1875 NVMe SSD	Up to 12 Gigabit
+g3.4xlarge	$1.429	16	122 GiB	EBS Only	Up to 10 Gigabit
+c6g.4xlarge	$0.6464	16	32 GiB	EBS Only	Up to 10 Gigabit
+z1d.2xlarge	$0.879	8	64 GiB	1 x 300 NVMe SSD	Up to 10 Gigabit
+c6gd.medium	$0.046	1	2 GiB	1 x 59 NVMe SSD	Up to 10 Gigabit
+m5.4xlarge	$0.888	16	64 GiB	EBS Only	Up to 10 Gigabit
+r5ad.2xlarge	$0.616	8	64 GiB	1 x 300 NVMe SSD	Up to 10 Gigabit
+z1d.3xlarge	$1.318	12	96 GiB	1 x 450 NVMe SSD	Up to 10 Gigabit
+m5a.large	$0.10	2	8 GiB	EBS Only	Up to 10 Gigabit
+r5ad.large	$0.154	2	16 GiB	1 x 75 NVMe SSD	Up to 10 Gigabit
+c6gd.large	$0.092	2	4 GiB	1 x 118 NVMe SSD	Up to 10 Gigabit
+i3.4xlarge	$1.448	16	122 GiB	2 x 1900 NVMe SSD	Up to 10 Gigabit
+r6g.large	$0.1184	2	16 GiB	EBS Only	Up to 10 Gigabit
+m6g.4xlarge	$0.7104	16	64 GiB	EBS Only	Up to 10 Gigabit
+r5b.large	$0.175	2	16 GiB	EBS Only	Up to 10 Gigabit
+r5b.xlarge	$0.35	4	32 GiB	EBS Only	Up to 10 Gigabit
+m6gd.xlarge	$0.2096	4	16 GiB	1 x 237 NVMe SSD	Up to 10 Gigabit
+c5d.2xlarge	$0.46	8	16 GiB	1 x 200 NVMe SSD	Up to 10 Gigabit
+c5.2xlarge	$0.404	8	16 GiB	EBS Only	Up to 10 Gigabit
+p3.2xlarge	$3.589	8	61 GiB	EBS Only	Up to 10 Gigabit
+r5d.2xlarge	$0.676	8	64 GiB	1 x 300 NVMe SSD	Up to 10 Gigabit
+c6g.large	$0.0808	2	4 GiB	EBS Only	Up to 10 Gigabit
+r5a.2xlarge	$0.532	8	64 GiB	EBS Only	Up to 10 Gigabit
+m5.2xlarge	$0.444	8	32 GiB	EBS Only	Up to 10 Gigabit
+g5.2xlarge	$1.53849	8	32 GiB	1 x 450 GB NVMe SSD	Up to 10 Gigabit
+r5d.xlarge	$0.338	4	32 GiB	1 x 150 NVMe SSD	Up to 10 Gigabit
+r5b.4xlarge	$1.40	16	128 GiB	EBS Only	Up to 10 Gigabit
+r5.xlarge	$0.296	4	32 GiB	EBS Only	Up to 10 Gigabit
+c6gd.2xlarge	$0.368	8	16 GiB	1 x 475 NVMe SSD	Up to 10 Gigabit
+i3.xlarge	$0.362	4	30.5 GiB	1 x 950 NVMe SSD	Up to 10 Gigabit
+r6g.4xlarge	$0.9472	16	128 GiB	EBS Only	Up to 10 Gigabit
+r5ad.8xlarge	$2.464	32	256 GiB	2 x 600 NVMe SSD	Up to 10 Gigabit
+i3.large	$0.181	2	15.25 GiB	1 x 475 NVMe SSD	Up to 10 Gigabit
+f1.2xlarge	$1.906	8	122 GiB	1 x 470 NVMe SSD	Up to 10 Gigabit
+c5a.4xlarge	$0.728	16	32 GiB	EBS Only	Up to 10 Gigabit
+g4ad.xlarge	$0.44271	4	16 GiB	150 GB NVMe SSD	Up to 10 Gigabit
+r6g.xlarge	$0.2368	4	32 GiB	EBS Only	Up to 10 Gigabit
+r6gd.4xlarge	$1.0816	16	128 GiB	1 x 950 NVMe SSD	Up to 10 Gigabit
+c5a.large	$0.091	2	4 GiB	EBS Only	Up to 10 Gigabit
+m6g.xlarge	$0.1776	4	16 GiB	EBS Only	Up to 10 Gigabit
+r5a.large	$0.133	2	16 GiB	EBS Only	Up to 10 Gigabit
+m5ad.8xlarge	$1.92	32	128 GiB	2 x 600 NVMe SSD	Up to 10 Gigabit
+r6gd.large	$0.1352	2	16 GiB	1 x 118 NVMe SSD	Up to 10 Gigabit
+m5d.xlarge	$0.262	4	16 GiB	1 x 150 NVMe SSD	Up to 10 Gigabit
+c5d.xlarge	$0.23	4	8 GiB	1 x 100 NVMe SSD	Up to 10 Gigabit
+m6g.large	$0.0888	2	8 GiB	EBS Only	Up to 10 Gigabit
+r6g.2xlarge	$0.4736	8	64 GiB	EBS Only	Up to 10 Gigabit
+r6g.medium	$0.0592	1	8 GiB	EBS Only	Up to 10 Gigabit
+r6gd.xlarge	$0.2704	4	32 GiB	1 x 237 NVMe SSD	Up to 10 Gigabit
+g4ad.2xlarge	$0.63292	8	32 GiB	300 GB NVMe SSD	Up to 10 Gigabit
+c6g.2xlarge	$0.3232	8	16 GiB	EBS Only	Up to 10 Gigabit
+m6gd.medium	$0.0524	1	4 GiB	1 x 59 NVMe SSD	Up to 10 Gigabit
+z1d.xlarge	$0.439	4	32 GiB	1 x 150 NVMe SSD	Up to 10 Gigabit
+c5d.large	$0.115	2	4 GiB	1 x 50 NVMe SSD	Up to 10 Gigabit
+m5a.8xlarge	$1.60	32	128 GiB	EBS Only	Up to 10 Gigabit
+r4.large	$0.156	2	15.25 GiB	EBS Only	Up to 10 Gigabit
+m5a.xlarge	$0.20	4	16 GiB	EBS Only	Up to 10 Gigabit
+c5.large	$0.101	2	4 GiB	EBS Only	Up to 10 Gigabit
+r5a.8xlarge	$2.128	32	256 GiB	EBS Only	Up to 10 Gigabit
+m6gd.2xlarge	$0.4192	8	32 GiB	1 x 475 NVMe SSD	Up to 10 Gigabit
+r5d.large	$0.169	2	16 GiB	1 x 75 NVMe SSD	Up to 10 Gigabit
+r5a.4xlarge	$1.064	16	128 GiB	EBS Only	Up to 10 Gigabit
+r4.4xlarge	$1.248	16	122 GiB	EBS Only	Up to 10 Gigabit
+g4ad.4xlarge	$1.014	16	64 GiB	600 GB NVMe SSD	Up to 10 Gigabit
+r4.2xlarge	$0.624	8	61 GiB	EBS Only	Up to 10 Gigabit
+m6g.2xlarge	$0.3552	8	32 GiB	EBS Only	Up to 10 Gigabit
+r5a.xlarge	$0.266	4	32 GiB	EBS Only	Up to 10 Gigabit
+c6gd.xlarge	$0.184	4	8 GiB	1 x 237 NVMe SSD	Up to 10 Gigabit
+m5ad.2xlarge	$0.48	8	32 GiB	1 x 300 NVMe SSD	Up to 10 Gigabit
+r5ad.xlarge	$0.308	4	32 GiB	1 x 150 NVMe SSD	Up to 10 Gigabit
+m5.large	$0.111	2	8 GiB	EBS Only	Up to 10 Gigabit
+c5.xlarge	$0.202	4	8 GiB	EBS Only	Up to 10 Gigabit
+r5b.2xlarge	$0.70	8	64 GiB	EBS Only	Up to 10 Gigabit
+m5ad.large	$0.12	2	8 GiB	1 x 75 NVMe SSD	Up to 10 Gigabit
+m5a.2xlarge	$0.40	8	32 GiB	EBS Only	Up to 10 Gigabit
+r5.4xlarge	$1.184	16	128 GiB	EBS Only	Up to 10 Gigabit
+m5d.2xlarge	$0.524	8	32 GiB	1 x 300 NVMe SSD	Up to 10 Gigabit
+m5a.4xlarge	$0.80	16	64 GiB	EBS Only	Up to 10 Gigabit
+r5d.4xlarge	$1.352	16	128 GiB	2 x 300 NVMe SSD	Up to 10 Gigabit
+z1d.large	$0.22	2	16 GiB	1 x 75 NVMe SSD	Up to 10 Gigabit
+c5a.2xlarge	$0.364	8	16 GiB	EBS Only	Up to 10 Gigabit
+c6g.xlarge	$0.1616	4	8 GiB	EBS Only	Up to 10 Gigabit
+i4i.xlarge	$0.398	4	32 GiB	1 x 937 NVMe SSD	Up to 10 Gigabit
+c5d.4xlarge	$0.92	16	32 GiB	1 x 400 NVMe SSD	Up to 10 Gigabit
+r6gd.medium	$0.0676	1	8 GiB	1 x 59 NVMe SSD	Up to 10 Gigabit
+m6g.medium	$0.0444	1	4 GiB	EBS Only	Up to 10 Gigabit
+r5ad.4xlarge	$1.232	16	128 GiB	2 x 300 NVMe SSD	Up to 10 Gigabit
+i4i.large	$0.199	2	16 GiB	1 x 468 NVMe SSD	Up to 10 Gigabit
+r5.large	$0.148	2	16 GiB	EBS Only	Up to 10 Gigabit
+m5ad.xlarge	$0.24	4	16 GiB	1 x 150 NVMe SSD	Up to 10 Gigabit
+r6gd.2xlarge	$0.5408	8	64 GiB	1 x 475 NVMe SSD	Up to 10 Gigabit
+c5a.xlarge	$0.182	4	8 GiB	EBS Only	Up to 10 Gigabit
+m6gd.4xlarge	$0.8384	16	64 GiB	1 x 950 NVMe SSD	Up to 10 Gigabit
+r5.2xlarge	$0.592	8	64 GiB	EBS Only	Up to 10 Gigabit
+m6gd.large	$0.1048	2	8 GiB	1 x 118 NVMe SSD	Up to 10 Gigabit
+m5ad.4xlarge	$0.96	16	64 GiB	2 x 300 NVMe SSD	Up to 10 Gigabit
+c6g.medium	$0.0404	1	2 GiB	EBS Only	Up to 10 Gigabit
+i3.2xlarge	$0.724	8	61 GiB	1 x 1900 NVMe SSD	Up to 10 Gigabit
+c6gd.4xlarge	$0.736	16	32 GiB	1 x 950 NVMe SSD	Up to 10 Gigabit
+m5d.large	$0.131	2	8 GiB	1 x 75 NVMe SSD	Up to 10 Gigabit
+r4.xlarge	$0.312	4	30.5 GiB	EBS Only	Up to 10 Gigabit
+c5.4xlarge	$0.808	16	32 GiB	EBS Only	Up to 10 Gigabit
+m5.xlarge	$0.222	4	16 GiB	EBS Only	Up to 10 Gigabit
+g5.xlarge	$1.277	4	16 GiB	1 x 250 GB NVMe SSD	Up to 10 Gigabit
+m5d.4xlarge	$1.048	16	64 GiB	2 x 300 NVMe SSD	Up to 10 Gigabit
+m4.large	$0.116	2	8 GiB	EBS Only	Moderate
+c4.large	$0.119	2	3.75 GiB	EBS Only	Moderate
+t2.xlarge	$0.2112	4	16 GiB	EBS Only	Moderate
+t2.2xlarge	$0.4224	8	32 GiB	EBS Only	Moderate
+t2.large	$0.1056	2	8 GiB	EBS Only	Low to Moderate
+t2.small	$0.026	1	2 GiB	EBS Only	Low to Moderate
+t2.micro	$0.0132	1	1 GiB	EBS Only	Low to Moderate
+t2.medium	$0.052	2	4 GiB	EBS Only	Low to Moderate
+t2.nano	$0.0066	1	0.5 GiB	EBS Only	Low
+m4.4xlarge	$0.928	16	64 GiB	EBS Only	High
+c4.xlarge	$0.237	4	7.5 GiB	EBS Only	High
+c4.4xlarge	$0.95	16	30 GiB	EBS Only	High
+c4.2xlarge	$0.476	8	15 GiB	EBS Only	High
+m4.xlarge	$0.232	4	16 GiB	EBS Only	High
+x1.16xlarge	$8.403	64	976 GiB	1 x 1920 SSD	High
+x1.32xlarge	$16.806	128	1952 GiB	2 x 1920 SSD	High
+m4.2xlarge	$0.464	8	32 GiB	EBS Only	High
+i4i.metal	$12.742	128	1024 GiB	8 x 3750 NVMe SSD	75000 Megabit
+c6in.12xlarge	$3.2256	48	96 GiB	EBS Only	75000 Megabit
+i4i.32xlarge	$12.7424	128	1024 GiB	8 x 3750 SSD	75000 Megabit
+x2iedn.24xlarge	$25.209	96	3072 GiB	2 x 1425 NVMe SSD	75 Gigabit
+c6gn.12xlarge	$2.46	48	96 GiB	EBS Only	75 Gigabit
+r5n.16xlarge	$5.60	64	512 GiB	EBS Only	75 Gigabit
+x2idn.24xlarge	$12.6045	96	1536 GiB	2 x 1425 NVMe SSD	75 Gigabit
+i4i.24xlarge	$9.5568	96	768 GiB	6 x 3750 NVMe SSD	56250 Megabit
+r6id.metal	$11.3568	128	1024 GiB	4 x 1900 NVMe SSD	50000 Megabit
+m6a.32xlarge	$6.3936	128	512 GiB	EBS Only	50000 Megabit
+c7i.metal-48xl	$10.1808	192	384 GiB	EBS Only	50000 Megabit
+r6id.32xlarge	$11.3568	128	1024 GiB	4 x 1900 NVMe SSD	50000 Megabit
+c6a.32xlarge	$5.8176	128	256 GiB	EBS Only	50000 Megabit
+c6a.metal	$8.7264	192	384 GiB	EBS Only	50000 Megabit
+c6in.8xlarge	$2.1504	32	64 GiB	EBS Only	50000 Megabit
+c7i.48xlarge	$10.1808	192	384 GiB	EBS Only	50000 Megabit
+c6id.metal	$7.728	128	256 GiB	4 x 1900 NVMe SSD	50000 Megabit
+m7i.metal-48xl	$11.1888	192	768 GiB	EBS Only	50000 Megabit
+m6i.32xlarge	$7.104	128	512 GiB	EBS Only	50000 Megabit
+r6i.32xlarge	$9.472	128	1024 GiB	EBS Only	50000 Megabit
+r7i.48xlarge	$14.9184	192	1536 GiB	EBS Only	50000 Megabit
+c6i.32xlarge	$6.464	128	256 GiB	EBS Only	50000 Megabit
+c6a.48xlarge	$8.7264	192	384 GiB	EBS Only	50000 Megabit
+m6a.48xlarge	$9.5904	192	768 GiB	EBS Only	50000 Megabit
+m6a.metal	$9.5904	192	768 GiB	EBS Only	50000 Megabit
+m6i.metal	$7.104	128	512 GiB	EBS Only	50000 Megabit
+m7i.48xlarge	$11.1888	192	768 GiB	EBS Only	50000 Megabit
+c6id.32xlarge	$7.728	128	256 GiB	4 x 1900 NVMe SSD	50000 Megabit
+r7i.metal-48xl	$14.9184	192	1536 GiB	EBS Only	50000 Megabit
+c6i.metal	$6.464	128	256 GiB	EBS Only	50000 Megabit
+r6i.metal	$9.472	128	1024 GiB	EBS Only	50000 Megabit
+im4gn.8xlarge	$3.37674	32	128 GiB	2 x 7500 SSD	50 Gigabit
+g4dn.8xlarge	$2.546	32	128 GiB	900 GB NVMe SSD	50 Gigabit
+x2idn.16xlarge	$8.403	64	1024 GiB	1 x 1900 NVMe SSD	50 Gigabit
+c5n.9xlarge	$2.304	36	96 GiB	EBS Only	50 Gigabit
+x2iedn.16xlarge	$16.806	64	2048 GiB	1 x 1900 NVMe SSD	50 Gigabit
+is4gen.8xlarge	$5.36522	32	192 GiB	4 x 7500 SSD	50 Gigabit
+r5n.12xlarge	$4.20	48	384 GiB	EBS Only	50 Gigabit
+g4dn.16xlarge	$5.092	64	256 GiB	900 GB NVMe SSD	50 Gigabit
+i3en.12xlarge	$6.312	48	384 GiB	4 x 7500 NVMe SSD	50 Gigabit
+c6gn.8xlarge	$1.64	32	64 GiB	EBS Only	50 Gigabit
+g4dn.12xlarge	$4.577	48	192 GiB	900 GB NVMe SSD	50 Gigabit
+g5.24xlarge	$10.33786	96	384 GiB	1 x 3800 GB NVMe SSD	50 Gigabit
+g5.12xlarge	$7.19994	48	192 GiB	1 x 3800 GB NVMe SSD	40 Gigabit
+c6i.24xlarge	$4.848	96	192 GiB	EBS Only	37500 Megabit
+c7i.metal-24xl	$5.0904	96	192 GiB	EBS Only	37500 Megabit
+m6a.24xlarge	$4.7952	96	384 GiB	EBS Only	37500 Megabit
+c6a.24xlarge	$4.3632	96	192 GiB	EBS Only	37500 Megabit
+r6id.24xlarge	$8.5176	96	768 GiB	4 x 1425 NVMe SSD	37500 Megabit
+r6i.24xlarge	$7.104	96	768 GiB	EBS Only	37500 Megabit
+c7i.24xlarge	$5.0904	96	192 GiB	EBS Only	37500 Megabit
+r7i.24xlarge	$7.4592	96	768 GiB	EBS Only	37500 Megabit
+m6i.24xlarge	$5.328	96	384 GiB	EBS Only	37500 Megabit
+r7i.metal-24xl	$7.4592	96	768 GiB	EBS Only	37500 Megabit
+c6id.24xlarge	$5.796	96	192 GiB	4 x 1425 NVMe SSD	37500 Megabit
+m7i.metal-24xl	$5.5944	96	384 GiB	EBS Only	37500 Megabit
+m7i.24xlarge	$5.5944	96	384 GiB	EBS Only	37500 Megabit
+i4i.16xlarge	$6.371	64	512 GiB	4 x 3750 NVMe SSD	35000 Megabit
+m7g.16xlarge	$3.0195	64	256 GiB	EBS Only	30 Gigabit
+r7g.metal	$4.0256	64	512 GiB	EBS Only	30 Gigabit
+r7g.16xlarge	$4.0256	64	512 GiB	EBS Only	30 Gigabit
+c7g.16xlarge	$2.7475	64	128 GiB	EBS Only	30 Gigabit
+m7g.metal	$3.0195	64	256 GiB	EBS Only	30 Gigabit
+c7g.metal	$2.7475	64	128 GiB	EBS Only	30 Gigabit
+i4i.12xlarge	$4.778	48	384 GiB	3 x 3750 NVMe SSD	28125 Megabit
+c6i.16xlarge	$3.232	64	128 GiB	EBS Only	25000 Megabit
+r6id.16xlarge	$5.6784	64	512 GiB	2 x 1900 NVMe SSD	25000 Megabit
+m6a.16xlarge	$3.1968	64	256 GiB	EBS Only	25000 Megabit
+c7i.16xlarge	$3.3936	64	128 GiB	EBS Only	25000 Megabit
+m6i.16xlarge	$3.552	64	256 GiB	EBS Only	25000 Megabit
+c6id.16xlarge	$3.864	64	128 GiB	2 x 1900 NVMe SSD	25000 Megabit
+c6a.16xlarge	$2.9088	64	128 GiB	EBS Only	25000 Megabit
+r7i.16xlarge	$4.9728	64	512 GiB	EBS Only	25000 Megabit
+m7i.16xlarge	$3.7296	64	256 GiB	EBS Only	25000 Megabit
+r6i.16xlarge	$4.736	64	512 GiB	EBS Only	25000 Megabit
+c5d.metal	$5.52	96	192 GiB	4 x 900 NVMe SSD	25 Gigabit
+d3.8xlarge	$5.11824	32	256 GiB	24 x 2000 HDD	25 Gigabit
+r5d.24xlarge	$8.112	96	768 GiB	4 x 900 NVMe SSD	25 Gigabit
+g5.8xlarge	$3.10745	32	128 GiB	1 x 900 GB NVMe SSD	25 Gigabit
+c6gd.metal	$2.944	64	128 GiB	2 x 1900 NVMe SSD	25 Gigabit
+c5.18xlarge	$3.636	72	144 GiB	EBS Only	25 Gigabit
+p3.16xlarge	$28.712	64	488 GiB	EBS Only	25 Gigabit
+c5d.24xlarge	$5.52	96	192 GiB	4 x 900 NVMe SSD	25 Gigabit
+c6g.16xlarge	$2.5856	64	128 GiB	EBS Only	25 Gigabit
+is4gen.4xlarge	$2.68261	16	96 GiB	2 x 7500 SSD	25 Gigabit
+r6g.metal	$3.7888	64	512 GiB	EBS Only	25 Gigabit
+r6gd.metal	$4.3264	64	512 GiB	2 x 1900 NVMe SSD	25 Gigabit
+m6g.16xlarge	$2.8416	64	256 GiB	EBS Only	25 Gigabit
+inf1.6xlarge	$1.382	24	48 GiB	EBS Only	25 Gigabit
+m5.metal	$5.328	96	384 GiB	EBS Only	25 Gigabit
+m5d.metal	$6.288	96	384 GiB	4 x 900 NVMe SSD	25 Gigabit
+r5d.metal	$8.112	96	768 GiB	4 x 900 NVMe SSD	25 Gigabit
+r5b.metal	$8.40	96	768 GiB	EBS Only	25 Gigabit
+r5b.24xlarge	$8.40	96	768 GiB	EBS Only	25 Gigabit
+g5.16xlarge	$5.1994	64	256 GiB	1 x 1900 GB NVMe SSD	25 Gigabit
+c5.24xlarge	$4.848	96	192 GiB	EBS Only	25 Gigabit
+im4gn.4xlarge	$1.68837	16	64 GiB	1 x 7500 SSD	25 Gigabit
+i3en.6xlarge	$3.156	24	192 GiB	2 x 7500 NVMe SSD	25 Gigabit
+m5d.24xlarge	$6.288	96	384 GiB	4 x 900 NVMe SSD	25 Gigabit
+x2iedn.8xlarge	$8.403	32	1024 GiB	1 x 950 NVMe SSD	25 Gigabit
+r6gd.16xlarge	$4.3264	64	512 GiB	2 x 1900 NVMe SSD	25 Gigabit
+i3.metal	$5.792	72	512 GiB	8 x 1900 NVMe SSD	25 Gigabit
+z1d.metal	$5.273	48	384 GiB	2 x 900 NVMe SSD	25 Gigabit
+r5.24xlarge	$7.104	96	768 GiB	EBS Only	25 Gigabit
+z1d.12xlarge	$5.273	48	384 GiB	2 x 900 NVMe SSD	25 Gigabit
+c6gn.4xlarge	$0.82	16	32 GiB	EBS Only	25 Gigabit
+c6gd.16xlarge	$2.944	64	128 GiB	2 x 1900 NVMe SSD	25 Gigabit
+r5n.8xlarge	$2.80	32	256 GiB	EBS Only	25 Gigabit
+c5.metal	$4.848	96	192 GiB	EBS Only	25 Gigabit
+c5d.18xlarge	$4.14	72	144 GiB	2 x 900 NVMe SSD	25 Gigabit
+m6gd.metal	$3.3536	64	256 GiB	2 x 1900 NVMe SSD	25 Gigabit
+g4ad.16xlarge	$4.056	64	256 GiB	2400 GB NVMe SSD	25 Gigabit
+m6gd.16xlarge	$3.3536	64	256 GiB	2 x 1900 NVMe SSD	25 Gigabit
+r6g.16xlarge	$3.7888	64	512 GiB	EBS Only	25 Gigabit
+r5.metal	$7.104	96	768 GiB	EBS Only	25 Gigabit
+c6g.metal	$2.5856	64	128 GiB	EBS Only	25 Gigabit
+m6g.metal	$2.8416	64	256 GiB	EBS Only	25 Gigabit
+m5.24xlarge	$5.328	96	384 GiB	EBS Only	25 Gigabit
+r7g.12xlarge	$3.0192	48	384 GiB	EBS Only	22500 Megabit
+c7g.12xlarge	$2.0606	48	96 GiB	EBS Only	22500 Megabit
+m7g.12xlarge	$2.2646	48	192 GiB	EBS Only	22500 Megabit
+c6in.metal	$8.6016	128	256 GiB	EBS Only	200000 Megabit
+c6in.32xlarge	$8.6016	128	256 GiB	EBS Only	200000 Megabit
+r4.16xlarge	$4.992	64	488 GiB	EBS Only	20 Gigabit
+c5a.24xlarge	$4.368	96	192 GiB	EBS Only	20 Gigabit
+c6gd.12xlarge	$2.208	48	96 GiB	2 x 1425 NVMe SSD	20 Gigabit
+r6g.12xlarge	$2.8416	48	384 GiB	EBS Only	20 Gigabit
+r5b.16xlarge	$5.60	64	512 GiB	EBS Only	20 Gigabit
+m6g.12xlarge	$2.1312	48	192 GiB	EBS Only	20 Gigabit
+c5a.16xlarge	$2.912	64	128 GiB	EBS Only	20 Gigabit
+g3.16xlarge	$5.716	64	488 GiB	EBS Only	20 Gigabit
+i3.16xlarge	$5.792	64	488 GiB	8 x 1900 NVMe SSD	20 Gigabit
+c6g.12xlarge	$1.9392	48	96 GiB	EBS Only	20 Gigabit
+r5a.24xlarge	$6.384	96	768 GiB	EBS Only	20 Gigabit
+m5.16xlarge	$3.552	64	256 GiB	EBS Only	20 Gigabit
+r5ad.24xlarge	$7.392	96	768 GiB	4 x 900 NVMe SSD	20 Gigabit
+m5a.24xlarge	$4.80	96	384 GiB	EBS Only	20 Gigabit
+m5d.16xlarge	$4.192	64	256 GiB	4 x 600 NVMe SSD	20 Gigabit
+m6gd.12xlarge	$2.5152	48	192 GiB	2 x 1425 NVMe SSD	20 Gigabit
+r5.16xlarge	$4.736	64	512 GiB	EBS Only	20 Gigabit
+m4.16xlarge	$3.712	64	256 GiB	EBS Only	20 Gigabit
+r6gd.12xlarge	$3.2448	48	384 GiB	2 x 1425 NVMe SSD	20 Gigabit
+r5d.16xlarge	$5.408	64	512 GiB	4 x 600 NVMe SSD	20 Gigabit
+m5ad.24xlarge	$5.76	96	384 GiB	4 x 900 NVMe SSD	20 Gigabit
+c6id.12xlarge	$2.898	48	96 GiB	2 x 1425 NVMe SSD	18750 Megabit
+c6a.12xlarge	$2.1816	48	96 GiB	EBS Only	18750 Megabit
+i4i.8xlarge	$3.186	32	256 GiB	2 x 3750 NVMe SSD	18750 Megabit
+r6id.12xlarge	$4.2588	48	384 GiB	2 x 1425 NVMe SSD	18750 Megabit
+r7i.12xlarge	$3.7296	48	384 GiB	EBS Only	18750 Megabit
+m6a.12xlarge	$2.3976	48	192 GiB	EBS Only	18750 Megabit
+m6i.12xlarge	$2.664	48	192 GiB	EBS Only	18750 Megabit
+c6i.12xlarge	$2.424	48	96 GiB	EBS Only	18750 Megabit
+r6i.12xlarge	$3.552	48	384 GiB	EBS Only	18750 Megabit
+c7i.12xlarge	$2.5452	48	96 GiB	EBS Only	18750 Megabit
+m7i.12xlarge	$2.7972	48	192 GiB	EBS Only	18750 Megabit
+c6in.24xlarge	$6.4512	96	192 GiB	EBS Only	150000 Megabit
+r7g.8xlarge	$2.0128	32	256 GiB	EBS Only	15 Gigabit
+m7g.8xlarge	$1.5098	32	128 GiB	EBS Only	15 Gigabit
+c7g.8xlarge	$1.3738	32	64 GiB	EBS Only	15 Gigabit
+g4ad.8xlarge	$2.028	32	128 GiB	1200 GB NVMe SSD	15 Gigabit
+r7i.8xlarge	$2.4864	32	256 GiB	EBS Only	12500 Megabit
+r6i.8xlarge	$2.368	32	256 GiB	EBS Only	12500 Megabit
+r6id.8xlarge	$2.8392	32	256 GiB	1 x 1900 NVMe SSD	12500 Megabit
+m6i.8xlarge	$1.776	32	128 GiB	EBS Only	12500 Megabit
+c6id.8xlarge	$1.932	32	64 GiB	1 x 1900 NVMe SSD	12500 Megabit
+m6a.8xlarge	$1.5984	32	128 GiB	EBS Only	12500 Megabit
+c7i.8xlarge	$1.6968	32	64 GiB	EBS Only	12500 Megabit
+c6a.8xlarge	$1.4544	32	64 GiB	EBS Only	12500 Megabit
+m7i.8xlarge	$1.8648	32	128 GiB	EBS Only	12500 Megabit
+c6i.8xlarge	$1.616	32	64 GiB	EBS Only	12500 Megabit
+c6g.8xlarge	$1.2928	32	64 GiB	EBS Only	12 Gigabit
+c6gd.8xlarge	$1.472	32	64 GiB	1 x 1900 NVMe SSD	12 Gigabit
+c5d.12xlarge	$2.76	48	96 GiB	2 x 900 NVMe SSD	12 Gigabit
+c5.12xlarge	$2.424	48	96 GiB	EBS Only	12 Gigabit
+r6g.8xlarge	$1.8944	32	256 GiB	EBS Only	12 Gigabit
+m5ad.16xlarge	$3.84	64	256 GiB	4 x 600 NVMe SSD	12 Gigabit
+m6gd.8xlarge	$1.6768	32	128 GiB	1 x 1900 NVMe SSD	12 Gigabit
+c5a.12xlarge	$2.184	48	96 GiB	EBS Only	12 Gigabit
+r5ad.16xlarge	$4.928	64	512 GiB	4 x 600 NVMe SSD	12 Gigabit
+m5a.16xlarge	$3.20	64	256 GiB	EBS Only	12 Gigabit
+r6gd.8xlarge	$2.1632	32	256 GiB	1 x 1900 NVMe SSD	12 Gigabit
+r5a.16xlarge	$4.256	64	512 GiB	EBS Only	12 Gigabit
+m6g.8xlarge	$1.4208	32	128 GiB	EBS Only	12 Gigabit
+c6in.16xlarge	$4.3008	64	128 GiB	EBS Only	100000 Megabit
+u-6tb1.56xlarge	$54.50589	224	6144 GiB	EBS Only	100 Gigabit
+r5n.metal	$8.40	96	768 GiB	EBS Only	100 Gigabit
+im4gn.16xlarge	$6.75347	64	256 GiB	4 x 7500 SSD	100 Gigabit
+c5n.18xlarge	$4.608	72	192 GiB	EBS Only	100 Gigabit
+i3en.metal	$12.624	96	768 GiB	8 x 7500 NVMe SSD	100 Gigabit
+u-9tb1.112xlarge	$96.20	448	9216 GiB	EBS Only	100 Gigabit
+x2idn.32xlarge	$16.806	128	2048 GiB	2 x 1900 NVMe SSD	100 Gigabit
+u-6tb1.112xlarge	$64.133	448	6144 GiB	EBS Only	100 Gigabit
+x2idn.metal	$16.806	128	2048 GiB	2 x 1900 NVMe SSD	100 Gigabit
+x2iedn.32xlarge	$33.612	128	4096 GiB	2 x 1900 NVMe SSD	100 Gigabit
+g5.48xlarge	$20.67572	192	768 GiB	2 x 3800 GB NVMe SSD	100 Gigabit
+i3en.24xlarge	$12.624	96	768 GiB	8 x 7500 NVMe SSD	100 Gigabit
+c6gn.16xlarge	$3.28	64	128 GiB	EBS Only	100 Gigabit
+g4dn.metal	$9.154	96	384 GiB	2 x 900 GB NVMe SSD	100 Gigabit
+x2iedn.metal	$33.612	128	4096 GiB	2 x 1900 NVMe SSD	100 Gigabit
+r5n.24xlarge	$8.40	96	768 GiB	EBS Only	100 Gigabit
+c5n.metal	$4.608	72	192 GiB	EBS Only	100 Gigabit
+inf1.24xlarge	$5.53	96	192 GiB	EBS Only	100 Gigabit
+r5d.8xlarge	$2.704	32	256 GiB	2 x 600 NVMe SSD	10 Gigabit
+m5.12xlarge	$2.664	48	192 GiB	EBS Only	10 Gigabit
+m5.8xlarge	$1.776	32	128 GiB	EBS Only	10 Gigabit
+r5a.12xlarge	$3.192	48	384 GiB	EBS Only	10 Gigabit
+r5b.12xlarge	$4.20	48	384 GiB	EBS Only	10 Gigabit
+r5.8xlarge	$2.368	32	256 GiB	EBS Only	10 Gigabit
+r4.8xlarge	$2.496	32	244 GiB	EBS Only	10 Gigabit
+c4.8xlarge	$1.902	36	60 GiB	EBS Only	10 Gigabit
+g3.8xlarge	$2.858	32	244 GiB	EBS Only	10 Gigabit
+r5.12xlarge	$3.552	48	384 GiB	EBS Only	10 Gigabit
+r5d.12xlarge	$4.056	48	384 GiB	2 x 900 NVMe SSD	10 Gigabit
+m5d.12xlarge	$3.144	48	192 GiB	2 x 900 NVMe SSD	10 Gigabit
+g3s.xlarge	$0.94	4	30.5 GiB	EBS Only	10 Gigabit
+f1.4xlarge	$3.812	16	244 GiB	1 x 940 NVMe SSD	10 Gigabit
+r5ad.12xlarge	$3.696	48	384 GiB	2 x 900 NVMe SSD	10 Gigabit
+r5b.8xlarge	$2.80	32	256 GiB	EBS Only	10 Gigabit
+m5ad.12xlarge	$2.88	48	192 GiB	2 x 900 NVMe SSD	10 Gigabit
+m5d.8xlarge	$2.096	32	128 GiB	2 x 600 NVMe SSD	10 Gigabit
+c5a.8xlarge	$1.456	32	64 GiB	EBS Only	10 Gigabit
+p3.8xlarge	$14.356	32	244 GiB	EBS Only	10 Gigabit
+c5d.9xlarge	$2.07	36	72 GiB	1 x 900 NVMe SSD	10 Gigabit
+z1d.6xlarge	$2.636	24	192 GiB	1 x 900 NVMe SSD	10 Gigabit
+i3.8xlarge	$2.896	32	244 GiB	4 x 1900 NVMe SSD	10 Gigabit
+c5.9xlarge	$1.818	36	72 GiB	EBS Only	10 Gigabit
+m5a.12xlarge	$2.40	48	192 GiB	EBS Only	10 Gigabit
+m4.10xlarge	$2.32	40	160 GiB	EBS Only	10 Gigabit

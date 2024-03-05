@@ -1,16 +1,16 @@
-name: ccf-demo
-description: example impl invoking CCF model
+name: Plotter_demo
+description: example impl invoking plotter model
 tags: null
 initialize:
   plugins:
     plotter:
-      method: Visualizer
+      method: Plotter
       path: "@grnsft/if-optimisation-models"
 tree:
   children:
     child0:
       defaults:
-        command: 'python3 ./src/lib/visualizer/plotter'
+        command: 'python3 ./src/lib/plotter/plotter'
         x_name: ['time']
         y_name: energy
         colour: blue

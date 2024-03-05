@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ "$#" -eq 2 ]; then
+    file1="$1"
+    file2="$2"
+else
+    echo "Usage: $0 <impl_file1> <imple_file2>"
+    exit 1
+fi
+
 # Function to calculate time difference in milliseconds
 calculate_time_difference() {
     local start_time=$1
@@ -42,7 +50,7 @@ run_command_multiple_times() {
         end_time=$(date +%s%N)
 
         total_time=$((total_time + $(calculate_time_difference $start_time $end_time)))
-        
+        sleep 10
     done
 
     local average_time=$((total_time / num_runs))
@@ -54,13 +62,13 @@ output_file="output.txt"
 echo "" > $output_file
 # Set the number of runs for each command
 num_runs=10
-
-# Command 1
-command_1="impact-engine --impl test.yaml"
+cd ../../Code/if-optimisation-models
+# Command 1 test_tool/performance/overhead.sh
+command_1="./run.sh $file1"
 average_time_1=$(run_command_multiple_times "$command_1" $num_runs)
 
 # Command 2
-command_2="impact-engine --impl test.yaml"
+command_2="./run.sh $file2"
 average_time_2=$(run_command_multiple_times "$command_2" $num_runs)
 
 # Calculate time differences

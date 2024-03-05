@@ -1,0 +1,47 @@
+name: sci-demo
+description: example invoking sci plugin
+tags:
+initialize:
+  plugins:
+    sci:
+      method: Sci
+      path: '@grnsft/if-models'
+      global-config:
+        functional-unit-time: '5 minutes'
+    plotter:
+      method: Shell
+      path: "@grnsft/if-models"
+      global-config:
+        command: 'python3 ./src/lib/plotter/plotter'
+        
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - plotter
+      defaults:
+        x_name: ['time']
+        y_name: energy
+        colour: blue
+        diagram_name: New_diagram
+        x_axis_name: Time in hours minutes and second
+        y_axis_name: Energy in KWh
+        diagram_title: time and Energy comparison
+        graph_type: bar
+      config:
+        sci:
+          functional-unit: requests # factor to convert per time to per f.unit
+      inputs:
+        - timestamp: 2023-07-06T00:00
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          duration: 1
+          requests: 100
+          plotted_points:
+            - time: 12:00:34
+              energy: 5
+            - time: 13:01:56
+              energy: 3
+            - time: 14:20:22
+              energy: 8 

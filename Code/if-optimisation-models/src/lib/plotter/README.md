@@ -25,30 +25,29 @@ Optional parameters with defaults:
 ## Simple Example Impl and corresponding Ompl
 Impl:
 ```yaml
-name: plotter -demo
+name: Plotter_demo
 description: example impl invoking plotter model
-tags:
+tags: null
 initialize:
-  models:
-    - name: plotter
-      model: ShellModel
-      path: '@grnsft/if-models'
-graph:
+  plugins:
+    plotter:
+      method: Visualizer
+      path: "@grnsft/if-optimisation-models"
+tree:
   children:
-    child:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/visualizer/plotter'
+        x_name: ['time']
+        y_name: energy
+        colour: blue
+        diagram_name: New_diagram
+        x_axis_name: Time in hours minutes and second
+        y_axis_name: Energy in KWh
+        diagram_title: time and Energy comparison
+        graph_type: bar  
       pipeline:
         - plotter
-      config:
-        plotter:
-          command: 'python3 ./src/lib/visualizer/plotter'
-          x_name: ['time']
-          y_name: energy
-          colour: yellow
-          diagram_name: New_diagram
-          x_axis_name: Time in hours minutes and second
-          y_axis_name: Energy in KWh
-          diagram_title: time and Energy comparison
-          graph_type: bar        
       inputs:
         - plotted_points:
             - time: 12:00:34
@@ -60,31 +59,30 @@ graph:
 ```
 Ompl:
 ```yaml
-name: plotter -demo
+name: Plotter_demo
 description: example impl invoking plotter model
 tags: null
 initialize:
-  models:
-    - name: plotter
-      path: '@grnsft/if-models'
-      model: ShellModel
-graph:
+  plugins:
+    plotter:
+      path: '@grnsft/if-optimisation-models'
+      method: Visualizer
+tree:
   children:
-    child:
+    child0:
+      defaults:
+        command: python3 ./src/lib/plotter/plotter
+        x_name:
+          - time
+        y_name: energy
+        colour: blue
+        diagram_name: New_diagram
+        x_axis_name: Time in hours minutes and second
+        y_axis_name: Energy in KWh
+        diagram_title: time and Energy comparison
+        graph_type: bar
       pipeline:
         - plotter
-      config:
-        plotter:
-          command: python3 ./src/lib/visualizer/plotter
-          x_name:
-            - time
-          y_name: energy
-          colour: yellow
-          diagram_name: New_diagram
-          x_axis_name: Time in hours minutes and second
-          y_axis_name: Energy in KWh
-          diagram_title: time and Energy comparison
-          graph_type: bar
       inputs:
         - plotted_points:
             - time: '12:00:34'
@@ -94,24 +92,24 @@ graph:
             - time: '14:20:22'
               energy: 8
       outputs:
-        - plotted_points:
+        - command: python3 ./src/lib/plotter/plotter
+          x_name:
+            - time
+          y_name: energy
+          colour: blue
+          diagram_name: New_diagram
+          x_axis_name: Time in hours minutes and second
+          y_axis_name: Energy in KWh
+          diagram_title: time and Energy comparison
+          graph_type: bar
+          plotted_points:
             - time: '12:00:34'
               energy: 5
             - time: '13:01:56'
               energy: 3
             - time: '14:20:22'
               energy: 8
-          command: python3 ./src/lib/visualizer/plotter
-          x_name:
-            - time
-          y_name: energy
-          colour: yellow
-          diagram_name: New_diagram
-          x_axis_name: Time in hours minutes and second
-          y_axis_name: Energy in KWh
-          diagram_title: time and Energy comparison
-          graph_type: bar
-          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/New_diagram.png
+          diagram: /home/user/repo/Code/if-optimisation-models/New_diagram.png
 
 ```
 And we can see the following diagram being created:
@@ -120,85 +118,83 @@ And we can see the following diagram being created:
 ## Example Pipeline with carbon-advisor for plotted points
 Impl:
 ```yaml
-name: plot-demo
-description: example impl invoking carbon advisor and Plotter model
-tags:
+name: Carbon Advisor Demo with plotter
+description: Simple demo for invoking carbon-advisor model and the plotter
+tags: null
 initialize:
-  models:
-    - name: carbon-advisor
-      model: CarbonAwareAdvisor
+  plugins:
+    carbon-aware-advisor:
+      method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
-    - name: plotter
-      model: ShellModel
+    plotter:
+      method: Shell
       path: "@grnsft/if-models"
-graph:
+tree:
   children:
-    child:
+    child0:
       pipeline:
-        - carbon-advisor
+        - carbon-aware-advisor
         - plotter
-      config:
-        carbon-advisor:
-          allowed-locations:  ['northeurope','eastus','westus']
-          allowed-timeframes: [
-            "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z"
+      defaults:
+        allowed-locations:  ['northeurope','eastus','westus']
+        allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
+            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
-          sampling: 6
-        plotter:
-          command: 'python3 ./src/lib/visualizer/plotter'
-          x_name:  [location,time]
-          y_name: score
-          colour: blue
-          diagram_name: demo
-          x_axis_name: Date and Location
-          y_axis_name: Carbon score
-          diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line # bar line or scatter
+        sampling: 10
+        command: 'python3 ./src/lib/plotter/plotter'
+        x_name:  [location,time]
+        y_name: score
+        colour: green
+        diagram_name: demo
+        x_axis_name: Date and Location
+        y_axis_name: Carbon score
+        diagram_title: Carbon score in relation to time and location (ascending)
+        graph_type: line # bar line or scatter
       inputs:
         -  
 ```
 Ompl:
 ```yaml
-name: shell-demo
-description: example impl invoking shell model
+name: Carbon Advisor Demo with plotter
+description: Simple demo for invoking carbon-advisor model and the plotter
 tags: null
 initialize:
-  models:
-    - name: carbon-advisor
+  plugins:
+    carbon-aware-advisor:
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAwareAdvisor
-    - name: plotter
+      method: CarbonAwareAdvisor
+    plotter:
       path: '@grnsft/if-models'
-      model: ShellModel
-graph:
+      method: Shell
+tree:
   children:
-    child:
+    child0:
       pipeline:
-        - carbon-advisor
+        - carbon-aware-advisor
         - plotter
-      config:
-        carbon-advisor:
-          allowed-locations:
-            - northeurope
-            - eastus
-            - westus
-          allowed-timeframes:
-            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
-            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-          sampling: 6
-        plotter:
-          command: python3 ./src/lib/visualizer/plotter
-          x_name:
-            - location
-            - time
-          y_name: score
-          colour: blue
-          diagram_name: demo
-          x_axis_name: Date and Location
-          y_axis_name: Carbon score
-          diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line
+      defaults:
+        allowed-locations:
+          - northeurope
+          - eastus
+          - westus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+        sampling: 10
+        command: python3 ./src/lib/plotter/plotter
+        x_name:
+          - location
+          - time
+        y_name: score
+        colour: green
+        diagram_name: demo
+        x_axis_name: Date and Location
+        y_axis_name: Carbon score
+        diagram_title: Carbon score in relation to time and location (ascending)
+        graph_type: line
       inputs:
         - null
       outputs:
@@ -207,47 +203,57 @@ graph:
             - eastus
             - westus
           allowed-timeframes:
-            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
+            - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
             - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-          sampling: 6
-          command: python3 ./src/lib/visualizer/plotter
+            - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+          sampling: 10
+          command: python3 ./src/lib/plotter/plotter
           x_name:
             - location
             - time
           y_name: score
-          colour: blue
+          colour: green
           diagram_name: demo
           x_axis_name: Date and Location
           y_axis_name: Carbon score
           diagram_title: Carbon score in relation to time and location (ascending)
           graph_type: line
           suggestions:
-            - suggested-location: northeurope
-              suggested-timeframe: '2022-07-21T04:45:11+00:00'
-              suggested-score: 0
-            - suggested-location: eastus
-              suggested-timeframe: '2022-08-02T20:45:11+00:00'
-              suggested-score: 0
+            - suggested-location: westus
+              suggested-timeframe: '2022-06-20T00:00:00+00:00'
+              suggested-score: 126
           plotted_points:
-            - location: northeurope
-              time: '2022-07-21T04:45:11+00:00'
-              score: 0
-            - location: eastus
-              time: '2022-08-02T20:45:11+00:00'
-              score: 0
             - location: westus
-              time: '2022-07-30T04:45:11+00:00'
-              score: 60
+              time: '2022-06-20T00:00:00+00:00'
+              score: 126
             - location: northeurope
-              time: '2022-07-26T20:45:11+00:00'
-              score: 81
+              time: '2022-06-21T11:00:00+00:00'
+              score: 569
             - location: eastus
-              time: '2022-07-20T12:45:11+00:00'
-              score: 73
+              time: '2022-06-20T05:00:00+00:00'
+              score: 393
             - location: northeurope
-              time: '2022-07-24T12:45:11+00:00'
-              score: 72
-          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png
+              time: '2022-06-20T18:00:00+00:00'
+              score: 556
+            - location: northeurope
+              time: '2022-08-02T04:00:00+00:00'
+              score: 188
+            - location: eastus
+              time: '2022-08-02T23:00:00+00:00'
+              score: 495
+            - location: eastus
+              time: '2022-08-03T16:00:00+00:00'
+              score: 469
+            - location: westus
+              time: '2024-08-03T19:00:00.000Z'
+              score: 201.16041666666666
+            - location: eastus
+              time: '2024-08-01T23:00:00.000Z'
+              score: 417.175
+            - location: westus
+              time: '2024-08-02T03:00:00.000Z'
+              score: 272.66041666666666
+          diagram: /home/user/repo/Code/if-optimisation-models/demo.png
 
 ```
 And we can see the following diagram being created:
@@ -276,63 +282,61 @@ Optional parameters with defaults:
 ## Simple Example Impl and corresponding Ompl
 Impl:
 ```yaml
-name: plotter -demo
-description: example impl invoking plotter model
+name: plotter-demo2
+description: example impl invoking Plotter model
 tags: null
 initialize:
-  models:
-    - name: plotter
-      path: '@grnsft/if-models'
-      model: ShellModel
-graph:
+  plugins:
+    plotter:
+      method: Shell
+      path: "@grnsft/if-models"
+tree:
   children:
-    child:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/plotter/plotter'
+        y_name: graph.carbon
+        colour: red
+        diagram_name: Test_diagram2
+        x_axis_name: Date
+        y_axis_name: Carbon
+        diagram_title: Carbon Emission per Date for graph.carbon
+        graph_type: scatter   
+        csv_path: 'helper2.csv'
       pipeline:
         - plotter
-      config:
-        plotter:
-          command: python3 ./src/lib/visualizer/plotter
-          y_name: graph.carbon
-          colour: red
-          diagram_name: Test_diagram2
-          x_axis_name: Date
-          y_axis_name: Carbon
-          diagram_title: Carbon Emission per Date for graph.carbon
-          graph_type: scatter
-          csv_path: helper2.csv
-      inputs:
-        - null
+      inputs: 
+      -
 ```
 Ompl:
 ```yaml
-name: plotter -demo
-description: example impl invoking plotter model
+name: plotter-demo2
+description: example impl invoking Plotter model
 tags: null
 initialize:
-  models:
-    - name: plotter
+  plugins:
+    plotter:
       path: '@grnsft/if-models'
-      model: ShellModel
-graph:
+      method: Shell
+tree:
   children:
-    child:
+    child0:
+      defaults:
+        command: python3 ./src/lib/plotter/plotter
+        y_name: graph.carbon
+        colour: red
+        diagram_name: Test_diagram2
+        x_axis_name: Date
+        y_axis_name: Carbon
+        diagram_title: Carbon Emission per Date for graph.carbon
+        graph_type: scatter
+        csv_path: helper2.csv
       pipeline:
         - plotter
-      config:
-        plotter:
-          command: python3 ./src/lib/visualizer/plotter
-          y_name: graph.carbon
-          colour: red
-          diagram_name: Test_diagram2
-          x_axis_name: Date
-          y_axis_name: Carbon
-          diagram_title: Carbon Emission per Date for graph.carbon
-          graph_type: scatter
-          csv_path: helper2.csv
       inputs:
         - null
       outputs:
-        - command: python3 ./src/lib/visualizer/plotter
+        - command: python3 ./src/lib/plotter/plotter
           y_name: graph.carbon
           colour: red
           diagram_name: Test_diagram2
@@ -341,7 +345,7 @@ graph:
           diagram_title: Carbon Emission per Date for graph.carbon
           graph_type: scatter
           csv_path: helper2.csv
-          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/Test_diagram2.png
+          diagram: /home/user/repo/Code/if-optimisation-models/Test_diagram2.png
 
 ```
 And we can see the following diagram being created:

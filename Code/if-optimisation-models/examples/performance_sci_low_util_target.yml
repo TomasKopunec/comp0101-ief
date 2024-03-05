@@ -1,0 +1,41 @@
+name: sci-demo
+description: example invoking sci plugin
+tags:
+initialize:
+  plugins:
+    sci:
+      method: Sci
+      path: '@grnsft/if-models'
+      global-config:
+        functional-unit-time: '5 minutes'
+    right-sizing:
+      path: "@grnsft/if-optimisation-models"
+      method: RightSizingModel
+      global-config:
+        data-path: 'data/test-instances.json'
+        
+tree:
+  children:
+    child:
+      pipeline:
+        - sci
+        - right-sizing
+      defaults:
+        target-cpu-util: 100
+      config:
+        sci:
+          functional-unit: requests # factor to convert per time to per f.unit
+                 
+      inputs:
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          carbon-operational: 0.02
+          carbon-embodied: 5
+          requests: 100
+          duration: 300
+          cloud-vendor: custom
+          cpu-util: 60
+          target-cpu-util: 90
+          mem-util: 50
+          location: uksouth
+          cloud-instance-type: 'Test_32_64'
+          

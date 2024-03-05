@@ -45,13 +45,18 @@ def plot_values(x_values, y_values, filename, graph_title, x_axis_label, y_axis_
 
 
 # Reading YAML input from stdin
-yaml_input = ''.join(sys.stdin.readlines())
-try:
-    data = yaml.safe_load(yaml_input)[0]
-    
-    if not data:
-        raise ValueError("YAML input is empty or invalid.")
+# Check if the file path argument is provided
+if len(sys.argv) < 2:
+    print("Usage: python script.py <path_to_yaml_file>")
+    sys.exit(1)
 
+file_path = sys.argv[1]  # The first argument after the script name
+
+try:
+    with open(file_path, 'r') as file:
+        data = yaml.safe_load(file)
+    
+    
     #y_name is always a required parameter
     if 'y_name' not in data:
             raise KeyError(f"Required parameter y_name is missing.")
@@ -60,6 +65,7 @@ try:
     #You either plot from a csv or from a dictionary called plotted_points
     if 'plotted_points' not in data and 'csv_path' not in data:
         raise KeyError("Missing one of the required parameters: 'plotted_points' or 'csv_path, one of them must be specified'.")
+    
     #You cant plot both from a csv and from a dictionary called plotted_points
     if 'plotted_points' in data and 'csv_path' in data:
         raise KeyError("Cant specify both 'plotted_points' and 'csv_path', only one of them must be specified.")

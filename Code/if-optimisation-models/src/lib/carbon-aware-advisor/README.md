@@ -85,159 +85,53 @@ Impl:
 
 ```yaml
 name: Carbon Advisor Demo
-description: Simple demo for invoking carbon-advisor model
+description: Simple demo for invoking carbon-aware-advisor model
+tags: null
 initialize:
-  models:
-    - name: carbon-advisor
-      model: CarbonAwareAdvisor
+  plugins:
+    carbon-aware-advisor:
+      method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
-graph:
+tree:
   children:
-    child:
+    child0:
       pipeline:
-        - carbon-advisor
-      config:
-        carbon-advisor:
-          allowed-locations: ['northeurope', 'eastus', 'westus']
-          allowed-timeframes: [
-            "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z"
+        - carbon-aware-advisor
+      defaults:
+        allowed-locations:  ['northeurope','eastus','westus']
+        allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
+            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
+      inputs:
+        - 
 ```
 Ompl: 
 
 ```yaml
 name: Carbon Advisor Demo
-description: Simple demo for invoking carbon-advisor model
+description: Simple demo for invoking carbon-aware-advisor model
 tags: null
 initialize:
-  models:
-    - name: carbon-advisor
+  plugins:
+    carbon-aware-advisor:
       path: '@grnsft/if-optimisation-models'
-      model: CarbonAwareAdvisor
-graph:
+      method: CarbonAwareAdvisor
+tree:
   children:
-    child:
+    child0:
       pipeline:
-        - carbon-advisor
-      config:
-        carbon-advisor:
-          allowed-locations:
-            - northeurope
-            - eastus
-            - westus
-          allowed-timeframes:
-            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
-            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-      inputs:
-        - timestamp: 2023-07-06T00:00
-          duration: 3600
-          cloud-vendor: azure
-          cloud-instance-type: Standard_NC24s_v3
-      outputs:
-        - timestamp: 2023-07-06T00:00
-          duration: 3600
-          cloud-vendor: azure
-          cloud-instance-type: Standard_NC24s_v3
-          allowed-locations:
-            - northeurope
-            - eastus
-            - westus
-          allowed-timeframes:
-            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
-            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-          suggestions:
-            - suggested-location: northeurope
-              suggested-timeframe: '2022-07-21T04:45:11+00:00'
-              suggested-score: 0
-            - suggested-location: eastus
-              suggested-timeframe: '2022-08-02T20:45:11+00:00'
-              suggested-score: 0
-          plotted_points: []
-```
-
-## Example configuration with sampling and plotter model to visualize the data
-Impl:
-```yaml
-name: plot-demo
-description: example impl invoking carbon advisor and Plotter model
-tags:
-initialize:
-  models:
-    - name: carbon-advisor
-      model: CarbonAwareAdvisor
-      path: "@grnsft/if-optimisation-models"
-    - name: plotter
-      model: ShellModel
-      path: "@grnsft/if-models"
-graph:
-  children:
-    child:
-      pipeline:
-        - carbon-advisor
-        - plotter
-      config:
-        carbon-advisor:
-          allowed-locations:  ['northeurope','eastus','westus']
-          allowed-timeframes: [
-            "2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z"
-          ]
-          sampling: 6
-        plotter:
-          command: 'python3 ./src/lib/visualizer/plotter'
-          x_name:  [location,time]
-          y_name: score
-          colour: blue
-          diagram_name: demo
-          x_axis_name: Date and Location
-          y_axis_name: Carbon score
-          diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line # bar line or scatter
-      inputs:
-        -  
-```
-Ompl:
-```yaml
-name: shell-demo
-description: example impl invoking shell model
-tags: null
-initialize:
-  models:
-    - name: carbon-advisor
-      path: '@grnsft/if-optimisation-models'
-      model: CarbonAwareAdvisor
-    - name: plotter
-      path: '@grnsft/if-models'
-      model: ShellModel
-graph:
-  children:
-    child:
-      pipeline:
-        - carbon-advisor
-        - plotter
-      config:
-        carbon-advisor:
-          allowed-locations:
-            - northeurope
-            - eastus
-            - westus
-          allowed-timeframes:
-            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
-            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-          sampling: 6
-        plotter:
-          command: python3 ./src/lib/visualizer/plotter
-          x_name:
-            - location
-            - time
-          y_name: score
-          colour: blue
-          diagram_name: demo
-          x_axis_name: Date and Location
-          y_axis_name: Carbon score
-          diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line
+        - carbon-aware-advisor
+      defaults:
+        allowed-locations:
+          - northeurope
+          - eastus
+          - westus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
       inputs:
         - null
       outputs:
@@ -246,47 +140,155 @@ graph:
             - eastus
             - westus
           allowed-timeframes:
-            - 2022-07-19T14:00:00Z - 2022-07-31T19:00:00Z
+            - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
             - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-          sampling: 6
+            - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+          suggestions:
+            - suggested-location: westus
+              suggested-timeframe: '2022-06-20T00:00:00+00:00'
+              suggested-score: 126
+
+```
+
+## Example configuration with sampling and plotter model to visualize the data
+Impl:
+```yaml
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  plugins:
+    carbon-aware-advisor:
+      method: CarbonAwareAdvisor
+      path: "@grnsft/if-optimisation-models"
+    plotter:
+      method: Shell
+      path: "@grnsft/if-models"
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
+        - plotter
+      defaults:
+        allowed-locations:  ['northeurope','eastus','westus']
+        allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
+            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
+          ]
+        sampling: 10
+        command: 'python3 ./src/lib/plotter/plotter'
+        x_name:  [location,time]
+        y_name: score
+        colour: yellow
+        diagram_name: demo
+        x_axis_name: Date and Location
+        y_axis_name: Carbon score
+        diagram_title: Carbon score in relation to time and location (ascending)
+        graph_type: bar # bar line or scatter
+      inputs:
+        - 
+```
+Ompl:
+```yaml
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  plugins:
+    carbon-aware-advisor:
+      path: '@grnsft/if-optimisation-models'
+      method: CarbonAwareAdvisor
+    plotter:
+      path: '@grnsft/if-models'
+      method: Shell
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
+        - plotter
+      defaults:
+        allowed-locations:
+          - northeurope
+          - eastus
+          - westus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+        sampling: 10
+        command: python3 ./src/lib/plotter/plotter
+        x_name:
+          - location
+          - time
+        y_name: score
+        colour: yellow
+        diagram_name: demo
+        x_axis_name: Date and Location
+        y_axis_name: Carbon score
+        diagram_title: Carbon score in relation to time and location (ascending)
+        graph_type: bar
+      inputs:
+        - null
+      outputs:
+        - allowed-locations:
+            - northeurope
+            - eastus
+            - westus
+          allowed-timeframes:
+            - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+            - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+          sampling: 10
           command: python3 ./src/lib/visualizer/plotter
           x_name:
             - location
             - time
           y_name: score
-          colour: blue
+          colour: yellow
           diagram_name: demo
           x_axis_name: Date and Location
           y_axis_name: Carbon score
           diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: line
+          graph_type: bar
           suggestions:
-            - suggested-location: northeurope
-              suggested-timeframe: '2022-07-21T04:45:11+00:00'
-              suggested-score: 0
-            - suggested-location: eastus
-              suggested-timeframe: '2022-08-02T20:45:11+00:00'
-              suggested-score: 0
+            - suggested-location: westus
+              suggested-timeframe: '2022-06-20T00:00:00+00:00'
+              suggested-score: 126
           plotted_points:
-            - location: northeurope
-              time: '2022-07-21T04:45:11+00:00'
-              score: 0
-            - location: eastus
-              time: '2022-08-02T20:45:11+00:00'
-              score: 0
             - location: westus
-              time: '2022-07-30T04:45:11+00:00'
-              score: 60
-            - location: northeurope
-              time: '2022-07-26T20:45:11+00:00'
-              score: 81
+              time: '2022-06-20T00:00:00+00:00'
+              score: 126
             - location: eastus
-              time: '2022-07-20T12:45:11+00:00'
-              score: 73
+              time: '2022-06-20T11:00:00+00:00'
+              score: 403
             - location: northeurope
-              time: '2022-07-24T12:45:11+00:00'
-              score: 72
-          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png
+              time: '2022-06-20T15:00:00+00:00'
+              score: 560
+            - location: westus
+              time: '2022-06-20T08:00:00+00:00'
+              score: 208
+            - location: northeurope
+              time: '2022-08-02T04:00:00+00:00'
+              score: 188
+            - location: westus
+              time: '2022-08-03T08:00:00+00:00'
+              score: 285
+            - location: eastus
+              time: '2022-08-03T02:00:00+00:00'
+              score: 489
+            - location: westus
+              time: '2024-08-03T19:00:00.000Z'
+              score: 201.16041666666666
+            - location: westus
+              time: '2024-08-01T21:00:00.000Z'
+              score: 233.66041666666666
+            - location: eastus
+              time: '2024-08-02T09:00:00.000Z'
+              score: 393.175
+          diagram: /home/user/repo/Code/if-optimisation-models/demo.png
 
 ```
 And we can see the following diagram being created:
@@ -301,7 +303,7 @@ And we can see the following diagram being created:
 ## Forecasting
 For a number of timeframe ranges that are either very recent or in the future the Carbon Aware SDK Api will not return any values. So we have created a prediction mechanism to provide with a forecast for that timeframe range using past values. This is a simple approach and by no means offers high accuracy. But it is a first implementation that can be expanded in the future to offer better predictions. The carbon Aware SDK might also be improved in future versions to perform future predictions for a longer time.
 
-The way the current algorith works is that the carbon of an unavaliable timeframe is measured as the weighted average of the average carbon score for that location the last X number of days.(X is currently defined as 500) and the score for that datetime and location the last available year. The weights are 0.2 for the average and 0.8 for the last available year.
+The way the current algorith works is that the carbon of an unavaliable timeframe is measured as the weighted average of the average carbon score for that location the last X number of days.(X is currently defined as 10) and the score for that datetime and location the last available year. The weights are 0.5 for the average and 0.5 for the last available year, as our analysis showed these produced the best results, but the user is free to change those values at the beggining of the index.ts file as they see fit.
 
 ## Integrating with Plotter
 To visualize the carbon emission data, integrate the `CarbonAwareAdvisor` model with the `plotter` model in your pipeline. Provide the necessary configurations for both models as per your requirements. The plotter model will automatically go through the plotted-points to search for the data so the x_name should be defined as [location, time] and the y_name as score.

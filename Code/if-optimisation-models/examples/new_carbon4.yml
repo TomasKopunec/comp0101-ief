@@ -3,7 +3,7 @@ description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
   plugins:
-    carbon-advisor:
+    carbon-aware-advisor:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
     plotter:
@@ -13,7 +13,7 @@ tree:
   children:
     child0:
       pipeline:
-        - carbon-advisor
+        - carbon-aware-advisor
         - plotter
       defaults:
         allowed-locations:  ['northeurope','eastus','westus']
