@@ -48,3 +48,9 @@ type Forecast = {
     n: number;
     decay: number;
 }
+
+type Suggestion = {
+    suggestedLocation: string;
+    suggestedTimeframe: string;
+    suggestedScore: number;
+}

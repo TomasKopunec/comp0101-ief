@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { PluginInterface } from '../../interfaces';
-import { PluginParams } from '../../types/common';
+import { ConfigParams, PluginParams } from '../../types/common';
 import { buildErrorMessage } from '../../util/helpers';
 import { ERRORS } from '../../util/errors';
 import { promises as fsPromises } from 'fs';
@@ -8,7 +8,7 @@ import * as path from 'path';
 
 
 // Make sure you have the 'qs' library installed
-export const CarbonAwareAdvisor = (): PluginInterface => {
+export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
   const { InputValidationError } = ERRORS; //used for exceptions
 
   interface EmissionsData { //interface for the emissions data returned by the API
@@ -49,7 +49,7 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
    */
   let supportedLocations: Set<string> = new Set();
   // Use for read from locations.json . We need to be careful when we commit to the impact framework dir for this path
-  let locationsFilePath = path.join(__dirname, '../../../../../..','src', 'lib', 'carbon-aware-advisor', 'locations.json');
+  let locationsFilePath = path.join(process.cwd(),'src', 'lib', 'carbon-aware-advisor', 'locations.json');
 
 
   //flag to check if the model has sampling, the sampling value is originally set to 0
@@ -626,6 +626,7 @@ export const CarbonAwareAdvisor = (): PluginInterface => {
   //so that eans that every time this model is run the execute function will be called
   return {
     metadata,
-    execute
+    execute, 
+    getAverageScoreForLastXDays
   };
 }
