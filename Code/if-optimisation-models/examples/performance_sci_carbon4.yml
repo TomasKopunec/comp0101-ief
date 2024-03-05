@@ -11,6 +11,14 @@ initialize:
     carbon-aware-advisor:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
+      global-config:
+        allowed-locations:  ['northeurope','eastus','westus']
+        allowed-timeframes: [
+            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
+            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
+            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
+          ]
+        sampling: 10
     plotter:
       method: Shell
       path: "@grnsft/if-models"
@@ -25,13 +33,6 @@ tree:
         - carbon-aware-advisor
         - plotter
       defaults:
-        allowed-locations:  ['northeurope','eastus','westus']
-        allowed-timeframes: [
-            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
-            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
-          ]
-        sampling: 10
         command: 'python3 ./src/lib/plotter/plotter'
         x_name:  [location,time]
         y_name: score

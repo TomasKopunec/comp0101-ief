@@ -8,7 +8,7 @@ import * as path from 'path';
 
 
 // Make sure you have the 'qs' library installed
-export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
+export const CarbonAwareAdvisor = async (params: ConfigParams): Promise<PluginInterface> => {
   const { InputValidationError } = ERRORS; //used for exceptions
 
   interface EmissionsData { //interface for the emissions data returned by the API
@@ -68,6 +68,8 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
   let errorBuilder = buildErrorMessage('CarbonAwareAdvisor');
 
 
+
+  
     /**
    * this function is the main function of the model, it is called by the impl file
    * it takes the inputs from the impl file and returns the results of the model
@@ -76,8 +78,8 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
    * @param inputs the inputs from the impl file
    * @returns the results of the model
    */ 
-    const execute= async (inputs: PluginParams[]): Promise<PluginParams[]>=>{
-      await validateInputs(inputs);
+    const execute= async (inputs: PluginParams[])=>{
+      // await validateInputs(configs);
       //echo that you are in the execute function
       console.log('You are in the execute function');
       //call the calculate function to perform the actual calculations
@@ -91,6 +93,7 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
   const calculate = async (inputs: PluginParams[]): Promise<PluginParams[]> =>{
     //depending on if we have sampling or not the result map that will be returned will be different. 
     //if hassampling =true then we need plotted points as well
+      
     let results: PluginParams[] = []
     if (hasSampling) {
       results = inputs.map(input => ({
@@ -364,7 +367,9 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
    * @param inputs The inputs provided by the user.
    * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
    */
-  const  validateInputs = async (inputs: PluginParams[]): Promise<void> => {
+  const  validateInputs = async (inputs: ConfigParams): Promise<void> => {
+    console.log('You are in the validateInputs function');
+    console.log('The inputs received from the impl:',JSON.stringify(inputs));
     // Set the supported locations based on the locations.json file to see if the locations we got as inputs are among them
     await setSupportedLocations();
        
@@ -372,15 +377,13 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
     if (inputs === undefined) {
       throwError(InputValidationError, 'Required Parameters not provided');
     }
-
-    if (!Array.isArray(inputs)) {
-      throwError(InputValidationError, 'Inputs must be an array');
-    }
+       
 
     //now that we have set the supported locations and he have checked that some inputs are provided
     //we can call the fucntion to validate those inputs
     validateParams(inputs);
-  }
+        
+  };
 
   /**
    * Validate the inputs provided by the user to make sure that all required parameters are provided and are of the correct type.
@@ -388,21 +391,21 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
    * @param params The inputs provided by the user in the impl file
    * @throws InputValidationError if the inputs are invalid and stops the execution of the model.
    */
-  const validateParams = async (params: PluginParams[]): Promise<void> => {
+  const validateParams = async (params: ConfigParams): Promise<void> => {
     //print the params received from the impl file for debugging puproses
     //console.log("The params received from the impl:",JSON.stringify(params));
     
     // Check if the 'allowed-locations' property exists in the impl file
-    if (params[0] && params[0]['allowed-locations'] !== undefined) {
-        const locs = params[0]['allowed-locations'];
+    if (params && params['allowed-locations'] !== undefined) {
+        const locs = params['allowed-locations'];
         // validate that the locations are corect
         validateLocations(locs);}
      else {
         throwError(InputValidationError, `Required Parameter allowed-locations not provided`);
     }
     // Check if the 'allowed-timeframes' property exists in the impl file
-    if (params[0] && params[0]['allowed-timeframes'] !== undefined) {
-      const times = params[0]['allowed-timeframes'];
+    if (params && params['allowed-timeframes'] !== undefined) {
+      const times = params['allowed-timeframes'];
       // validate that the timeframes are correct
       validateTimeframes(times);
     } else {
@@ -410,9 +413,10 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
     }
 
     // Check if the 'sampling' property exists in the impl file
-    if (params[0] && params[0]['sampling'] !== undefined) {
-      const sample = params[0]['sampling'];
+    if (params && params['sampling'] !== undefined) {
+      const sample = params['sampling'];
       // Further processing with locs
+      console.log('`sampling` provided:', sample);
       validateSampling(sample);
     } else {
         console.log('`sampling` is undefined, and thus will not be used.');
@@ -426,9 +430,11 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
   * @throws InputValidationError if the sampling parameter is invalid and stops the execution of the model.
   * @returns void
   */
-  const validateSampling = (sampling: any): void => {
-    // Check if sampling is a positive number  
-    const hasSampling = sampling > 0;
+  const validateSampling = (sample: any): void => {
+    // Check if sampling is a positive number  and populate the global params hasSampling and sampling
+    hasSampling = sample > 0;
+    sampling =sample;
+    
   
     if (!hasSampling || typeof sampling !== 'number' || sampling <= 0) {
       console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
@@ -454,6 +460,7 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
       }
       allowedLocations.add(location); // populate the global set of allowedLocations
     });
+
   };
 
   /**
@@ -621,7 +628,8 @@ export const CarbonAwareAdvisor = (params : ConfigParams): PluginInterface => {
       throw error;
     } 
   }
-
+  //first we validate the inuts and then we return the metadata and the execute function
+  await validateInputs(params);
   // the CarbonAwareAdvisor returns the metadata and the execute function
   //so that eans that every time this model is run the execute function will be called
   return {

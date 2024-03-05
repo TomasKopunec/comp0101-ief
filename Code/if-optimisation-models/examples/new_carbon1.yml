@@ -6,17 +6,16 @@ initialize:
     carbon-aware-advisor:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
-tree:
-  children:
-    child0:
-      pipeline:
-        - carbon-aware-advisor
-      defaults:
+      global-config:
         allowed-locations:  ['northeurope','eastus']
         allowed-timeframes: [
             "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
             "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
-        # sampling: 10
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
       inputs:
         - 
