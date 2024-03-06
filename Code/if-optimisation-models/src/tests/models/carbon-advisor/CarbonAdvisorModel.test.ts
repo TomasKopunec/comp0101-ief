@@ -3,7 +3,12 @@ import { ConfigParams, PluginParams } from "../../../types/common";
 import { PluginInterface } from "../../../interfaces";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
+import 'jest-expect-message';
 const mock = new MockAdapter(axios);
+
+/**
+* To run: npm run test -- src/tests/models/CarbonAdvisorModel.test.ts
+*/
 
 // Import scenario1.json
 import scenario1 = require("./scenarios/scenario1.json");
@@ -26,20 +31,19 @@ describe('CarbonAdvisorModel', () => {
      */
     it('CarbonAdvisorModel.Scenario1', async () => {
         initMock(scenario1);
-        const config: ConfigParams = {};
-        const inputs: PluginParams[] = [
-            {
-                "timestamp": "",
-                "duration": 1,
-                "allowed-locations": ["eastus"],
-                "allowed-timeframes": ["2024-01-15T12:00:00Z - 2024-01-15T18:00:00Z"],
-            }
-        ];
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus"],
+            "allowed-timeframes": ["2024-01-15T12:00:00Z - 2024-01-15T18:00:00Z"]
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
         const model = CarbonAwareAdvisor(config);
         mockAverage(model, 5);
 
         const result = await model.execute(inputs);
-        const suggestions = validateSuggestions(result);
+        const suggestions = validateSuggestions(result, config);
 
         expect(suggestions.length).toBe(1);
         const suggestion = suggestions[0];
@@ -55,20 +59,19 @@ describe('CarbonAdvisorModel', () => {
     */
     it('CarbonAdvisorModel.Scenario2', async () => {
         initMock(scenario2);
-        const config: ConfigParams = {};
-        const inputs: PluginParams[] = [
-            {
-                "timestamp": "",
-                "duration": 1,
-                "allowed-locations": ["eastus"],
-                "allowed-timeframes": ["2022-01-14T00:00:00Z - 2022-01-16T00:00:00Z"],
-            }
-        ];
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus"],
+            "allowed-timeframes": ["2022-01-14T00:00:00Z - 2022-01-16T00:00:00Z"],
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
         const model = CarbonAwareAdvisor(config);
         mockAverage(model, 5);
 
         const result = await model.execute(inputs);
-        const suggestions = validateSuggestions(result);
+        const suggestions = validateSuggestions(result, config);
 
         expect(suggestions.length).toBe(1);
         const suggestion = suggestions[0];
@@ -84,20 +87,19 @@ describe('CarbonAdvisorModel', () => {
     */
     it('CarbonAdvisorModel.Scenario3', async () => {
         initMock(scenario3);
-        const config: ConfigParams = {};
-        const inputs: PluginParams[] = [
-            {
-                "timestamp": "",
-                "duration": 1,
-                "allowed-locations": ["eastus"],
-                "allowed-timeframes": ["2021-01-01T00:00:00Z - 2022-01-01T00:00:00Z"],
-            }
-        ];
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus"],
+            "allowed-timeframes": ["2021-01-01T00:00:00Z - 2022-01-01T00:00:00Z"],
+        }
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
         const model = CarbonAwareAdvisor(config);
         mockAverage(model, 50);
 
         const result = await model.execute(inputs);
-        const suggestions = validateSuggestions(result);
+        const suggestions = validateSuggestions(result, config);
 
         expect(suggestions.length).toBe(1);
         const suggestion = suggestions[0];
@@ -107,7 +109,7 @@ describe('CarbonAdvisorModel', () => {
     });
 });
 
-function validateSuggestions(result: PluginParams[]): Suggestion[] {
+function validateSuggestions(result: PluginParams[], config: ConfigParams): Suggestion[] {
     console.log("Validating suggestions:");
     console.log(JSON.stringify(result, null, 2));
 
@@ -119,39 +121,40 @@ function validateSuggestions(result: PluginParams[]): Suggestion[] {
         suggestedScore: suggestion['suggested-score']
     }));
 
-    checkIfSuggestedTimeframesWithinRange(result, suggestions);
-    checkIfSuggestedLocationsWithinAllowedLocations(result, suggestions);
+    checkIfSuggestedTimeframesWithinRange(config, suggestions);
+    checkIfSuggestedLocationsWithinAllowedLocations(config, suggestions);
     return suggestions;
 }
 
-function checkIfSuggestedLocationsWithinAllowedLocations(inputs: PluginParams[],
-    suggestions: Suggestion[]) {
-    const allowedLocations = inputs[0]["allowed-locations"] as string[];
+function checkIfSuggestedLocationsWithinAllowedLocations(config: ConfigParams, suggestions: Suggestion[]) {
+    const allowedLocations = config["allowed-locations"] as string[];
     for (const suggestion of suggestions) {
         expect(typeof suggestion.suggestedLocation).toBe("string");
         // Must be one of the allowed locations
-        expect(allowedLocations.includes(suggestion.suggestedLocation)).toBe(true);
+        expect(allowedLocations.includes(suggestion.suggestedLocation),
+            `Suggested location ${suggestion.suggestedLocation} is not within the allowed locations ${allowedLocations}`)
+            .toBe(true);
     }
 }
 
-function checkIfSuggestedTimeframesWithinRange(inputs: PluginParams[], suggestions: Suggestion[]) {
-    const allowedTimeframes = inputs[0]["allowed-timeframes"] as string[];
+function checkIfSuggestedTimeframesWithinRange(config: ConfigParams, suggestions: Suggestion[]) {
+    const allowedTimeframes = config["allowed-timeframes"] as string[];
     for (const suggestion of suggestions) {
         let isValid = false;
         for (const timeframe of allowedTimeframes) {
             const from = new Date(timeframe.split(" - ")[0]);
             const to = new Date(timeframe.split(" - ")[1]);
             const date = new Date(suggestion.suggestedTimeframe);
+            expect(date, `Suggested timeframe must be a valid date`).not.toBe("Invalid Date");
             console.log(date)
             console.log("Checking if ", date, " is between ", from, " and ", to)
             isValid = isValid || (date >= from && date <= to);
         }
         // Must be within the allowed timeframes
-        expect(isValid).toBe(true);
+        expect(isValid, `Suggested timeframe ${suggestion.suggestedTimeframe} is not within the allowed timeframes ${allowedTimeframes}`)
+            .toBe(true);
     }
 }
-
-// npm run test -- src/tests/models/CarbonAdvisorModel.test.ts
 
 // describe('CarbonAdvisorModel.Configuration', () => {
 //     // it('CarbonAdvisorModel.Configuration.MissingParams', async () => {
