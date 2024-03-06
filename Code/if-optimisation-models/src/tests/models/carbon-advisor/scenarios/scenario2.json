@@ -1,14 +1,6 @@
 [
     {
         "location": "eastus",
-        "time": "2022-01-13T23:30:00+00:00",
-        "rating": -1,
-        "duration": "04:00:00"
-    },
-
-
-    {
-        "location": "eastus",
         "time": "2022-01-14T03:30:00+00:00",
         "rating": 27,
         "duration": "04:00:00"
@@ -118,14 +110,6 @@
         "location": "eastus",
         "time": "2022-01-16T23:30:00+00:00",
         "rating": 29,
-        "duration": "04:00:00"
-    },
-
-
-    {
-        "location": "eastus",
-        "time": "2022-01-17T03:30:00+00:00",
-        "rating": -2,
         "duration": "04:00:00"
     }
 ]

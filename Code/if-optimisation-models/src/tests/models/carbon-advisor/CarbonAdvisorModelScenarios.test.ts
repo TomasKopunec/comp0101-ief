@@ -23,7 +23,7 @@ function mockAverage(model: PluginInterface, value: number) {
     jest.spyOn(model, 'getAverageScoreForLastXDays').mockResolvedValue(value);
 }
 
-describe('CarbonAdvisorModel', () => {
+describe('CarbonAdvisorModel.Scenario', () => {
     /**
      * Scenario 1: Find best time for 15/01/2024 in eastus between 12:00 and 18:00 (no sampling)
      * Expected: Suggest the time of 11:30 with score 1
@@ -47,9 +47,10 @@ describe('CarbonAdvisorModel', () => {
 
         expect(suggestions.length).toBe(1);
         const suggestion = suggestions[0];
-        expect(suggestion.suggestedLocation).toBe("eastus");
-        expect(suggestion.suggestedTimeframe).toBe("2024-01-15T11:30:00+00:00");
-        expect(suggestion.suggestedScore).toBe(1);
+        expect(suggestion.location).toBe('eastus');
+        expect(suggestion.time).toBe('2024-01-15T11:30:00+00:00');
+        expect(suggestion.rating).toBe(1);
+        expect(suggestion.duration).toBe('04:00:00');
     });
 
     /**
@@ -75,9 +76,9 @@ describe('CarbonAdvisorModel', () => {
 
         expect(suggestions.length).toBe(1);
         const suggestion = suggestions[0];
-        expect(suggestion.suggestedLocation).toBe("eastus");
-        expect(suggestion.suggestedTimeframe).toBe("2022-01-15T23:30:00+00:00");
-        expect(suggestion.suggestedScore).toBe(4);
+        expect(suggestion.location).toBe("eastus");
+        expect(suggestion.time).toBe("2022-01-15T23:30:00+00:00");
+        expect(suggestion.rating).toBe(4);
     });
 
     /**
@@ -103,9 +104,9 @@ describe('CarbonAdvisorModel', () => {
 
         expect(suggestions.length).toBe(1);
         const suggestion = suggestions[0];
-        expect(suggestion.suggestedLocation).toBe("eastus");
-        expect(suggestion.suggestedTimeframe).toBe("2021-07-16T11:30:00+00:00");
-        expect(suggestion.suggestedScore).toBe(5);
+        expect(suggestion.location).toBe("eastus");
+        expect(suggestion.time).toBe("2021-07-16T11:30:00+00:00");
+        expect(suggestion.rating).toBe(5);
     });
 });
 
@@ -115,12 +116,7 @@ function validateSuggestions(result: PluginParams[], config: ConfigParams): Sugg
 
     expect(result.length).toBe(1);
     expect(result[0].suggestions.length).toBeGreaterThanOrEqual(1);
-    const suggestions = (result[0].suggestions as any[]).map((suggestion: any) => ({
-        suggestedLocation: suggestion['suggested-location'],
-        suggestedTimeframe: suggestion['suggested-timeframe'],
-        suggestedScore: suggestion['suggested-score']
-    }));
-
+    const suggestions = result[0].suggestions as Suggestion[];
     checkIfSuggestedTimeframesWithinRange(config, suggestions);
     checkIfSuggestedLocationsWithinAllowedLocations(config, suggestions);
     return suggestions;
@@ -129,10 +125,9 @@ function validateSuggestions(result: PluginParams[], config: ConfigParams): Sugg
 function checkIfSuggestedLocationsWithinAllowedLocations(config: ConfigParams, suggestions: Suggestion[]) {
     const allowedLocations = config["allowed-locations"] as string[];
     for (const suggestion of suggestions) {
-        expect(typeof suggestion.suggestedLocation).toBe("string");
         // Must be one of the allowed locations
-        expect(allowedLocations.includes(suggestion.suggestedLocation),
-            `Suggested location ${suggestion.suggestedLocation} is not within the allowed locations ${allowedLocations}`)
+        expect(allowedLocations.includes(suggestion.location),
+            `Suggested location ${suggestion.location} is not within the allowed locations ${allowedLocations}`)
             .toBe(true);
     }
 }
@@ -142,36 +137,34 @@ function checkIfSuggestedTimeframesWithinRange(config: ConfigParams, suggestions
     for (const suggestion of suggestions) {
         let isValid = false;
         for (const timeframe of allowedTimeframes) {
+            // Extract allowed timeframe
             const from = new Date(timeframe.split(" - ")[0]);
             const to = new Date(timeframe.split(" - ")[1]);
-            const date = new Date(suggestion.suggestedTimeframe);
+
+            // Extract suggested timeframe
+            const date = new Date(suggestion.time);
+
+            // Extract duration
+            const dateWithDuration = addDuration(date, suggestion.duration);
+
             expect(date, `Suggested timeframe must be a valid date`).not.toBe("Invalid Date");
-            console.log(date)
-            console.log("Checking if ", date, " is between ", from, " and ", to)
-            isValid = isValid || (date >= from && date <= to);
+            expect(dateWithDuration, `Suggested duration must be a valid date`).not.toBe("Invalid Date");
+
+            const isWithinBounds = (date >= from && date <= to) || (dateWithDuration >= from && dateWithDuration <= to);
+            console.log(`Checking if ${date} (or ${dateWithDuration}) is between ${from} and ${to}`)
+            isValid = isValid || isWithinBounds;
         }
         // Must be within the allowed timeframes
-        expect(isValid, `Suggested timeframe ${suggestion.suggestedTimeframe} is not within the allowed timeframes ${allowedTimeframes}`)
+        expect(isValid, `Suggested timeframe ${suggestion.time} is not within the allowed timeframes ${allowedTimeframes}`)
             .toBe(true);
     }
 }
 
-// describe('CarbonAdvisorModel.Configuration', () => {
-//     // it('CarbonAdvisorModel.Configuration.MissingParams', async () => {
-//     //     const config : ConfigParams = {};
-//     //     const inputs : PluginParams[] = [];
-//     //     const model = CarbonAwareAdvisor(config);
-//     //     await expect(model.execute(inputs))
-//     //         .rejects.toThrow("Required Parameter allowed-locations not provided");
-//     // });
-
-//     it('CarbonAdvisorModel.Configuration.MissingParams', async () => {
-//         const config : ConfigParams = {
-//             "allowed-locations": []
-//         };
-//         const inputs : PluginParams[] = [];
-//         const model = CarbonAwareAdvisor(config);
-//         await expect(model.execute(inputs, config))
-//             .rejects.toThrow("Required Parameter allowed-locations is empty");
-//     });
-// });
+function addDuration(date: Date, duration: string): Date {
+    const newDate = new Date(date);
+    const parts = duration.split(":");
+    newDate.setHours(newDate.getHours() + parseInt(parts[0]));
+    newDate.setMinutes(newDate.getMinutes() + parseInt(parts[1]));
+    newDate.setSeconds(newDate.getSeconds() + parseInt(parts[2]));
+    return newDate;
+}

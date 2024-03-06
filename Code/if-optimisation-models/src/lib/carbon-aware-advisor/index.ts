@@ -355,7 +355,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    */
   const validateInputs = async () => {
     console.log('Input validation: ', JSON.stringify(params, null, 2));
-    if (params === undefined) {
+    if (params === undefined || params === null || Object.keys(params).length === 0) {
       throwError(InputValidationError, 'Required Parameters not provided');
     }
 
@@ -399,7 +399,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
       console.log('`sampling` provided:', sample);
       validateSampling(sample);
     } else {
-      console.log('`sampling` is undefined, and thus will not be used.');
+      console.log('Sampling not provided, ignoring');
     }
   };
 
@@ -413,7 +413,6 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     // Check if sampling is a positive number  and populate the global params hasSampling and sampling
     hasSampling = sample > 0;
     sampling = sample;
-
 
     if (!hasSampling || typeof sampling !== 'number' || sampling <= 0) {
       console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
@@ -449,7 +448,6 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   * @returns void
   */
   const validateTimeframes = (timeframes: any): void => {
-
     if (!Array.isArray(timeframes) || timeframes.length === 0) {
       throwError(InputValidationError,
         `Required Parameter allowed-timeframes is empty`);
@@ -463,6 +461,13 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
         throwError(InputValidationError,
           `Timeframe ${timeframe} is invalid`);
       }
+
+      // Check if the start and end times are valid dates
+      if (isNaN(Date.parse(from)) || isNaN(Date.parse(to))) {
+        throwError(InputValidationError,
+          `Timeframe ${timeframe} is invalid`);
+      }
+
       // Check if start is before end
       if (from >= to) {
         throwError(InputValidationError,
@@ -609,6 +614,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   return {
     metadata,
     execute,
-    getAverageScoreForLastXDays
+    getAverageScoreForLastXDays,
+    supportedLocations
   };
 }

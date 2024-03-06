@@ -50,7 +50,8 @@ type Forecast = {
 }
 
 type Suggestion = {
-    suggestedLocation: string;
-    suggestedTimeframe: string;
-    suggestedScore: number;
+    location: string;
+    time: string;
+    rating: number;
+    duration: string;
 }
