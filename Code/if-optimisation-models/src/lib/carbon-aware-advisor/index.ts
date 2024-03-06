@@ -208,24 +208,12 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
     // Filter all responses to get items with the lowest rating (i.e. the best responses)
     const finalSuggestions = AllBestData.filter(item => item.rating === lowestRating);
 
-    //for each suggestion create the results key suggestions to return  it to the impl file 
-    finalSuggestions.forEach(async item => {
-      results[0].suggestions.push({
-        'suggested-location': item.location,
-        'suggested-timeframe': item.time,
-        'suggested-score': item.rating
-      });
-    });
+    // Store the final suggestions in the output results
+    results[0].suggestions = finalSuggestions;
 
-    // if we have sampling in the result we return the plotted points as well which have samples from different timeframe and locations
+    // If we have sampling in the result we return the plotted points as well which have samples from different timeframe and locations
     if (hasSampling) {
-      plotted_points.forEach(async item => {
-        results[0].plotted_points.push({
-          'location': item.location,
-          'time': item.time,
-          'score': item.rating
-        });
-      });
+      results[0].plotted_points = plotted_points;
     }
     return results;
   }
