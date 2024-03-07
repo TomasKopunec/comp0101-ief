@@ -18,7 +18,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
     let database: CPUDatabase = new CPUDatabase();
     const Cache: Map<string, CPUDatabase> = new Map();
     const builtinDataPath = './data';
-    const cpuMetrics = ['cpu-util', 'cloud-vendor', 'cloud-instance-type'];
+    const cpuMetrics = ['cpu/utilisation', 'cloud-vendor', 'cloud-instance-type'];
 
     const configure = (configParams: ConfigParams) => {
         // Load model data if 'data-path' is provided in configParams
@@ -73,7 +73,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         if (validateSingleInput(input)) {
             // Store original instance details
             input['old-instance'] = input['cloud-instance-type'];
-            input['old-cpu-util'] = input['cpu-util'];
+            input['old-cpu-util'] = input['cpu/utilisation'];
             input['old-mem-util'] = input['mem-util'];
 
             // Retrieve instance details from database
@@ -88,11 +88,12 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
             let targetRAM = (originalMemUtil / 100) * instance.RAM;
             let region = input['location'];
 
+            let cpuUtil = input['cpu/utilisation'];
             // Ensure cpu-util is a number
-            if (typeof input['cpu-util'] === 'number') {
-                util = input['cpu-util'] as number;
-            } else if (typeof input['cpu-util'] === 'string') {
-                util = parseFloat(input['cpu-util']);
+            if (typeof cpuUtil === 'number') {
+                util = cpuUtil as number;
+            } else if (typeof cpuUtil === 'string') {
+                util = parseFloat(cpuUtil);
             } else {
                 throw new Error('cpu-util must be a number or string');
             }
@@ -126,7 +127,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 
                 // Update output parameters
                 output['cloud-instance-type'] = processedModel;
-                output['cpu-util'] = fixFloat(combination.cpuUtil * 100, 2);
+                output['cpu/utilisation'] = fixFloat(combination.cpuUtil * 100, 2);
                 output['mem-util'] = fixFloat(combination.memUtil * 100, 2);
                 output['total-memoryGB'] = combination.instance.RAM;
                 if (res.length > 1) {
@@ -159,7 +160,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         .object({
             'cloud-instance-type': z.string(),
             'cloud-vendor': z.string(),
-            'cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+            'cpu/utilisation': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
             'target-cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional()
         })
         .refine(atLeastOneDefined, {
