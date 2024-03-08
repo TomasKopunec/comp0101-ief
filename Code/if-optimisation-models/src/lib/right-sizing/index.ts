@@ -9,6 +9,9 @@ import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../
 
 import { CPUDatabase, CloudInstance } from './CPUFamily';
 
+/**
+ * Implementation of the ModelPluginInterface for the Right Sizing model.
+ */
 export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 
     const metadata = {
@@ -20,6 +23,11 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
     const builtinDataPath = './data';
     const cpuMetrics = ['cpu/utilisation', 'cloud-vendor', 'cloud-instance-type'];
 
+    /**
+     * Configures the model with the provided parameters.
+     * 
+     * @param   configParams Configuration parameters for the model.
+     */
     const configure = (configParams: ConfigParams) => {
         // Load model data if 'data-path' is provided in configParams
         if (configParams && 'data-path' in configParams) {
@@ -33,9 +41,15 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         }
     }
     
-    
+    // Execute the configure function
     configure(params);
 
+    /**
+     * Executes the model with the given inputs and returns the corresponding outputs.
+     * 
+     * @param   inputs The list of input parameters for the models.
+     * @return  A Promise resolving to an array of model parameters representing the outputs.
+     */
     const execute = async (inputs: PluginParams[]) => {
         let outputs: PluginParams[] = [];
 
@@ -66,6 +80,11 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         return Promise.resolve(outputs); // Resolve the promise with the outputs array
     }
 
+    /**
+     * Processes a single input to generate multiple outputs, each representing a different instance combination.
+     * @param input The input parameters for the model.
+     * @returns An array of model parameters representing different instance combinations.
+     */
     const processInput = (input: PluginParams): PluginParams[] => {
         let outputs: PluginParams[] = [];
 
@@ -155,6 +174,12 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         return outputs;
     }
 
+    /**
+     * Validate the input parameters object, check if the necessary parameters are present.
+     * 
+     * @param input Input model parameters object to be validated
+     * @returns True if the input is valid, false otherwise
+     */
     const validateSingleInput = (input: PluginParams) => {
         const schema = z
         .object({
@@ -170,6 +195,15 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         return validate<z.infer<typeof schema>>(schema, input);
     }
 
+    /**
+     * Processes a single input to generate multiple outputs, each representing a different instance combination.
+     * @param index The current index in the family array.
+     * @param family The sorted array of CloudInstance objects.
+     * @param originalData With original cost, RAM size, required vCPUs, target cpu util, target RAM, region of the instance.
+     * @param optimalData The current optimal combination data.
+     * @param currentData The current state of the combination being evaluated.
+     * @returns An object containing optimal combination details, closest CPU utilization difference, optimal RAM, and lowest cost.
+     */
     const findOptimalCombination = (index: number, family: CloudInstance[], 
         originalData: OriginalData, optimalData: CombinationData, currentData: CurrentData): CombinationData => {
             try {
@@ -241,6 +275,16 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
             return { ...optimalData };
         }
 
+    /**
+     * @param cloudInstance The original cloud instance to be analyzed.
+     * @param cpuUtil The current CPU utilization percentage.
+     * @param targetUtil The target CPU utilization percentage.
+     * @param targetRAM The target RAM size in GB.
+     * @param originalMemUtil The original memory utilization percentage.
+     * @param region The region where the cloud instance resides.
+     * @returns An array containing the optimal combination of cloud instances along with
+     *          their CPU utilization, memory utilization, RAM size, price, and price difference percentage.
+     */
     const calculateRightSizing = (cloudInstance: CloudInstance, cpuUtil: number, targetUtil: number, 
         targetRAM: number, originalMemUtil: number, region: string): InstanceData[] => {
         // Check if the cloud instance is valid
@@ -321,6 +365,12 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         return optimalCombination;
     }
     
+    /**
+     * Get the databases of cloud instances.
+     * This method is used for testing purposes.
+     * 
+     * @returns The databases of cloud instances
+     */
     const getDatabases = (): Map<string, CPUDatabase> => {
         return Cache;
     }
