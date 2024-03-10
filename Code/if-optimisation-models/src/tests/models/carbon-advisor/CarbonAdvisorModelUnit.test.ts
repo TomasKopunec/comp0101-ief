@@ -17,15 +17,15 @@ function mockAverage(model: PluginInterface, value: number) {
     jest.spyOn(model, 'getAverageScoreForLastXDays').mockResolvedValue(value);
 }
 
-describe('CarbonAdvisorModel.Validation', () => {
-    it('CarbonAdvisorModel.Validation.Metadata', async () => {
+describe('CarbonAdvisorModel.Unit', () => {
+    it('CarbonAdvisorModel.Unit.Metadata', async () => {
         const config: ConfigParams = {};
         const inputs: PluginParams[] = [];
         const model = CarbonAwareAdvisor(config);
         expect(model.metadata['kind']).toBe('execute');
     });
 
-    it('CarbonAdvisorModel.Validation.UndefinedParams', async () => {
+    it('CarbonAdvisorModel.Unit.UndefinedParams', async () => {
         const config: ConfigParams = {};
         const inputs: PluginParams[] = [];
         const model = CarbonAwareAdvisor(config);
@@ -285,10 +285,8 @@ describe('CarbonAdvisorModel.Validation', () => {
         mockAverage(model, 1);
         initMock(scenario1);
 
-        const spy = jest.spyOn(console, 'warn');
-        await model.execute(inputs);
-        expect(spy).toHaveBeenCalledWith('`sampling` provided but not a positive number. Ignoring `sampling`.');
-
+        await expect(model.execute(inputs))
+            .rejects.toThrow("Sampling must be an integer.");
     });
 
     it('CarbonAdvisorModel.Unit.SamplingInvalidZero', async () => {
@@ -304,10 +302,8 @@ describe('CarbonAdvisorModel.Validation', () => {
         const model = CarbonAwareAdvisor(config);
         mockAverage(model, 1);
         initMock(scenario1);
-
-        const spy = jest.spyOn(console, 'warn');
-        await model.execute(inputs);
-        expect(spy).toHaveBeenCalledWith('`sampling` provided but not a positive number. Ignoring `sampling`.');
+        await expect(model.execute(inputs))
+        .rejects.toThrow("Sampling must be a positive number.");
     });
 
     it('CarbonAdvisorModel.Unit.SamplingValid', async () => {

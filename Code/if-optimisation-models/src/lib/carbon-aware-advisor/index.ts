@@ -410,13 +410,21 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    * @returns void
    */
   const validateSampling = (sample: any): void => {
-    // Check if sampling is a positive number  and populate the global params hasSampling and sampling
+    if(!Number.isInteger(sample)) {
+      throwError(InputValidationError, "Sampling must be an integer.");
+    }
+
+    if(sample <= 0) {
+      throwError(InputValidationError, "Sampling must be a positive number.");
+    }
+
+
+    if (allowedTimeframes.size > sample) {
+      throwError(InputValidationError, "Sampling must be greater than or equal to the number of allowed timeframes.");
+    }
+
     hasSampling = sample > 0;
     sampling = sample;
-
-    if (!hasSampling || typeof sampling !== 'number' || sampling <= 0) {
-      console.warn('`sampling` provided but not a positive number. Ignoring `sampling`.');
-    }
   };
 
   /**

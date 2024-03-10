@@ -240,7 +240,11 @@ describe('CarbonAdvisorModel.Sampling', () => {
         initMock(scenario1);
         const config: ConfigParams = {
             "allowed-locations": ["eastus"],
-            "allowed-timeframes": ["2024-01-15T00:00:00Z - 2024-01-16T00:00:00Z"],
+            "allowed-timeframes": [
+                "2024-01-15T00:00:00Z - 2024-01-16T00:00:00Z",
+                "2024-01-16T00:00:00Z - 2024-01-17T00:00:00Z",
+                "2024-01-17T00:00:00Z - 2024-01-18T00:00:00Z"
+            ],
             "sampling": 2
         };
         const inputs: PluginParams[] = [{
@@ -249,7 +253,7 @@ describe('CarbonAdvisorModel.Sampling', () => {
         }];
         const model = CarbonAwareAdvisor(config);
         await expect(model.execute(inputs))
-            .rejects.toThrow("Sampling must be greater than or equal to allowed timeframes");
+            .rejects.toThrow("Sampling must be greater than or equal to the number of allowed timeframes.");
     });
 
     it('CarbonAdvisorModel.Sampling.Scenario1', async () => {
