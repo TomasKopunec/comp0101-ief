@@ -10,10 +10,18 @@ const mock = new MockAdapter(axios);
 * To run: npm run test -- src/tests/models/CarbonAdvisorModel.test.ts
 */
 
-// Import scenario1.json
+/**
+ * Import scenarios
+ */
 import scenario1 = require("./scenarios/scenario1.json");
 import scenario2 = require("./scenarios/scenario2.json");
 import scenario3 = require("./scenarios/scenario3.json");
+import scenario4 = require("./scenarios/scenario4.json");
+import scenario5 = require("./scenarios/scenario5.json");
+import scenario6 = require("./scenarios/scenario6.json");
+import scenario7 = require("./scenarios/scenario7.json");
+
+import locations = require("../../../lib/carbon-aware-advisor/locations.json");
 
 function initMock(scenario: any) {
     mock.onGet(new RegExp('/emissions/bylocations')).reply(200, scenario);
@@ -23,7 +31,7 @@ function mockAverage(model: PluginInterface, value: number) {
     jest.spyOn(model, 'getAverageScoreForLastXDays').mockResolvedValue(value);
 }
 
-describe('CarbonAdvisorModel.Scenario', () => {
+describe('CarbonAdvisorModel.Basic', () => {
     /**
      * Scenario 1: Find best time for 15/01/2024 in eastus between 12:00 and 18:00 (no sampling)
      * Expected: Suggest the time of 11:30 with score 1
@@ -108,6 +116,114 @@ describe('CarbonAdvisorModel.Scenario', () => {
         expect(suggestion.time).toBe("2021-07-16T11:30:00+00:00");
         expect(suggestion.rating).toBe(5);
     });
+
+    /**
+     * Scenario 4: Find best time for 15/01/2024 either in eastus or westus between 12:00 and 18:00 (no sampling)
+     * Expected: Suggest the time of 10:00 with score 5
+     */
+    it('CarbonAdvisorModel.Scenario4', async () => {
+        initMock(scenario4);
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus", "westus"],
+            "allowed-timeframes": ["2024-01-15T00:00:00Z - 2024-01-16T00:00:00Z"],
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        mockAverage(model, 5);
+
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config);
+
+        expect(suggestions.length).toBe(1);
+        const suggestion = suggestions[0];
+        expect(suggestion.location).toBe("westus");
+        expect(suggestion.time).toBe("2024-01-15T10:00:00+00:00");
+        expect(suggestion.rating).toBe(5);
+    });
+
+    /**
+     * Scenario 5: Find best time between 15/01/2024 - 22/01/2024 in in [eastus, westus, centralus]
+     * Expected: Suggest the time of 6:00 with score 1 in centralus
+     */
+    it('CarbonAdvisorModel.Scenario5', async () => {
+        initMock(scenario5);
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus", "westus", "centralus"],
+            "allowed-timeframes": ["2024-01-15T00:00:00Z - 2024-01-22T00:00:00Z"],
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        mockAverage(model, 5);
+
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config);
+
+        expect(suggestions.length).toBe(1);
+        const suggestion = suggestions[0];
+        expect(suggestion.location).toBe("centralus");
+        expect(suggestion.time).toBe("2024-01-19T06:00:00+00:00");
+        expect(suggestion.rating).toBe(1);
+    });
+
+    /** 
+     * Scenario 6: Find best time for 15/01/2024 in usazure (us_azure test)
+     * Expected: Suggest the time of 14:00 with score 19
+     */
+    it('CarbonAdvisorModel.Scenario6', async () => {
+        initMock(scenario6);
+        const config: ConfigParams = {
+            "allowed-locations": ["us_azure"],
+            "allowed-timeframes": ["2024-01-15T12:00:00Z - 2024-01-15T18:00:00Z"]
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        mockAverage(model, 5);
+
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config);
+
+        expect(suggestions.length).toBe(1);
+        const suggestion = suggestions[0];
+        expect(suggestion.location).toBe("westus");
+        expect(suggestion.time).toBe("2024-01-15T14:00:00+00:00");
+        expect(suggestion.rating).toBe(15);
+    });
+
+     /** 
+     * Scenario 7: Find best time for 15/01/2024 in world_azure locations (big dataset)
+     * Expected: Suggest the time of 14:00 with score 19
+     */
+     it('CarbonAdvisorModel.Scenario7', async () => {
+        initMock(scenario7);
+        const config: ConfigParams = {
+            "allowed-locations": ["world_azure"],
+            "allowed-timeframes": ["2024-01-15T12:00:00Z - 2024-01-15T18:00:00Z"]
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        mockAverage(model, 5);
+
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config);
+
+        expect(suggestions.length).toBe(1);
+        const suggestion = suggestions[0];
+        expect(suggestion.location).toBe("westindia");
+        expect(suggestion.time).toBe("2024-01-15T14:00:00+00:00");
+        expect(suggestion.rating).toBe(1);
+    });
 });
 
 function validateSuggestions(result: PluginParams[], config: ConfigParams): Suggestion[] {
@@ -124,6 +240,13 @@ function validateSuggestions(result: PluginParams[], config: ConfigParams): Sugg
 
 function checkIfSuggestedLocationsWithinAllowedLocations(config: ConfigParams, suggestions: Suggestion[]) {
     const allowedLocations = config["allowed-locations"] as string[];
+    const map = locations as Record<string, string[]>;
+    for(const loc of allowedLocations) {
+        if(loc in locations) {
+            allowedLocations.push(...map[loc]);
+        }
+    }
+
     for (const suggestion of suggestions) {
         // Must be one of the allowed locations
         expect(allowedLocations.includes(suggestion.location),

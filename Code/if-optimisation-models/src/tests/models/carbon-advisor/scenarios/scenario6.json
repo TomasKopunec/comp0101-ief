@@ -1,0 +1,164 @@
+[
+    {
+        "location": "centralus",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 82,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "centralus",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 35,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "centralus",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 66,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 20,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 47,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 71,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus2",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 93,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus2",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 56,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus2",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 39,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "northcentralus",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 64,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "northcentralus",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 25,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "northcentralus",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 78,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "southcentralus",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 58,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "southcentralus",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 38,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "southcentralus",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 85,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westcentralus",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 71,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westcentralus",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 23,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westcentralus",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 50,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 62,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 15,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 19,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus2",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 32,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus2",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 73,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus2",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 50,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus3",
+        "time": "2024-01-15T10:00:00+00:00",
+        "rating": 80,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus3",
+        "time": "2024-01-15T14:00:00+00:00",
+        "rating": 20,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "westus3",
+        "time": "2024-01-15T18:00:00+00:00",
+        "rating": 63,
+        "duration": "04:00:00"
+    }
+]
