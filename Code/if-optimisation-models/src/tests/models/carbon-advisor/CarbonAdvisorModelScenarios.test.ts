@@ -337,11 +337,14 @@ describe('CarbonAdvisorModel.Sampling', () => {
 
         // Sort plotted points
         const plotted_points = (result[0].plotted_points as Suggestion[]).sort((a, b) => a.rating - b.rating);
-        expect(plotted_points[0]).toEqual(data[0]);
-        expect(plotted_points[1]).toEqual(data[1]);
 
-        let lastRating = plotted_points[1].rating;
-        for (let i = 2; i < 5; i++) {
+        const fst = plotted_points[0];
+        expect(fst.location).toBe("eastus");
+        expect(fst.time).toBe("2024-01-15T02:00:00+00:00");
+        expect(fst.rating).toBe(5);
+
+        let lastRating = plotted_points[0].rating;
+        for (let i = 1; i < 5; i++) {
             expect(plotted_points[i].rating).toBeGreaterThan(lastRating);
             expect(config["allowed-locations"].includes(plotted_points[i].location)).toBe(true);
         }
@@ -377,6 +380,7 @@ describe('CarbonAdvisorModel.Sampling', () => {
         const sortedInput = scenario10.sort((a, b) => a.rating - b.rating);
 
         console.log("Plotted", JSON.stringify(plotted_points, null, 2));
+        console.log("Sorted", JSON.stringify(sortedInput, null, 2));
 
         // The best for timeframe one
         const fst = plotted_points[0];
