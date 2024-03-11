@@ -1,4 +1,4 @@
-import { CarbonAwareAdvisor } from "../../../lib/carbon-aware-advisor"; // This is a temp fix, will be removed once the new model is ready
+import { CarbonAwareAdvisor } from "../../../lib/carbon-aware-advisor";
 import { ConfigParams, PluginParams } from "../../../types/common";
 import { PluginInterface } from "../../../interfaces";
 import axios from "axios";
@@ -30,8 +30,46 @@ function initMock(scenario: any) {
     mock.onGet(new RegExp('/emissions/bylocations')).reply(200, scenario);
 }
 
+function initMockWithParams(data: Suggestion[], location: string, from: string, to: string) {
+    let queryString = '';
+    const params = {
+        location: location,
+        time: from,
+        toTime: to
+    };
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    if (params) {
+        queryString = Object.entries(params).map(([key, value]) => {
+            if (Array.isArray(value)) {
+                // Convert each value to a string before encoding and repeat the key for each value in the array
+                return value.map(v => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`).join('&');
+            } else {
+                // Convert value to a string before encoding and directly append to query string
+                return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+            }
+        }).join('&');
+    }
+    //the final url is the url of the api call we will be performing
+    const finalUrl = `/emissions/bylocations${queryString ? '?' + queryString : ''}`;
+
+    // Match this: emissions/bylocations?location=eastus&time=2024-01-03T04%3A00%3A00Z&toTime=2024-01-03T20%3A00%3A00Z
+    console.log(finalUrl);
+
+    mock.onGet(finalUrl).reply(200, data.filter((item: Suggestion) => {
+        const locFrom = new Date(item.time);
+        const locTo = new Date(item.time);
+        return item.location === location
+            && fromDate >= locFrom && toDate <= locTo;
+    }));
+}
+
 function mockAverage(model: PluginInterface, value: number) {
-    jest.spyOn(model, 'getAverageScoreForLastXDays').mockResolvedValue(value);
+    jest.spyOn(model, 'getAverageScoreForLastXDays').mockImplementation(() => {
+        console.log("Mocking average score");
+        return Promise.resolve(value);
+    });
 }
 
 describe('CarbonAdvisorModel.Basic', () => {
@@ -360,11 +398,14 @@ describe('CarbonAdvisorModel.Sampling', () => {
      */
     it('CarbonAdvisorModel.Sampling.Scenario5', async () => {
         initMock(scenario10);
+        initMockWithParams(scenario10, "eastus", "2023-01-01T00:00:00Z", "2023-01-02T00:00:00Z");
+        initMockWithParams(scenario10, "eastus", "2023-01-03T04:00:00Z", "2023-01-03T20:00:00Z");
+
         const config: ConfigParams = {
             "allowed-locations": ["eastus"],
             "allowed-timeframes": [
-                "2024-01-01T00:00:00Z - 2024-01-02T00:00:00Z",
-                "2024-01-03T04:00:00Z - 2024-01-03T20:00:00Z"
+                "2023-01-01T00:00:00Z - 2023-01-02T00:00:00Z",
+                "2023-01-03T04:00:00Z - 2023-01-03T20:00:00Z"
             ],
             "sampling": 5
         };
@@ -375,7 +416,6 @@ describe('CarbonAdvisorModel.Sampling', () => {
         const model = CarbonAwareAdvisor(config);
         const result = await model.execute(inputs);
         validateSampling(result, config);
-
         const plotted_points = (result[0].plotted_points as Suggestion[]).sort((a, b) => a.rating - b.rating);
         const sortedInput = scenario10.sort((a, b) => a.rating - b.rating);
 
@@ -385,23 +425,23 @@ describe('CarbonAdvisorModel.Sampling', () => {
         // The best for timeframe one
         const fst = plotted_points[0];
         expect(fst.location).toBe("eastus");
-        expect(fst.time).toBe("2024-01-01T10:00:00+00:00");
-        expect(fst.rating).toBe(6);
+        expect(fst.time).toBe("2023-01-03T02:00:00+00:00");
+        expect(fst.rating).toBe(4);
 
         // The best for timeframe two
         const snd = plotted_points[1];
         expect(snd.location).toBe("eastus");
-        expect(snd.time).toBe("2024-01-03T02:00:00+00:00");
+        expect(snd.time).toBe("2023-01-03T02:00:00+00:00");
         expect(snd.rating).toBe(4);
 
         const lastRating = plotted_points[1].rating;
-        expect(plotted_points[2].time.startsWith("2024-01-01T")).toBe(true);
+        expect(plotted_points[2].time.startsWith("2023-01")).toBe(true);
         expect(plotted_points[2].rating).toBeGreaterThanOrEqual(lastRating);
 
-        expect(plotted_points[3].time.startsWith("2024-01-01T")).toBe(true);
+        expect(plotted_points[3].time.startsWith("2023-01")).toBe(true);
         expect(plotted_points[3].rating).toBeGreaterThanOrEqual(lastRating);
 
-        expect(plotted_points[4].time.startsWith("2024-01-03T")).toBe(true);
+        expect(plotted_points[4].time.startsWith("2023-01")).toBe(true);
         expect(plotted_points[4].rating).toBeGreaterThanOrEqual(lastRating);
     });
 });
