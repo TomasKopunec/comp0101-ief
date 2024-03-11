@@ -7,13 +7,13 @@ initialize:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
       global-config:
-        allowed-locations:  ['eastus']
-        allowed-timeframes: ["2024-01-15T12:00:00Z - 2024-01-15T18:00:00Z"]
-        sampling: 2
+        allowed-locations: ["eastus"]
+        allowed-timeframes: ["2024-05-01T00:00:00Z - 2024-05-10T00:00:00Z"]
 tree:
   children:
     child0:
       pipeline:
         - carbon-advisor
       inputs:
-        - 
+        - timestamp: "2024-01-01T14:00:00Z"
+          duration: 1
