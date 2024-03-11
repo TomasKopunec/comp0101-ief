@@ -1,215 +1,48 @@
 import * as fs from "fs";
-import { RightSizingModel } from "../../lib/right-sizing/index.wrapper"; // This is a temp fix, will be removed once the new model is ready
-import { CPUDatabase, CloudInstance } from "../../lib/right-sizing/CPUFamily";
-import { PluginParams } from "../../types/common";
-import { fixFloat } from "../../util/util";
+import { RightSizingModel } from "../../../lib/right-sizing/index.wrapper"; // This is a temp fix, will be removed once the new model is ready
+import { CPUDatabase, CloudInstance } from "../../../lib/right-sizing/CPUFamily";
+import { PluginParams } from "../../../types/common";
+import { fixFloat } from "../../../util/util";
 
+import scenario1 = require('./scenarios/scenario1.json');
+import scenario2 = require('./scenarios/scenario2.json');
+import scenario3 = require('./scenarios/scenario3.json');
+import scenario4 = require('./scenarios/scenario4.json');
+import scenario5 = require('./scenarios/scenario5.json');
+import scenario6 = require('./scenarios/scenario6.json');
+
+const ALG_TEST1_INPUTS = scenario1.INPUTS;
+const ALG_TEST1_EXPECTED_OUTPUTS = scenario1.EXPECTED;
+
+const ALG_TEST2_INPUTS = scenario2.INPUTS;
+const ALG_TEST2_EXPECTED_OUTPUTS = scenario2.EXPECTED;
+
+const ALG_TEST3_INPUTS = scenario3.INPUTS;
+const ALG_TEST3_EXPECTED_OUTPUTS = scenario3.EXPECTED;
+
+// Required cpu: 75% of 16 = 12
+// Required memory: 50% of 64 = 32
+// Fittest combination: [8, 16] + [4, 16] = 12, 32
+const ALG_TEST4_INPUTS = scenario4.INPUTS;
+const ALG_TEST4_EXPECTED_OUTPUTS = scenario4.EXPECTED;
+
+// Required cpu: 75% of 16 = 12
+// Required memory: 50% of 32 = 16
+// Fittest combination: [8, 8] + [4, 8] = 12, 16
+const ALG_TEST5_INPUTS = scenario5.INPUTS;
+const ALG_TEST5_EXPECTED_OUTPUTS = scenario5.EXPECTED;
+
+// Required cpu: 75% of 16 = 12
+// Required memory: 50% of 32 = 16
+// Fittest combination: [8, 8] + [4, 8] = 12, 16
+const ALG_TEST6_INPUTS = scenario6.INPUTS;
+const ALG_TEST6_EXPECTED_OUTPUTS = scenario6.EXPECTED;
 
 type CombinationValues = {
     vCPUs: number;
     RAM: number;
     cost: number;
 }
-
-const ALG_TEST1_INPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 75,
-        "mem-util": 75,
-        "location": "uksouth",
-        "cloud-instance-type": "Test1_16_32"
-    }
-];
-const ALG_TEST1_EXPECTED_OUTPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test1_8_16"
-    },
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test1_4_8"
-    }
-];
-
-const ALG_TEST2_INPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 50,
-        "mem-util": 50,
-        "target-cpu-util": 80,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_32_64"
-    }
-];
-const ALG_TEST2_EXPECTED_OUTPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 80,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_16_16"
-    },
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 80,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_4_16"
-    }
-];
-
-const ALG_TEST3_INPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 75,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test1_16_32"
-    }
-];
-const ALG_TEST3_EXPECTED_OUTPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_4_16"
-    },
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_8_16"    
-    }
-];
-
-
-// Required cpu: 75% of 16 = 12
-// Required memory: 50% of 64 = 32
-// Fittest combination: [8, 16] + [4, 16] = 12, 32
-const ALG_TEST4_INPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 75,
-        "mem-util": 50,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_16_64"
-    }
-];
-const ALG_TEST4_EXPECTED_OUTPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_8_16"
-    },
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test_4_16"
-    }
-];
-
-// Required cpu: 75% of 16 = 12
-// Required memory: 50% of 32 = 16
-// Fittest combination: [8, 8] + [4, 8] = 12, 16
-const ALG_TEST5_INPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 75,
-        "mem-util": 50,
-        "location": "uksouth",
-        "cloud-instance-type": "Test2_16_32"
-    }
-];
-const ALG_TEST5_EXPECTED_OUTPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test2_8_8_cheap"
-    },
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test2_4_8_cheap"
-    }
-];
-
-// Required cpu: 75% of 16 = 12
-// Required memory: 50% of 32 = 16
-// Fittest combination: [8, 8] + [4, 8] = 12, 16
-const ALG_TEST6_INPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 75,
-        "mem-util": 50,
-        "location": "uksouth",
-        "cloud-instance-type": "Test3_16_32"
-    }
-];
-const ALG_TEST6_EXPECTED_OUTPUTS = [
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test3_6_8"
-    },
-    {
-        "timestamp": "2023-11-02T10:35:00.000Z",
-        "duration": 300,
-        "cloud-vendor": "custom",
-        "cpu-util": 100,
-        "mem-util": 100,
-        "location": "uksouth",
-        "cloud-instance-type": "Test3_6_8"
-    }
-];
-
 
 describe("CPUDatabase", () => {
     const db = new CPUDatabase();

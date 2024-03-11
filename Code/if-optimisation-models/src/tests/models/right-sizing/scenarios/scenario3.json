@@ -1,0 +1,33 @@
+{
+    "INPUTS": [
+        {
+            "timestamp": "2023-11-02T10:35:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "custom",
+            "cpu-util": 75,
+            "mem-util": 100,
+            "location": "uksouth",
+            "cloud-instance-type": "Test1_16_32"
+        }
+    ],
+    "EXPECTED": [
+        {
+            "timestamp": "2023-11-02T10:35:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "custom",
+            "cpu-util": 100,
+            "mem-util": 100,
+            "location": "uksouth",
+            "cloud-instance-type": "Test_4_16"
+        },
+        {
+            "timestamp": "2023-11-02T10:35:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "custom",
+            "cpu-util": 100,
+            "mem-util": 100,
+            "location": "uksouth",
+            "cloud-instance-type": "Test_8_16"    
+        }
+    ]
+}
