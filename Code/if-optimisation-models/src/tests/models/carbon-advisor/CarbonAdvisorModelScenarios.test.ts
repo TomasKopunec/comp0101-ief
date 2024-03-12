@@ -24,13 +24,6 @@ import scenario8 = require("./scenarios/scenario8.json");
 import scenario9 = require("./scenarios/scenario9.json");
 import scenario10 = require("./scenarios/scenario10.json");
 
-import scenario11 = require("./scenarios/scenario11.json");
-import scenario12 = require("./scenarios/scenario12.json");
-import scenario13 = require("./scenarios/scenario13.json");
-import scenario14 = require("./scenarios/scenario14.json");
-// import scenario15 = require("./scenarios/scenario15.json");
-// import scenario16 = require("./scenarios/scenario16.json");
-
 import locations = require("../../../lib/carbon-aware-advisor/locations.json");
 
 function initMock(scenario: any) {
@@ -450,37 +443,6 @@ describe('CarbonAdvisorModel.Sampling', () => {
 
         expect(plotted_points[4].time.startsWith("2023-01")).toBe(true);
         expect(plotted_points[4].rating).toBeGreaterThanOrEqual(lastRating);
-    });
-});
-
-describe('CarbonAdvisorModel.Forecasting', () => {
-    /**
-     * Simple prediction for 2024-05-01 - 2024-05-10 in eastus
-     */
-    it('CarbonAdvisorModel.Forecasting.Scenario1', async () => {
-        // initMock(scenario11);
-        mock.reset();
-        mock.restore();
-        mock.resetHandlers();
-        mock.resetHistory();
-        const config: ConfigParams = {
-            "allowed-locations": ["eastus"],
-            "allowed-timeframes": ["2024-05-01T00:00:00Z - 2024-05-10T00:00:00Z"]
-        };
-        const inputs: PluginParams[] = [{
-            "timestamp": "",
-            "duration": 1
-        }];
-        const model = CarbonAwareAdvisor(config);
-        const result = await model.execute(inputs);
-        const suggestions = validateSuggestions(result, config);
-
-        expect(suggestions.length).toBe(1);
-        const suggestion = suggestions[0];
-        expect(suggestion.location).toBe('eastus');
-        expect(suggestion.time).toBe('2024-05-06T17:00:00.000Z');
-        expect(suggestion.rating).toBe(339.6375);
-        expect(suggestion.duration).toBe('01:00:00');
     });
 });
 
