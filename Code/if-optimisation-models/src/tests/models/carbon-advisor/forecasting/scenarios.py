@@ -4,9 +4,11 @@ from datetime import datetime, timedelta
 
 locations = [
     "eastus",
+    "westus",
+    "centralus",
 ]
 
-start_date = datetime(2023, 1, 1)
+start_date = datetime(2018, 1, 1)
 end_date = datetime(2025, 1, 1)
 
 times = []
@@ -22,7 +24,7 @@ output = []
 for location in locations:
     for time in times:
         # Set score to 1 if the year is 2024, otherwise set it to a random number between 1 and 30
-        rating = 1 if str(time).startswith("2024") else random.randint(10, 50)
+        rating = random.randint(10, 50)
         output.append({
             "Location": location,
             "Time": time,

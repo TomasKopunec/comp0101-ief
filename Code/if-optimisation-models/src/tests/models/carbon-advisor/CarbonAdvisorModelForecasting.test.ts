@@ -2,6 +2,7 @@ import { CarbonAwareAdvisor } from "../../../lib/carbon-aware-advisor"; // This 
 import { ConfigParams, PluginParams } from "../../../types/common";
 import locations = require("../../../lib/carbon-aware-advisor/locations.json");
 import 'jest-expect-message';
+import { config } from "dotenv";
 
 describe('CarbonAdvisorModel.Forecasting', () => {
     /**
@@ -27,6 +28,190 @@ describe('CarbonAdvisorModel.Forecasting', () => {
         expect(first.duration).toBe("04:00:00");
         expect(first.location).toBe("eastus");
         expect(first.time.startsWith("2024-05-04T20:00")).toBe(true);
+    });
+
+    /**
+     * Input 1/1/2018 - 1/1/2025 (all dates in 2024 are set to 1 for easy testing)
+     * Allowed locations: eastus
+     * Allowed timeframes: 2024-05-01T00:00:00Z - 2024-05-10T00:00:00Z
+     * Expect three suggestions of 4 hours at eastus on 2024-05-04T20:00:00Z, 2025-05-04T20:00:00Z, 2026-05-04T20:00:00Z, with rating 5.5
+     */
+    it('CarbonAdvisorModel.Forecasting.Scenario2', async () => {
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus"],
+            "allowed-timeframes": [
+                "2024-05-01T00:00:00Z - 2024-05-10T00:00:00Z",
+                "2025-05-01T00:00:00Z - 2025-05-10T00:00:00Z",
+                "2026-05-01T00:00:00Z - 2026-05-10T00:00:00Z",
+            ]
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config, 3);
+        for(const suggestion of suggestions) {
+            expect(suggestion.rating).toBe(5.5);
+            expect(suggestion.duration).toBe("04:00:00");
+            expect(suggestion.location).toBe("eastus");
+            expect(suggestion.time.endsWith("-05-04T00:00:00.000Z")).toBe(true);
+        }
+    });
+
+    /**
+     * INPUT: scenario3.json
+     * Input 1/1/2018 - 1/1/2025
+     * Allowed locations: eastus, westus, centralus
+     * Allowed timeframes: 2025-05-01T00:00:00Z - 2025-05-10T00:00:00Z, 2025-03-01T00:00:00Z - 2025-03-10T00:00:00Z, 2025-09-01T00:00:00Z - 2025-09-10T00:00:00Z
+     * Expect 
+     */
+    it('CarbonAdvisorModel.Forecasting.Scenario3', async () => {
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus", "westus", "centralus"],
+            "allowed-timeframes": [
+                "2025-05-01T00:00:00Z - 2025-05-10T00:00:00Z",
+                "2025-03-01T00:00:00Z - 2025-03-10T00:00:00Z",
+                "2025-09-01T00:00:00Z - 2025-09-10T00:00:00Z",
+            ]
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config, 3);
+        for (const suggestion of suggestions) {
+            expect(suggestion.rating).toBeCloseTo(19.688, 2);
+            expect(suggestion.duration).toBe("04:00:00");
+            expect([`eastus`, `westus`, `centralus`].includes(suggestion.location)).toBe(true);
+            expect(suggestion.time.startsWith("2025-0")).toBe(true);
+        }
+    });
+
+    /**
+     * INPUT: scenario3.json
+     * Same input as scenario 3, this time we will check if the model can handle a prediction for 4, 5 and 6 years ahead
+     */
+    it('CarbonAdvisorModel.Forecasting.Scenario4', async () => {
+        const timeframe = `{year}-01-01T00:00:00Z - {year}-01-10T00:00:00Z`
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus"],
+            "allowed-timeframes": [timeframe.replace(/\{year\}/g, "2028")]
+        };
+        let model = CarbonAwareAdvisor(config);
+
+        // Validate 2028 (should succeed, it's within next 5 years)
+        let result = await model.execute(inputs);
+        let suggestions = validateSuggestions(result, config, 1);
+        expect(suggestions.length).toBe(1);
+        expect(suggestions[0].location).toBe("eastus");
+        expect(suggestions[0].time.startsWith("2028-01-")).toBe(true);
+        expect(suggestions[0].rating).toBeCloseTo(20.1475, 2);
+        expect(suggestions[0].duration).toBe("04:00:00");
+
+        // Validate 2029 (should still succeed, it's within next 5 years 01/01/2029 is within 5 years from today)
+        config["allowed-timeframes"] = [timeframe.replace(/\{year\}/g, "2029")];
+        model = CarbonAwareAdvisor(config);
+        result = await model.execute(inputs);
+        suggestions = validateSuggestions(result, config, 1);
+        expect(suggestions.length).toBe(1);
+        expect(suggestions[0].location).toBe("eastus");
+        expect(suggestions[0].time.startsWith("2029-01-")).toBe(true);
+        expect(suggestions[0].rating).toBeCloseTo(20.1475, 2);
+        expect(suggestions[0].duration).toBe("04:00:00");
+
+        // Validate 2030 (should fail, it's more than 5 years ahead)
+        config["allowed-timeframes"] = [timeframe.replace(/\{year\}/g, "2030")];
+        model = CarbonAwareAdvisor(config);
+        result = await model.execute(inputs);
+        expect(result.length).toBe(1);
+        expect(result[0].suggestions.length).toBe(0);
+    });
+
+    /**
+     * INPUT: scenario3.json
+     * Test sampling of allowed timeframes
+     */
+    it('CarbonAdvisorModel.Forecasting.Scenario5', async () => {
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus", "westus", "centralus"],
+            "allowed-timeframes": [
+                "2025-01-01T00:00:00Z - 2025-01-10T00:00:00Z",
+                "2025-05-01T00:00:00Z - 2025-05-10T00:00:00Z",
+            ],
+            "sampling": 2
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config, 2);
+        for (const suggestion of suggestions) {
+            expect(suggestion.rating).toBeCloseTo(20.1475, 2);
+            expect([`eastus`, `westus`, `centralus`].includes(suggestion.location)).toBe(true);
+            expect(suggestion.time.startsWith("2025-0")).toBe(true);
+            expect(suggestion.duration).toBe("04:00:00");
+        }
+
+        expect(result[0].plotted_points.length).toBe(2);
+        const plotted_points = result[0].plotted_points;
+        for (const point of plotted_points) {
+            expect(suggestions.includes(point)).toBe(true);
+        }
+    });
+
+    /**
+     * INPUT: scenario3.json
+     * Test sampling of allowed timeframes
+     */
+    it('CarbonAdvisorModel.Forecasting.Scenario6', async () => {
+        const config: ConfigParams = {
+            "allowed-locations": ["eastus", "westus", "centralus"],
+            "allowed-timeframes": [
+                "2025-01-01T00:00:00Z - 2025-01-10T00:00:00Z",
+                "2026-03-01T00:00:00Z - 2026-03-10T00:00:00Z",
+                "2027-06-01T00:00:00Z - 2027-06-10T00:00:00Z",
+                "2028-09-01T00:00:00Z - 2028-09-10T00:00:00Z",
+            ],
+            "sampling": 10
+        };
+        const inputs: PluginParams[] = [{
+            "timestamp": "",
+            "duration": 1
+        }];
+        const model = CarbonAwareAdvisor(config);
+        const result = await model.execute(inputs);
+        const suggestions = validateSuggestions(result, config, 3);
+        for (const suggestion of suggestions) {
+            expect(suggestion.rating).toBeCloseTo(19.688, 2);
+            expect([`eastus`, `westus`, `centralus`].includes(suggestion.location)).toBe(true);
+            expect(suggestion.time.startsWith("2025")
+                || suggestion.time.startsWith("2026")
+                || suggestion.time.startsWith("2027")
+                || suggestion.time.startsWith("2028")).toBe(true);
+            expect(suggestion.duration).toBe("04:00:00");
+        }
+
+        expect(result[0].plotted_points.length).toBe(10);
+        const plotted_points = result[0].plotted_points;
+        for (const point of plotted_points) {
+            expect([`eastus`, `westus`, `centralus`].includes(point.location)).toBe(true);
+            expect(point.time.startsWith("2025")
+                || point.time.startsWith("2026")
+                || point.time.startsWith("2027")
+                || point.time.startsWith("2028")).toBe(true);
+            expect(point.duration).toBe("04:00:00");
+            expect(point.rating).toBeGreaterThanOrEqual(19.67);
+        }
     });
 });
 
