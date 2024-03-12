@@ -1,0 +1,18 @@
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  plugins:
+    carbon-aware-advisor:
+      method: CarbonAwareAdvisor
+      path: "@grnsft/if-optimisation-models"
+      global-config:
+        allowed-locations: ["eastus"]
+        allowed-timeframes: ["2024-01-15T12:00:00Z - 2024-01-15T18:00:00Z"]
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
+      inputs:
+        - 
