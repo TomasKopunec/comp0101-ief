@@ -1,0 +1,27 @@
+x_name: ['speed']
+y_name: fine_amount
+colour: pink
+diagram_name: results/test5
+x_axis_name: speed in km/hour
+y_axis_name: fine_amount in GBP
+diagram_title: speed and fine_amount relationship
+graph_type: bar  
+plotted_points:
+  - speed: 51
+    fine_amount: 50
+  - speed: 60
+    fine_amount: 70
+  - speed: 80
+    fine_amount: 120
+  - speed: 90
+    fine_amount: 150
+  - speed: 100
+    fine_amount: 200
+  - speed: 110
+    fine_amount: 300
+  - speed: 120
+    fine_amount: 400
+  - speed: 130
+    fine_amount: 500
+  - speed: 140
+    fine_amount: 800 

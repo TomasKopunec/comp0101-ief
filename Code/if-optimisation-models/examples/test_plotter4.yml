@@ -1,0 +1,43 @@
+name: Plotter_demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  plugins:
+    plotter:
+      method: Plotter
+      path: "@grnsft/if-optimisation-models"
+tree:
+  children:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/plotter/plotter'
+        diagram_name: ../../test_tool/plotter/results/test4_if
+        x_name: ['weight']
+        y_name: death_probability
+        colour: green
+        x_axis_name: weight in kilograms
+        y_axis_name: death_probability in percentage points
+        diagram_title: weight and death_probability comparison
+        graph_type: scatter  
+      pipeline:
+        - plotter
+      inputs:
+      - plotted_points:
+        - weight: 56
+          death_probability: 7
+        - weight: 92
+          death_probability: 33
+        - weight: 109
+          death_probability: 81
+        - weight: 32
+          death_probability: 90
+        - weight: 21
+          death_probability: 99
+        - weight: 78
+          death_probability: 16
+        - weight: 81
+          death_probability: 6
+        - weight: 86
+          death_probability: 19
+        - weight: 69
+          death_probability: 17

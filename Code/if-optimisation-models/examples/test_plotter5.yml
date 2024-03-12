@@ -1,0 +1,43 @@
+name: Plotter_demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  plugins:
+    plotter:
+      method: Plotter
+      path: "@grnsft/if-optimisation-models"
+tree:
+  children:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/plotter/plotter'
+        diagram_name: ../../test_tool/plotter/results/test5_if
+        x_name: ['speed']
+        y_name: fine_amount
+        colour: pink
+        x_axis_name: speed in km/hour
+        y_axis_name: fine_amount in GBP
+        diagram_title: speed and fine_amount comparison
+        graph_type: bar  
+      pipeline:
+        - plotter
+      inputs:
+      - plotted_points:
+        - speed: 51
+          fine_amount: 50
+        - speed: 60
+          fine_amount: 70
+        - speed: 80
+          fine_amount: 120
+        - speed: 90
+          fine_amount: 150
+        - speed: 100
+          fine_amount: 200
+        - speed: 110
+          fine_amount: 300
+        - speed: 120
+          fine_amount: 400
+        - speed: 130
+          fine_amount: 500
+        - speed: 140
+          fine_amount: 800 

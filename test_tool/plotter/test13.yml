@@ -1,0 +1,9 @@
+command: 'python3 ./src/lib/plotter/plotter'
+y_name: 'club rasbou'
+colour: gold
+diagram_name: results/test13
+x_axis_name: Type of prodcut
+y_axis_name: Quanity in units
+diagram_title: Alcohol and food Consuption in Club rasbou
+graph_type: bar   
+csv_path: '../../Code/if-optimisation-models/clubs.csv'

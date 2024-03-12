@@ -1,0 +1,27 @@
+x_name: ['name']
+y_name: age
+colour: black
+diagram_name: results/test3
+x_axis_name: Name of individual
+y_axis_name: Age in years
+diagram_title: Name and Age
+graph_type: line  
+plotted_points:
+  - name: Maria
+    age: 5
+  - name: Christa
+    age: 3
+  - name: Jason
+    age: 18 
+  - name: Mike
+    age: 43 
+  - name: John
+    age: 23
+  - name: Peter
+    age: 33
+  - name: Paul
+    age: 29
+  - name: David
+    age: 19
+  - name: Joseph
+    age: 65

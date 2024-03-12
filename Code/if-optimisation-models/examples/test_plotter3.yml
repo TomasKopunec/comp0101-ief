@@ -1,0 +1,43 @@
+name: Plotter_demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  plugins:
+    plotter:
+      method: Plotter
+      path: "@grnsft/if-optimisation-models"
+tree:
+  children:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/plotter/plotter'
+        x_name: ['name']
+        y_name: age
+        colour: black
+        diagram_name: ../../test_tool/plotter/results/test3_if
+        x_axis_name: Name of individual
+        y_axis_name: Age in years
+        diagram_title: Name and Age
+        graph_type: line   
+      pipeline:
+        - plotter
+      inputs:
+        - plotted_points:
+          - name: Maria
+            age: 5
+          - name: Christa
+            age: 3
+          - name: Jason
+            age: 18 
+          - name: Mike
+            age: 43 
+          - name: John
+            age: 23
+          - name: Peter
+            age: 33
+          - name: Paul
+            age: 29
+          - name: David
+            age: 19
+          - name: Joseph
+            age: 65
