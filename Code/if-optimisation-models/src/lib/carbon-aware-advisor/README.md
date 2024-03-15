@@ -50,7 +50,7 @@ Please refer to this for more information, but there are too many errors in this
     ]
   },
   "DataSources": {
-    "EmissionsDataSource": "test-json",
+    "EmissionsDataSource": "ElectricityMaps",
     "ForecastDataSource": "ElectricityMaps",
     "Configurations": {
       "test-json": {
