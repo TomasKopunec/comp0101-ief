@@ -7,7 +7,7 @@ The CarbonAwareAdvisor model is designed to provide carbon emission data based o
 ## Key Features
 - **Location Filtering**: Users can specify a list of locations to consider for carbon emission data.
 - **Timeframe Filtering**: Users can define time ranges to narrow down the search for carbon emission data.
-- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape. If sampling is not defined in the impl then no data points are sampled and the plotted_points is not added in the ompl.
+- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape. If sampling is not defined in the impl then no data points are sampled and the plotted-points is not added in the ompl.
 
 ## Outputs
 - ** Suggestions: **: List of the best location and time combination to minimize the carbon score along with that score.
@@ -252,7 +252,7 @@ tree:
             - suggested-location: westus
               suggested-timeframe: '2022-06-20T00:00:00+00:00'
               suggested-score: 126
-          plotted_points:
+          plotted-points:
             - location: westus
               time: '2022-06-20T00:00:00+00:00'
               score: 126
