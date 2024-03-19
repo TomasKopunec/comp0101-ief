@@ -1,7 +1,9 @@
 #!/bin/bash
 
 cd ../../../
-# Check if VSCode is installed
+# npm install -g @devcontainers/cli
+
+#Check if VSCode is installed
 if ! command -v code &> /dev/null
 then
     echo "VSCode is not installed. Please install VSCode before proceeding."
@@ -25,13 +27,15 @@ else
     echo "Repository already exists locally."
 fi
 
-cp comp0101-ief/Code/carbon-aware-webapi/start.sh carbon-aware-sdk/
+#cp comp0101-ief/Code/carbon-aware-webapi/start.sh carbon-aware-sdk/
 
 
 # Change directory into the repository
-cd carbon-aware-sdk/
+
+echo "pls use control+shift+p to open the project in a container by selecting as folder the carbon-aware-sdk from the same dir where you installed comp0101-ief"
+echo "then run .start.sh at the terminal"
 
 # Open the repository in VSCode
-devcontainer up --workspace-folder .
-devcontainer exec --workspace-folder . ./start.sh
+# devcontainer up --workspace-folder carbon-aware-sdk
+# devcontainer exec --workspace-folder carbon-aware-sdk ./start.sh
 

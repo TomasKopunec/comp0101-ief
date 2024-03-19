@@ -62,3 +62,47 @@ These must have an open-source repository and documentation to facilitate commun
 - All contributions to the project will be made under an open-source license to foster transparency and community involvement.
 
 ##The final report is shared in the microsoft teams channel of the project team
+
+
+Follow these steps to set up the SDK API:
+
+1. **Start the API:**
+   - Open a terminal window in the root directory of your project.
+   - Execute the script by running:
+     \```
+     ./api_start.sh
+     \```
+
+2. **Open Command Palette:**
+   - Press `Ctrl` + `Shift` + `P` to open the Command Palette in your code editor.
+
+3. **Select Project Folder:**
+   - Use the Command Palette to select the `carbon-aware-sdk` folder, which should be located in the same directory where you cloned this project.
+
+4. **Run Startup Script:**
+   - In the terminal that opens within your selected folder, start the necessary services by running:
+     \```
+     ./start.sh
+     \```
+
+# Running the Dockerized Version
+
+To use the Dockerized version of the application, follow these steps:
+
+1. **Run Docker Container:**
+   - In a new terminal window, initiate the Docker container by running:
+     \```
+     ./docker_run.sh
+     \```
+   - This process might take up to 3 minutes as the Docker image is being built.
+
+2. **Using the Docker Environment:**
+   - Once the Docker container is ready, you'll be automatically placed into the Docker environment's terminal.
+   - To execute implementation files located in the `examples` folder, use the following command structure:
+     \```
+     ./run.sh <file_name>
+     \```
+     For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
+     \```
+     ./run.sh new_carbon1
+     \```
