@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: '/Code/if-optimisation-models/'
+        working-directory: 'Code/if-optimisation-models'
     strategy:
       matrix:
         node-version: [18.x]
@@ -28,7 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: '**/package-lock.json'
+        cache-dependency-path: 'Code/if-optimisation-models/package-lock.json'
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
