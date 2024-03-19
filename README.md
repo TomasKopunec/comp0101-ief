@@ -106,3 +106,11 @@ To use the Dockerized version of the application, follow these steps:
      ```
      ./run.sh new_carbon1
      ```
+**Alternatively build from Dockerfile**
+- The Dockerfile  can be find in the parent directory comp0101-ief
+- Build and run it using:
+   ```
+    docker build --no-cache  -t ief_image .
+    docker run -it --net=host --name ief_runner ief_image 
+  ```
+   
