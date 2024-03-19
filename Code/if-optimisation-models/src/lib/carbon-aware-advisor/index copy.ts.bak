@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { ModelParams } from '@grnsft/if-unofficial-models/build/types/common';
-import { ModelPluginInterface } from '@grnsft/if-unofficial-models/build/interfaces';
-import { buildErrorMessage } from '@grnsft/if-unofficial-models/build/util/helpers';
+import { ModelParams } from '@grnsft/if-unofficial-plugins/build/types/common';
+import { ModelPluginInterface } from '@grnsft/if-unofficial-plugins/build/interfaces';
+import { buildErrorMessage } from '@grnsft/if-unofficial-plugins/build/util/helpers';
 
-import { ERRORS } from '@grnsft/if-unofficial-models/build/util/errors';
+import { ERRORS } from '@grnsft/if-unofficial-plugins/build/util/errors';
 
 import { promises as fsPromises } from 'fs';
 import * as path from 'path';
