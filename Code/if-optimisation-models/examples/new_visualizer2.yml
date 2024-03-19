@@ -5,12 +5,13 @@ initialize:
   plugins:
     plotter:
       method: Shell
-      path: "@grnsft/if-models"
+      path: "@grnsft/if-plugins"
+      global-config:
+        command: 'python3 ./src/lib/plotter/plotter'
 tree:
   children:
     child0:
       defaults:
-        command: 'python3 ./src/lib/plotter/plotter'
         y-name: graph.carbon
         colour: red
         diagram-name: ../Test_diagram2
@@ -22,4 +23,4 @@ tree:
       pipeline:
         - plotter
       inputs: 
-      -
+      - 

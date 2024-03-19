@@ -18,6 +18,6 @@ tree:
   children:
     child0:
       pipeline:
-        - carbon-aware-advisor        
+        - carbon-aware-advisor  
       inputs:
         - 

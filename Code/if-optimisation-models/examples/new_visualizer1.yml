@@ -4,13 +4,14 @@ tags: null
 initialize:
   plugins:
     plotter:
-      method: Plotter
-      path: "@grnsft/if-optimisation-models"
+      method: Shell
+      path: '@grnsft/if-plugins'
+      global-config:
+        command: 'python3 ./src/lib/plotter/plotter'
 tree:
   children:
     child0:
       defaults:
-        command: 'python3 ./src/lib/plotter/plotter'
         x-name: ['time']
         y-name: energy
         colour: blue

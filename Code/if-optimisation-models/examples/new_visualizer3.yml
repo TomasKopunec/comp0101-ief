@@ -16,7 +16,9 @@ initialize:
         sampling: 10
     plotter:
       method: Shell
-      path: "@grnsft/if-models"
+      path: "@grnsft/if-plugins"
+      global-config:
+        command: 'python3 ./src/lib/plotter/plotter'
 tree:
   children:
     child0:
@@ -24,7 +26,6 @@ tree:
         - carbon-aware-advisor
         - plotter
       defaults:
-        command: 'python3 ./src/lib/plotter/plotter'
         x-name:  [location,time]
         y-name: score
         colour: green
@@ -34,4 +35,4 @@ tree:
         diagram-title: Carbon score in relation to time and location (ascending)
         graph-type: line # bar line or scatter
       inputs:
-        - 
+        - fake: "fake"

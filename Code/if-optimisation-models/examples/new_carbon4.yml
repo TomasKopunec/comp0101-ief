@@ -16,9 +16,10 @@ initialize:
         sampling: 10
     plotter:
       method: Shell
-      path: "@grnsft/if-models"
+      path: "@grnsft/if-plugins"
       global-config:
         command: 'python3 ./src/lib/plotter/plotter'
+
 tree:
   children:
     child0:
@@ -35,4 +36,4 @@ tree:
         diagram-title: Carbon score in relation to time and location (ascending)
         graph-type: bar # bar line or scatter
       inputs:
-        - 
+        - time: '2022-06-20T00:00:00+00:00'
