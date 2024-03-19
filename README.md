@@ -69,9 +69,9 @@ These must have an open-source repository and documentation to facilitate commun
 1. **Start the API:**
    - Open a terminal window in the root directory of your project.
    - Execute the script by running:
-     \```
+     ```
      ./api_start.sh
-     \```
+     ```
 
 2. **Open Command Palette:**
    - Press `Ctrl` + `Shift` + `P` to open the Command Palette in your code editor.
