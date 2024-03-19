@@ -11,14 +11,14 @@ tree:
     child0:
       defaults:
         command: 'python3 ./src/lib/plotter/plotter'
-        y_name: graph.carbon
+        y-name: graph.carbon
         colour: red
-        diagram_name: ../Test_diagram2
-        x_axis_name: Date
-        y_axis_name: Carbon
-        diagram_title: Carbon Emission per Date for graph.carbon
-        graph_type: scatter   
-        csv_path: 'helper2.csv'
+        diagram-name: ../Test_diagram2
+        x-axis-name: Date
+        y-axis-name: Carbon
+        diagram-title: Carbon Emission per Date for graph.carbon
+        graph-type: scatter   
+        csv-path: 'helper2.csv'
       pipeline:
         - plotter
       inputs: 

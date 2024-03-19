@@ -1,0 +1,9 @@
+command: 'python3 ./src/lib/plotter/plotter'
+y_name: group_4
+colour: lavender
+diagram_name: results/test10
+x_axis_name: Group Rank
+y_axis_name: Mark
+diagram_title: Marks for each rank for group_4
+graph_type: line   
+csv_path: '../../Code/if-optimisation-models/helper3.csv'

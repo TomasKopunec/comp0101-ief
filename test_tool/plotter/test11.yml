@@ -1,0 +1,9 @@
+command: 'python3 ./src/lib/plotter/plotter'
+y_name: 'club seniorita'
+colour: darkviolet
+diagram_name: results/test11
+x_axis_name: Type of prodcut
+y_axis_name: Quanity in units
+diagram_title: Alcohol and food Consuption in Club Seniorita
+graph_type: scatter   
+csv_path: '../../Code/if-optimisation-models/clubs.csv'

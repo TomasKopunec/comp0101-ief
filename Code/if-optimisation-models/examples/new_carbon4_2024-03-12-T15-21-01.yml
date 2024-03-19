@@ -1,0 +1,89 @@
+name: Carbon Advisor Demo
+description: Simple demo for invoking carbon-advisor model
+tags: null
+initialize:
+  plugins:
+    carbon-aware-advisor:
+      path: '@grnsft/if-optimisation-models'
+      method: CarbonAwareAdvisor
+      global-config:
+        allowed-locations:
+          - northeurope
+          - eastus
+          - westus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+        sampling: 10
+    plotter:
+      path: '@grnsft/if-models'
+      method: Shell
+      global-config:
+        command: python3 ./src/lib/plotter/plotter
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
+        - plotter
+      defaults:
+        x_name:
+          - location
+          - time
+        y_name: score
+        colour: yellow
+        diagram_name: demo
+        x_axis_name: Date and Location
+        y_axis_name: Carbon score
+        diagram_title: Carbon score in relation to time and location (ascending)
+        graph_type: bar
+      inputs:
+        - null
+      outputs:
+        - x_name:
+            - location
+            - time
+          y_name: score
+          colour: yellow
+          diagram_name: demo
+          x_axis_name: Date and Location
+          y_axis_name: Carbon score
+          diagram_title: Carbon score in relation to time and location (ascending)
+          graph_type: bar
+          suggestions:
+            - suggested-location: westus
+              suggested-timeframe: '2022-06-20T00:00:00+00:00'
+              suggested-score: 126
+          plotted_points:
+            - location: westus
+              time: '2022-06-20T00:00:00+00:00'
+              score: 126
+            - location: eastus
+              time: '2022-06-20T10:00:00+00:00'
+              score: 402
+            - location: westus
+              time: '2022-06-21T12:00:00+00:00'
+              score: 286
+            - location: eastus
+              time: '2022-06-19T21:00:00+00:00'
+              score: 409
+            - location: northeurope
+              time: '2022-08-02T04:00:00+00:00'
+              score: 188
+            - location: eastus
+              time: '2022-08-02T11:00:00+00:00'
+              score: 468
+            - location: northeurope
+              time: '2022-08-03T12:00:00+00:00'
+              score: 416
+            - location: westus
+              time: '2024-08-03T19:00:00.000Z'
+              score: 196.47708333333333
+            - location: northeurope
+              time: '2024-08-02T10:00:00.000Z'
+              score: 268.9604166666667
+            - location: westus
+              time: '2024-08-02T11:00:00.000Z'
+              score: 279.9770833333333
+          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png

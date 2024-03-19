@@ -1,0 +1,25 @@
+name: Plotter_demo
+description: example impl invoking plotter model
+tags: null
+initialize:
+  plugins:
+    plotter:
+      method: Plotter
+      path: "@grnsft/if-optimisation-models"
+tree:
+  children:
+    child0:
+      defaults:
+        command: 'python3 ./src/lib/plotter/plotter'
+        diagram_name: ../../test_tool/plotter/results/test8_if
+        y_name: group_2
+        colour: grey
+        x_axis_name: Group Rank
+        y_axis_name: Mark
+        diagram_title: Marks for each rank for group_2
+        graph_type: bar   
+        csv_path: '../../Code/if-optimisation-models/helper3.csv'
+      pipeline:
+        - plotter
+      inputs:
+      - 

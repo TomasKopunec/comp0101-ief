@@ -99,7 +99,7 @@ export const CarbonAwareAdvisor =async  (params: ConfigParams): Promise<PluginIn
       results = inputs.map(input => ({
         ...input,
         suggestions: [],
-        plotted_points: []
+        'plotted-points': []
       }));
     }
     else {
@@ -221,7 +221,7 @@ export const CarbonAwareAdvisor =async  (params: ConfigParams): Promise<PluginIn
     // if we have sampling in the result we return the plotted points as well which have samples from different timeframe and locations
     if (hasSampling) {
       plotted_points.forEach(async item => {
-        results[0].plotted_points.push({
+        results[0]['plotted-points'].push({
           'location': item.location,
           'time': item.time,
           'score': item.rating

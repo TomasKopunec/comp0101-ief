@@ -7,7 +7,7 @@ The CarbonAwareAdvisor model is designed to provide carbon emission data based o
 ## Key Features
 - **Location Filtering**: Users can specify a list of locations to consider for carbon emission data.
 - **Timeframe Filtering**: Users can define time ranges to narrow down the search for carbon emission data.
-- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape. If sampling is not defined in the impl then no data points are sampled and the plotted_points is not added in the ompl.
+- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape. If sampling is not defined in the impl then no data points are sampled and the plotted-points is not added in the ompl.
 
 ## Outputs
 - ** Suggestions: **: List of the best location and time combination to minimize the carbon score along with that score.
@@ -50,7 +50,7 @@ Please refer to this for more information, but there are too many errors in this
     ]
   },
   "DataSources": {
-    "EmissionsDataSource": "test-json",
+    "EmissionsDataSource": "ElectricityMaps",
     "ForecastDataSource": "ElectricityMaps",
     "Configurations": {
       "test-json": {
@@ -75,35 +75,36 @@ Please refer to this for more information, but there are too many errors in this
 ## Configuration
 The model requires two main parameters to be configured in the impl file:
 - `allowed-locations`: A list of locations for which the carbon data is required.
+The locations can also be keywords like azure_europe etc that are sets of locations that cover a wider range so that the user does not have to write each individual location. You can find all the available keywords and locations at the locations.json .
 - `allowed-timeframes`: A list of timeframes in the format `YYYY-MM-DDTHH:MM:SSZ - YYYY-MM-DDTHH:MM:SSZ`.
-
+The timeframes can be in the past and up to 5 years in the future. If the timeframe is in the future then we perform our own forecasting algorithm.
 Optional parameter:
-- `sampling`: Specifies the number of data points to sample from the returned data for a more granular analysis.
+- `sampling`: Specifies the number of data points to sample from the returned data for a more granular analysis. If it is not specified then only the best timeframe and location combination is returned. Sampling if specified must be larger or equal to the number of allowed timeframes. The sampling emmission data are sampled uniformely from the allowed-timeframes (more data will be returned from larger timeframes) and the best emission data for each timeframe is always returned. The rest from that timeframe are selected at random.
 
 ## Example Impl Configuration without sampling
 Impl:
 
 ```yaml
 name: Carbon Advisor Demo
-description: Simple demo for invoking carbon-aware-advisor model
+description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
   plugins:
-    carbon-aware-advisor:
+    carbon-advisor:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
-tree:
-  children:
-    child0:
-      pipeline:
-        - carbon-aware-advisor
-      defaults:
+      global-config:
         allowed-locations:  ['northeurope','eastus','westus']
         allowed-timeframes: [
             "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
             "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
             "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-advisor
       inputs:
         - 
 ```
@@ -111,18 +112,18 @@ Ompl:
 
 ```yaml
 name: Carbon Advisor Demo
-description: Simple demo for invoking carbon-aware-advisor model
+description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
   plugins:
-    carbon-aware-advisor:
+    carbon-advisor:
       path: '@grnsft/if-optimisation-models'
       method: CarbonAwareAdvisor
 tree:
   children:
     child0:
       pipeline:
-        - carbon-aware-advisor
+        - carbon-advisor
       defaults:
         allowed-locations:
           - northeurope
@@ -161,16 +162,7 @@ initialize:
     carbon-aware-advisor:
       method: CarbonAwareAdvisor
       path: "@grnsft/if-optimisation-models"
-    plotter:
-      method: Shell
-      path: "@grnsft/if-models"
-tree:
-  children:
-    child0:
-      pipeline:
-        - carbon-aware-advisor
-        - plotter
-      defaults:
+      global-config:
         allowed-locations:  ['northeurope','eastus','westus']
         allowed-timeframes: [
             "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
@@ -178,7 +170,18 @@ tree:
             "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
           ]
         sampling: 10
+    plotter:
+      method: Shell
+      path: "@grnsft/if-models"
+      global-config:
         command: 'python3 ./src/lib/plotter/plotter'
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
+        - plotter
+      defaults:
         x_name:  [location,time]
         y_name: score
         colour: yellow
@@ -200,16 +203,7 @@ initialize:
     carbon-aware-advisor:
       path: '@grnsft/if-optimisation-models'
       method: CarbonAwareAdvisor
-    plotter:
-      path: '@grnsft/if-models'
-      method: Shell
-tree:
-  children:
-    child0:
-      pipeline:
-        - carbon-aware-advisor
-        - plotter
-      defaults:
+      global-config:
         allowed-locations:
           - northeurope
           - eastus
@@ -219,7 +213,18 @@ tree:
           - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
           - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
         sampling: 10
+    plotter:
+      path: '@grnsft/if-models'
+      method: Shell
+      global-config:
         command: python3 ./src/lib/plotter/plotter
+tree:
+  children:
+    child0:
+      pipeline:
+        - carbon-aware-advisor
+        - plotter
+      defaults:
         x_name:
           - location
           - time
@@ -233,17 +238,7 @@ tree:
       inputs:
         - null
       outputs:
-        - allowed-locations:
-            - northeurope
-            - eastus
-            - westus
-          allowed-timeframes:
-            - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
-            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-            - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
-          sampling: 10
-          command: python3 ./src/lib/visualizer/plotter
-          x_name:
+        - x_name:
             - location
             - time
           y_name: score
@@ -257,38 +252,38 @@ tree:
             - suggested-location: westus
               suggested-timeframe: '2022-06-20T00:00:00+00:00'
               suggested-score: 126
-          plotted_points:
+          plotted-points:
             - location: westus
               time: '2022-06-20T00:00:00+00:00'
               score: 126
             - location: eastus
-              time: '2022-06-20T11:00:00+00:00'
-              score: 403
-            - location: northeurope
-              time: '2022-06-20T15:00:00+00:00'
-              score: 560
+              time: '2022-06-20T10:00:00+00:00'
+              score: 402
             - location: westus
-              time: '2022-06-20T08:00:00+00:00'
-              score: 208
+              time: '2022-06-21T12:00:00+00:00'
+              score: 286
+            - location: eastus
+              time: '2022-06-19T21:00:00+00:00'
+              score: 409
             - location: northeurope
               time: '2022-08-02T04:00:00+00:00'
               score: 188
-            - location: westus
-              time: '2022-08-03T08:00:00+00:00'
-              score: 285
             - location: eastus
-              time: '2022-08-03T02:00:00+00:00'
-              score: 489
+              time: '2022-08-02T11:00:00+00:00'
+              score: 468
+            - location: northeurope
+              time: '2022-08-03T12:00:00+00:00'
+              score: 416
             - location: westus
               time: '2024-08-03T19:00:00.000Z'
-              score: 201.16041666666666
+              score: 196.47708333333333
+            - location: northeurope
+              time: '2024-08-02T10:00:00.000Z'
+              score: 268.9604166666667
             - location: westus
-              time: '2024-08-01T21:00:00.000Z'
-              score: 233.66041666666666
-            - location: eastus
-              time: '2024-08-02T09:00:00.000Z'
-              score: 393.175
-          diagram: /home/user/repo/Code/if-optimisation-models/demo.png
+              time: '2024-08-02T11:00:00.000Z'
+              score: 279.9770833333333
+          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png
 
 ```
 And we can see the following diagram being created:
