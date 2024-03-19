@@ -64,7 +64,7 @@ These must have an open-source repository and documentation to facilitate commun
 ##The final report is shared in the microsoft teams channel of the project team
 
 
-Follow these steps to set up the SDK API:
+# Follow these steps to set up the SDK API:
 
 1. **Start the API:**
    - Open a terminal window in the root directory of your project.
