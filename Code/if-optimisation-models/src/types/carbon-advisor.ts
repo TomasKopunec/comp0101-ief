@@ -34,7 +34,22 @@ type ForecastDataPoint = {
     value: number;
 }
 
-interface ApiResponse {
+type ApiResponse = {
+    location: string;
+    time: string;
+    rating: number;
+    duration: string;
+}
+
+type Forecast = {
+    location: string;
+    timeframe: Timeframe;
+    rating: number;
+    n: number;
+    decay: number;
+}
+
+type Suggestion = {
     location: string;
     time: string;
     rating: number;
