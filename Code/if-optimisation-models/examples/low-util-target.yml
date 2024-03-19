@@ -20,7 +20,7 @@ tree:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
           cloud-vendor: custom
-          cpu/utilisation: 60
+          cpu-util: 60
           target-cpu-util: 90
           mem-util: 50
           location: uksouth

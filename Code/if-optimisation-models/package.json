@@ -9,11 +9,11 @@
     "install2if": "./install2if.sh local",
     "install2if:local": "./install2if.sh local",
     "install2if:dev": "./install2if.sh dev",
-    "if:local": "yarn if",
-    "if:dev": "cd ../if && yarn if",
-    "intall-if": "npm run install2if && yarn if",
-    "install-and-exec:local": "./install2if.sh local && yarn if",
-    "install-and-exec:dev": "./install2if.sh dev && cd ../if && yarn if",
+    "if:local": "yarn ie",
+    "if:dev": "cd ../if && yarn ie",
+    "intall-if": "npm run install2if && yarn ie",
+    "install-and-exec:local": "./install2if.sh local && yarn ie",
+    "install-and-exec:dev": "./install2if.sh dev && cd ../if && yarn ie",
     "test": "jest --verbose"
   },
   "keywords": [
