@@ -34,14 +34,14 @@ tree:
         - plotter
       defaults:
         command: 'python3 ./src/lib/plotter/plotter'
-        x_name:  [location,time]
-        y_name: score
+        x-name:  [location,time]
+        y-name: score
         colour: green
-        diagram_name: demo
-        x_axis_name: Date and Location
-        y_axis_name: Carbon score
-        diagram_title: Carbon score in relation to time and location (ascending)
-        graph_type: line # bar line or scatter
+        diagram-name: demo
+        x-axis-name: Date and Location
+        y-axis-name: Carbon score
+        diagram-title: Carbon score in relation to time and location (ascending)
+        graph-type: line # bar line or scatter
       config:
         sci:
           functional-unit: requests # factor to convert per time to per f.unit

@@ -26,13 +26,13 @@ tree:
         - carbon-aware-advisor
         - plotter
       defaults:
-        x_name:  [location,time]
-        y_name: score
+        x-name:  [location,time]
+        y-name: score
         colour: yellow
-        diagram_name: demo
-        x_axis_name: Date and Location
-        y_axis_name: Carbon score
-        diagram_title: Carbon score in relation to time and location (ascending)
-        graph_type: bar # bar line or scatter
+        diagram-name: demo
+        x-axis-name: Date and Location
+        y-axis-name: Carbon score
+        diagram-title: Carbon score in relation to time and location (ascending)
+        graph-type: bar # bar line or scatter
       inputs:
         - 
