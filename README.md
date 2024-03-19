@@ -81,9 +81,9 @@ These must have an open-source repository and documentation to facilitate commun
 
 4. **Run Startup Script:**
    - In the terminal that opens within your selected folder, start the necessary services by running:
-     \```
+     ```
      ./start.sh
-     \```
+     ```
 
 # Running the Dockerized Version
 
@@ -91,18 +91,18 @@ To use the Dockerized version of the application, follow these steps:
 
 1. **Run Docker Container:**
    - In a new terminal window, initiate the Docker container by running:
-     \```
+     ```
      ./docker_run.sh
-     \```
+     ```
    - This process might take up to 3 minutes as the Docker image is being built.
 
 2. **Using the Docker Environment:**
    - Once the Docker container is ready, you'll be automatically placed into the Docker environment's terminal.
    - To execute implementation files located in the `examples` folder, use the following command structure:
-     \```
+     ```
      ./run.sh <file_name>
-     \```
+     ```
      For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
-     \```
+     ```
      ./run.sh new_carbon1
-     \```
+     ```
