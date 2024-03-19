@@ -1,5 +1,4 @@
-import * as fs from "fs";
-import { RightSizingModel } from "../../../lib/right-sizing/index.wrapper"; // This is a temp fix, will be removed once the new model is ready
+import { RightSizingModel } from "../../../lib/right-sizing";
 import { CPUDatabase, CloudInstance } from "../../../lib/right-sizing/CPUFamily";
 import { PluginParams } from "../../../types/common";
 import { fixFloat } from "../../../util/util";
@@ -243,7 +242,7 @@ describe("RightSizingModel", () => {
          * For each instance from input, check if: 
          * minimum required CPUs <= Total number of CPUs of combination <= original number of CPUs
          */
-        it("Is the number of total vCPUs in a valid range? (default cpu-target-util)", async () => {
+        it("Is the total number of vCPUs in a valid range? (default cpu-target-util)", async () => {
             const inputs = ALG_TEST1_INPUTS;
             const outputs = await model.execute(inputs);
 
@@ -282,7 +281,7 @@ describe("RightSizingModel", () => {
             expect(compareWithExpectedCombinedValues(ALG_TEST1_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
         });
         
-        it("Is the number of total vCPUs in a valid range? (custom cpu-target-util)", async () => {
+        it("Is the total number of vCPUs in a valid range? (custom cpu-target-util)", async () => {
             const inputs = ALG_TEST2_INPUTS;
             const outputs = await model.execute(inputs);
 
@@ -357,7 +356,7 @@ describe("RightSizingModel", () => {
             };
         });
 
-        it("Is the total RAM of the combination the fittest?", async () => {
+        it("When vCPU is fittest, Is the total RAM the fittest?", async () => {
             const inputs = ALG_TEST4_INPUTS;
             const outputs = await model.execute(inputs);
 
@@ -370,14 +369,14 @@ describe("RightSizingModel", () => {
             .toEqual(getCombinedData(ALG_TEST4_EXPECTED_OUTPUTS)[timestamp].vCPUs);
         });
 
-        it ("Is the price of the combination the lowest available for this configuration?", async () => {
+        it ("When vCPU and RAM are fittest, Is the sum price the lowest available?", async () => {
             const inputs = ALG_TEST5_INPUTS;
             const outputs = await model.execute(inputs);
             
             expect(compareWithExpectedCombinedValues(ALG_TEST5_EXPECTED_OUTPUTS, outputs)).toBeTruthy();
         });
 
-        it ("Does the algorithm consider multiple same instance in a combination?", async () => {
+        it ("Does the algorithm consider multiple identical instance in a combination?", async () => {
             const inputs = ALG_TEST6_INPUTS;
             const outputs = await model.execute(inputs);
             

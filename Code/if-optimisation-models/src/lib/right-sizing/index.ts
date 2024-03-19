@@ -21,7 +21,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
     let database: CPUDatabase = new CPUDatabase();
     const Cache: Map<string, CPUDatabase> = new Map();
     const builtinDataPath = './data';
-    const cpuMetrics = ['cpu/utilisation', 'cloud-vendor', 'cloud-instance-type'];
+    const cpuMetrics = ['cpu-util', 'cloud-vendor', 'cloud-instance-type'];
 
     /**
      * Configures the model with the provided parameters.
@@ -92,7 +92,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         if (validateSingleInput(input)) {
             // Store original instance details
             input['old-instance'] = input['cloud-instance-type'];
-            input['old-cpu-util'] = input['cpu/utilisation'];
+            input['old-cpu-util'] = input['cpu-util'];
             input['old-mem-util'] = input['mem-util'];
 
             // Retrieve instance details from database
@@ -107,7 +107,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
             let targetRAM = (originalMemUtil / 100) * instance.RAM;
             let region = input['location'];
 
-            let cpuUtil = input['cpu/utilisation'];
+            let cpuUtil = input['cpu-util'];
             // Ensure cpu-util is a number
             if (typeof cpuUtil === 'number') {
                 util = cpuUtil as number;
@@ -146,7 +146,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 
                 // Update output parameters
                 output['cloud-instance-type'] = processedModel;
-                output['cpu/utilisation'] = fixFloat(combination.cpuUtil * 100, 2);
+                output['cpu-util'] = fixFloat(combination.cpuUtil * 100, 2);
                 output['mem-util'] = fixFloat(combination.memUtil * 100, 2);
                 output['total-memoryGB'] = combination.instance.RAM;
                 if (res.length > 1) {
@@ -185,7 +185,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
         .object({
             'cloud-instance-type': z.string(),
             'cloud-vendor': z.string(),
-            'cpu/utilisation': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
+            'cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)),
             'target-cpu-util': z.number().gte(0).lte(100).or(z.string().regex(/^[0-9]+(\.[0-9]+)?$/)).optional()
         })
         .refine(atLeastOneDefined, {
