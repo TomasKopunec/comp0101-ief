@@ -111,7 +111,7 @@ graph:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
           cloud-vendor: azure
-          cpu-util: 50
+          cpu-util: 75
           target-cpu-util: 100
           mem-availableGB: 0.488636416
           mem-usedGB: 0.5113635839999999
@@ -144,12 +144,12 @@ graph:
         - timestamp: '2023-11-02T10:35:00.000Z'
           duration: 300
           cloud-vendor: azure
-          cpu-util: 50
+          cpu-util: 75
           target-cpu-util: 100
           mem-availableGB: 0.488636416
           mem-usedGB: 0.5113635839999999
           total-memoryGB: 32
-          mem-util: 50
+          mem-util: 75
           location: westus
           cloud-instance-type: Standard_D8a_v4
       outputs:
@@ -169,6 +169,24 @@ graph:
           old-cpu-util: 50
           old-mem-util: 50
           price-change: Price decreased by 98%
+          output-id: 2f37753f-5152-42af-8470-49f258b0cfed
+        - timestamp: '2023-11-02T10:35:00.000Z'
+          duration: 300
+          cloud-vendor: azure
+          cpu-util: 100
+          target-cpu-util: 100
+          mem-availableGB: 0.488636416
+          mem-usedGB: 0.5113635839999999
+          total-memoryGB: 8
+          mem-util: 100
+          location: westus
+          cloud-instance-type: Standard_D2a_v4
+          data-path: data/azure-instances.json
+          old-instance: Standard_D8a_v4
+          old-cpu-util: 50
+          old-mem-util: 50
+          price-change: Price decreased by 98%
+          output-id: 2f37753f-5152-42af-8470-49f258b0cfed
 ```
 
 ## Contributing
