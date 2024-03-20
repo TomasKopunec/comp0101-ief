@@ -26,20 +26,116 @@ Impact Engine Framework
 
 Here is the link to the resource: [Link](https://github.com/Green-Software-Foundation/if)
 
-## Video Presentation Link
+## Video Presentation for Requirements Phase Link
 https://youtu.be/YYdt-9RIYiU
 
+## Final Video Presentation for Implemented Project Link
+tbd
+
 ## Project Description
-As digital transformation accelerates, the environmental impact of software becomes increasingly significant. The Impact Engine Framework (IEF) project, initiated by the Open Source Working Group at the Green Software Foundation, aims to address this challenge. The IEF is designed to Model, Measure, siMulate, and Monitor the environmental impacts of software components across diverse computing environments. With software now running on an array of platforms - from clouds to containers, and mobile devices to desktops - each ecosystem presents unique measurement challenges. This project seeks to streamline the process, developing a unified framework that can adapt to various environmental metrics, reducing the friction currently associated with assessing software emissions.
+This project includes the creation and integration of three unique models inside the Impact Engine Framework (IF) to support green computing practices in response to the growing environmental concerns connected with the carbon footprint of information and communication technologies. The Carbon Advisor, Right-sizing, and Plotter models are intended to support organisations and software developers in making well-informed decisions that minimise energy use and lower carbon emissions without sacrificing functionality. Utilising the Carbon Aware SDK, the Carbon Advisor model determines the optimal carbon-efficient operating parameters—like time and place—for software programmes to function. The goal of the right-sizing model is to minimise wasted energy and capacity(ram?) by optimising the use of cloud resources. Lastly, the Plotter model's user-friendly visualisations improve the clarity and accessibility of complicated environmental data. Our extensive testing, which includes usability, performance, and unit evaluations, shows how well the models work to encourage software developers to embrace environmentally responsible practices. Future work will focus on refining these models and exploring additional avenues for reducing the tech industry's environmental footprint.
 
-## Key Expected Outcome
-Extend the IEF adaptable framework capable of modeling and measuring the environmental impact of software across multiple environments, to edge devices, or another specifically selected environment.
-Produce either:
-•	A simulation tool to forecast potential emissions based on software design choices.
-•	A monitoring tool that provides ongoing environmental impact assessments.
-These must have an open-source repository and documentation to facilitate community contributions and adoption.
+## Models Implemented
 
-## Core Requirements
+### Carbon-aware-advisor
+The CarbonAwareAdvisor model is designed to provide carbon emission data based on specified locations and timeframes. It interacts with the Carbon Aware SDK to fetch the most carbon-efficient options for given parameters.
+
+#### Key Features
+- **Location Filtering**: Users can specify a list of locations to consider for carbon emission data.
+- **Timeframe Filtering**: Users can define time ranges to narrow down the search for carbon emission data.
+- **Sampling**: An optional parameter that allows users to specify the number of data points to sample from the available data, providing a broader view of the carbon emission landscape. If sampling is not defined in the impl then no data points are sampled and the plotted-points is not added in the ompl.
+#### Outputs
+- **Suggestions:**: List of the best location and time combination to minimize the carbon score along with that score.
+- **Plotted-points:**: ONLY IF THE SAMPLING PARAMETER IS INITIALIZED IN THE IMPL. A sampling number of samples for trade-off visualization. A best combination from each timeframe is always included . So sampling must be >= number of time regions in the allowed-timeframes. The plotter model can then be used in the pipeline to plot this samples.
+#### Link for carbon aware advisor
+The carbon aware advisor model and its documentation can be found here: https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/carbon-aware-advisor
+
+### Right-Sizing
+The right-sizing model for Impact Engine Framework is designed to identify cloud computing instances that better align with the performance and capacity requirements of the customer's workload, with the goal of achieving the highest possible cpu usage , ram usage while minimising the cost and maintaining performance . It takes input in yaml format, ultimately providing more optimal instances based on the current cloud instance type, cloud vendor, current CPU utilization, target CPU utilization, and RAM requirements. Currently, this model primarily targets virtual machines of Azure and AWS.
+#### Link for right-sizing
+The right-sizing model and its documentation can be found here: https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/right-sizing
+
+### Plotter
+The Plotter model created for the Impact Engine Framework is designed to visualize data through various types of graphs such as bar, line, and scatter plots. It takes input in YAML format or csv format , defining the x and y values along with additional parameters to customize the plots.
+This model is typically used in a pipeline following data-enrichment models like carbon-advisor, which populates the plotted-points parameter required by Plotter. If the user prefers he can specify the plotted-points parameter himself in the Impl file but the main value of the model is its ability to visualize the data provided by other models of the Impact Engine Framework. The user can also specify a csv file to read the data to plot from.
+
+#### Link for plotter
+The plotter model and its documentation can be found here: https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/plotter
+
+## Installation 
+### Prerequisites
+Make sure you have Node.js version 18 installed
+### Install instructions
+. **Initiate the npm project:**
+   - Execute the following commands
+     \```
+     cd Code/if-optimisation-models
+     npm install
+     \```
+
+2. **Calculating an Impl file:**
+   
+   - To execute implementation files located in the `examples` folder, use the following command structure:
+     \```
+     ./run.sh <file_name>
+     \```
+     For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
+     \```
+     ./run.sh new_carbon1
+     \```
+ - For instruction on how to write Impl files and the available model check the official Impact Engine Framework documentation : https://if.greensoftware.foundation/major-concepts/
+
+## Running the Dockerized Version
+
+To use the Dockerized version of the application, follow these steps:
+
+1. **Run Docker Container:**
+   - In a new terminal window, initiate the Docker container by running:
+     \```
+     ./docker_run.sh
+     \```
+   - This process might take up to 3 minutes as the Docker image is being built.
+
+2. **Using the Docker Environment:**
+   - Once the Docker container is ready, you'll be automatically placed into the Docker environment's terminal.
+   - To execute implementation files located in the `examples` folder, use the following command structure:
+     \```
+     ./run.sh <file_name>
+     \```
+     For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
+     \```
+     ./run.sh new_carbon1
+     \```
+
+
+  ## Starting the Carbon Aware SDK API
+  The SDK API is necessary for the carbon-aware-advisor model
+  ### Instruction how to Deploy it on localhost
+  Detailed instructions on how to run the API on localhost can be found on the original WebAPI documentation : https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/casdk-docs/docs/quickstart.md
+
+  ### Simpler approach -using our method
+  We have created certain scripts and use a docker container provided to simplify the process of deploying the WebAPI: 
+  1. **Start the API:**
+   - Open a terminal window in the root directory of your project.
+   - Execute the script by running:
+     \```
+     ./api_start.sh
+     \```
+
+2. **Open Command Palette:**
+   - Press `Ctrl` + `Shift` + `P` to open the Command Palette in your code editor.
+
+3. **Select Project Folder:**
+   - Use the Command Palette to select the `carbon-aware-sdk` folder, which should be located in the same directory where you cloned this project.
+
+4. **Run Startup Script:**
+   - In the terminal that opens within your selected folder, start the necessary services by running:
+     \```
+     ./start.sh
+     \```
+
+
+<!-- ## Core Requirements
 - Development of a flexible measurement model for software environmental impact extending IEF.
 - Integration capability with various environments (cloud, bare-metal, virtualized, etc.).
 - Creation of a simulation tool to project the environmental impact during the design phase or
@@ -61,48 +157,7 @@ These must have an open-source repository and documentation to facilitate commun
 - Collaboration with the broader open-source community will be essential to ensure the framework's adaptability and effectiveness.
 - All contributions to the project will be made under an open-source license to foster transparency and community involvement.
 
-##The final report is shared in the microsoft teams channel of the project team
+##The final report is shared in the microsoft teams channel of the project team -->
 
 
-Follow these steps to set up the SDK API:
 
-1. **Start the API:**
-   - Open a terminal window in the root directory of your project.
-   - Execute the script by running:
-     \```
-     ./api_start.sh
-     \```
-
-2. **Open Command Palette:**
-   - Press `Ctrl` + `Shift` + `P` to open the Command Palette in your code editor.
-
-3. **Select Project Folder:**
-   - Use the Command Palette to select the `carbon-aware-sdk` folder, which should be located in the same directory where you cloned this project.
-
-4. **Run Startup Script:**
-   - In the terminal that opens within your selected folder, start the necessary services by running:
-     \```
-     ./start.sh
-     \```
-
-# Running the Dockerized Version
-
-To use the Dockerized version of the application, follow these steps:
-
-1. **Run Docker Container:**
-   - In a new terminal window, initiate the Docker container by running:
-     \```
-     ./docker_run.sh
-     \```
-   - This process might take up to 3 minutes as the Docker image is being built.
-
-2. **Using the Docker Environment:**
-   - Once the Docker container is ready, you'll be automatically placed into the Docker environment's terminal.
-   - To execute implementation files located in the `examples` folder, use the following command structure:
-     \```
-     ./run.sh <file_name>
-     \```
-     For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
-     \```
-     ./run.sh new_carbon1
-     \```
