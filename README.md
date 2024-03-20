@@ -1,5 +1,10 @@
 
-# Project Brief
+# Implementation of parameter optimisation and isualisation models for the Impact Engine Framework
+## Project Description
+This project includes the creation and integration of three unique models inside the Impact Engine Framework (IF) to support green computing practices in response to the growing environmental concerns connected with the carbon footprint of information and communication technologies.
+
+The Carbon Advisor, Right-sizing, and Plotter models are intended to support organisations and software developers in making well-informed decisions that minimise energy use and lower carbon emissions without sacrificing functionality. Utilising the Carbon Aware SDK, the Carbon Advisor model determines the optimal carbon-efficient operating parameters—like time and place—for software programmes to function. The goal of the right-sizing model is to minimise wasted energy and capacity(ram?) by optimising the use of cloud resources. Lastly, the Plotter model's user-friendly visualisations improve the clarity and accessibility of complicated environmental data. Our extensive testing, which includes usability, performance, and unit evaluations, shows how well the models work to encourage software developers to embrace environmentally responsible practices. Future work will focus on refining these models and exploring additional avenues for reducing the tech industry's environmental footprint.
+
 ## Project Team
 - Bouras, Dimitrios TL
 - Gudmundsdottir, Telma
@@ -28,9 +33,6 @@ https://youtu.be/YYdt-9RIYiU
 
 ## Final Video Presentation for Implemented Project Link
 tbd
-
-## Project Description
-This project includes the creation and integration of three unique models inside the Impact Engine Framework (IF) to support green computing practices in response to the growing environmental concerns connected with the carbon footprint of information and communication technologies. The Carbon Advisor, Right-sizing, and Plotter models are intended to support organisations and software developers in making well-informed decisions that minimise energy use and lower carbon emissions without sacrificing functionality. Utilising the Carbon Aware SDK, the Carbon Advisor model determines the optimal carbon-efficient operating parameters—like time and place—for software programmes to function. The goal of the right-sizing model is to minimise wasted energy and capacity(ram?) by optimising the use of cloud resources. Lastly, the Plotter model's user-friendly visualisations improve the clarity and accessibility of complicated environmental data. Our extensive testing, which includes usability, performance, and unit evaluations, shows how well the models work to encourage software developers to embrace environmentally responsible practices. Future work will focus on refining these models and exploring additional avenues for reducing the tech industry's environmental footprint.
 
 ## Models Implemented
 
