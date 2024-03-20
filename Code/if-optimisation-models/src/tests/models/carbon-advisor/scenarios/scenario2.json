@@ -1,0 +1,115 @@
+[
+    {
+        "location": "eastus",
+        "time": "2022-01-14T03:30:00+00:00",
+        "rating": 27,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-14T07:30:00+00:00",
+        "rating": 38,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-14T11:30:00+00:00",
+        "rating": 6,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-14T15:30:00+00:00",
+        "rating": 11,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-14T19:30:00+00:00",
+        "rating": 18,
+        "duration": "04:00:00"
+    },    
+    {
+        "location": "eastus",
+        "time": "2022-01-14T23:30:00+00:00",
+        "rating": 17,
+        "duration": "04:00:00"
+    },
+
+
+
+    {
+        "location": "eastus",
+        "time": "2022-01-15T03:30:00+00:00",
+        "rating": 49,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-15T07:30:00+00:00",
+        "rating": 43,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-15T11:30:00+00:00",
+        "rating": 15,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-15T15:30:00+00:00",
+        "rating": 7,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-15T19:30:00+00:00",
+        "rating": 36,
+        "duration": "04:00:00"
+    },    
+    {
+        "location": "eastus",
+        "time": "2022-01-15T23:30:00+00:00",
+        "rating": 4,
+        "duration": "04:00:00"
+    },
+
+
+    {
+        "location": "eastus",
+        "time": "2022-01-16T03:30:00+00:00",
+        "rating": 32,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-16T07:30:00+00:00",
+        "rating": 19,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-16T11:30:00+00:00",
+        "rating": 44,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-16T15:30:00+00:00",
+        "rating": 21,
+        "duration": "04:00:00"
+    },
+    {
+        "location": "eastus",
+        "time": "2022-01-16T19:30:00+00:00",
+        "rating": 11,
+        "duration": "04:00:00"
+    },    
+    {
+        "location": "eastus",
+        "time": "2022-01-16T23:30:00+00:00",
+        "rating": 29,
+        "duration": "04:00:00"
+    }
+]

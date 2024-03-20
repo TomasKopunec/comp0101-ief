@@ -68,21 +68,21 @@ Make sure you have Node.js version 18 installed
 ### Install instructions
 . **Initiate the npm project:**
    - Execute the following commands
-     \```
+     ```
      cd Code/if-optimisation-models
      npm install
-     \```
+     ```
 
 2. **Calculating an Impl file:**
    
    - To execute implementation files located in the `examples` folder, use the following command structure:
-     \```
+     ```
      ./run.sh <file_name>
-     \```
+     ```
      For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
-     \```
+     ```
      ./run.sh new_carbon1
-     \```
+     ```
  - For instruction on how to write Impl files and the available model check the official Impact Engine Framework documentation : https://if.greensoftware.foundation/major-concepts/
 
 ## Running the Dockerized Version
@@ -91,21 +91,29 @@ To use the Dockerized version of the application, follow these steps:
 
 1. **Run Docker Container:**
    - In a new terminal window, initiate the Docker container by running:
-     \```
+     ```
      ./docker_run.sh
-     \```
+     ```
    - This process might take up to 3 minutes as the Docker image is being built.
+   
+   **Alternatively build from Dockerfile**
+- The Dockerfile  can be find in the parent directory comp0101-ief
+- Build and run it using:
+   ```
+    docker build --no-cache  -t ief_image .
+    docker run -it --net=host --name ief_runner ief_image 
+  ```
 
 2. **Using the Docker Environment:**
    - Once the Docker container is ready, you'll be automatically placed into the Docker environment's terminal.
    - To execute implementation files located in the `examples` folder, use the following command structure:
-     \```
+     ```
      ./run.sh <file_name>
-     \```
+     ```
      For instance, if you want to run an example file named `new_carbon1.yml`, you would execute:
-     \```
+     ```
      ./run.sh new_carbon1
-     \```
+     ```
 
 
   ## Starting the Carbon Aware SDK API
@@ -115,12 +123,13 @@ To use the Dockerized version of the application, follow these steps:
 
   ### Simpler approach -using our method
   We have created certain scripts and use a docker container provided to simplify the process of deploying the WebAPI: 
+  - You may need to gain administrative or root access to execute the following code.
   1. **Start the API:**
    - Open a terminal window in the root directory of your project.
    - Execute the script by running:
-     \```
+     ```
      ./api_start.sh
-     \```
+     ```
 
 2. **Open Command Palette:**
    - Press `Ctrl` + `Shift` + `P` to open the Command Palette in your code editor.
@@ -130,9 +139,9 @@ To use the Dockerized version of the application, follow these steps:
 
 4. **Run Startup Script:**
    - In the terminal that opens within your selected folder, start the necessary services by running:
-     \```
+    ```
      ./start.sh
-     \```
+     ```
 
 
 <!-- ## Core Requirements

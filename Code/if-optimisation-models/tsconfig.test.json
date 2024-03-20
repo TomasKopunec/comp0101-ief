@@ -37,4 +37,5 @@
     "node_modules",
     ".types-compat"
   ],
+  "files": ["node_modules/jest-expect-message/types/index.d.ts"]
 }
