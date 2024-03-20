@@ -65,11 +65,12 @@ These must have an open-source repository and documentation to facilitate commun
 
 
 # Follow these steps to set up the SDK API:
-
+- You may need to gain administrative or root access to execute the following code.
 1. **Start the API:**
    - Open a terminal window in the root directory of your project.
    - Execute the script by running:
      ```
+     chmod +x api_start.sh
      ./api_start.sh
      ```
 
