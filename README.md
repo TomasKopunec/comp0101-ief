@@ -120,7 +120,7 @@ To use the Dockerized version of the application, follow these steps:
   ### Instruction how to Deploy it on localhost
   Detailed instructions on how to run the API on localhost can be found on the original WebAPI documentation : https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/casdk-docs/docs/quickstart.md
 
-  ### Simpler approach -using our method
+  ### Simpler approach 1 - using our method with container
   We have created certain scripts and use a docker container provided to simplify the process of deploying the WebAPI: 
   - You may need to gain administrative or root access to execute the following code.
   1. **Start the API:**
@@ -140,6 +140,24 @@ To use the Dockerized version of the application, follow these steps:
    - In the terminal that opens within your selected folder, start the necessary services by running:
     ```
      ./start.sh
+     ```
+
+### Simpler approach 2 - using our method without in container
+
+#### Prerequisites
+Make sure you have .NET Core 6.0 installed (Use ```dotnet --list-sdks``` to check,Prefer version **6.0.418**)
+- Simply install it with a single command (For example in Ubuntu ```sudo apt install dotnet-sdk-6.0```)
+- To install the specified version, please visit the [Microsoft .NET 6.0 Download website](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0) for more information 
+
+#### Installation process
+  - You may need to gain administrative or root access to execute the following code.
+   - Open a terminal window in the root directory of your project, add execute permissions to the script:
+     ``` 
+     chmod +x api_start_without_in_container.sh
+     ```
+   - Execute the script by running:
+     ```
+     ./api_start_without_in_container.sh
      ```
 
 
