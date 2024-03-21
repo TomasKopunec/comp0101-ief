@@ -3,7 +3,7 @@
 ## Project Description
 This project includes the creation and integration of three unique models inside the Impact Engine Framework (IF) to support green computing practices in response to the growing environmental concerns connected with the carbon footprint of information and communication technologies.
 
-The Carbon Advisor, Right-sizing, and Plotter models are intended to support organisations and software developers in making well-informed decisions that minimise energy use and lower carbon emissions without sacrificing functionality. Utilising the Carbon Aware SDK, the Carbon Advisor model determines the optimal carbon-efficient operating parameters—like time and place—for software programmes to function. The goal of the right-sizing model is to minimise wasted energy and capacity(ram?) by optimising the use of cloud resources. Lastly, the Plotter model's user-friendly visualisations improve the clarity and accessibility of complicated environmental data. Our extensive testing, which includes usability, performance, and unit evaluations, shows how well the models work to encourage software developers to embrace environmentally responsible practices. Future work will focus on refining these models and exploring additional avenues for reducing the tech industry's environmental footprint.
+The Carbon Advisor, Right-sizing, and Plotter models are intended to support organisations and software developers in making well-informed decisions that minimise energy use and lower carbon emissions without sacrificing functionality. Utilising the Carbon Aware SDK, the Carbon Advisor model determines the optimal carbon-efficient operating parameters—like time and place—for software programmes to function. The goal of the right-sizing model is to minimise wasted energy and capacity by optimising the use of cloud resources. Lastly, the Plotter model's user-friendly visualisations improve the clarity and accessibility of complicated environmental data. Our extensive testing, which includes usability, performance, and unit evaluations, shows how well the models work to encourage software developers to embrace environmentally responsible practices. Future work will focus on refining these models and exploring additional avenues for reducing the tech industry's environmental footprint.
 
 ## Project Team
 - Bouras, Dimitrios TL
@@ -46,20 +46,20 @@ The CarbonAwareAdvisor model is designed to provide carbon emission data based o
 #### Outputs
 - **Suggestions:**: List of the best location and time combination to minimize the carbon score along with that score.
 - **Plotted-points:**: ONLY IF THE SAMPLING PARAMETER IS INITIALIZED IN THE IMPL. A sampling number of samples for trade-off visualization. A best combination from each timeframe is always included . So sampling must be >= number of time regions in the allowed-timeframes. The plotter model can then be used in the pipeline to plot this samples.
-#### Link for carbon aware advisor
-The carbon aware advisor model and its documentation can be found here: https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/carbon-aware-advisor
+#### Link for carbon aware advisor 
+[The carbon aware advisor model and its documentation can be found here](https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/carbon-aware-advisor)
 
 ### Right-Sizing
 The right-sizing model for Impact Engine Framework is designed to identify cloud computing instances that better align with the performance and capacity requirements of the customer's workload, with the goal of achieving the highest possible cpu usage , ram usage while minimising the cost and maintaining performance . It takes input in yaml format, ultimately providing more optimal instances based on the current cloud instance type, cloud vendor, current CPU utilization, target CPU utilization, and RAM requirements. Currently, this model primarily targets virtual machines of Azure and AWS.
 #### Link for right-sizing
-The right-sizing model and its documentation can be found here: https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/right-sizing
+[The right-sizing model and its documentation can be found here](https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/right-sizing)
 
 ### Plotter
 The Plotter model created for the Impact Engine Framework is designed to visualize data through various types of graphs such as bar, line, and scatter plots. It takes input in YAML format or csv format , defining the x and y values along with additional parameters to customize the plots.
 This model is typically used in a pipeline following data-enrichment models like carbon-advisor, which populates the plotted-points parameter required by Plotter. If the user prefers he can specify the plotted-points parameter himself in the Impl file but the main value of the model is its ability to visualize the data provided by other models of the Impact Engine Framework. The user can also specify a csv file to read the data to plot from.
 
 #### Link for plotter
-The plotter model and its documentation can be found here: https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/plotter
+[The plotter model and its documentation can be found here](https://github.com/TomasKopunec/comp0101-ief/tree/main/Code/if-optimisation-models/src/lib/plotter)
 
 ## Installation 
 ### Prerequisites
@@ -82,7 +82,7 @@ Make sure you have Node.js version 18 installed
      ```
      ./run.sh new_carbon1
      ```
- - For instruction on how to write Impl files and the available model check the official Impact Engine Framework documentation : https://if.greensoftware.foundation/major-concepts/
+ - For instruction on how to write Impl files and the available model check the [official Impact Engine Framework documentation](https://if.greensoftware.foundation/major-concepts).
 
 ## Running the Dockerized Version
 
@@ -118,7 +118,9 @@ To use the Dockerized version of the application, follow these steps:
   ## Starting the Carbon Aware SDK API
   The SDK API is necessary for the carbon-aware-advisor model
   ### Instruction how to Deploy it on localhost
-  Detailed instructions on how to run the API on localhost can be found on the original WebAPI documentation : https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/casdk-docs/docs/quickstart.md
+  Detailed instructions on how to run the API on localhost can be found on the original WebAPI documentation [original WebAPI documentation for quickstart](https://if.greensoftware.foundation/major-concepts).
+
+
 
   ### Simpler approach 1 - using our method with container
   We have created certain scripts and use a docker container provided to simplify the process of deploying the WebAPI: 
@@ -130,13 +132,13 @@ To use the Dockerized version of the application, follow these steps:
      ./api_start.sh
      ```
 
-2. **Open Command Palette:**
+1. **Open Command Palette:**
    - Press `Ctrl` + `Shift` + `P` to open the Command Palette in your code editor.
 
-3. **Select Project Folder:**
+2. **Select Project Folder:**
    - Use the Command Palette to select the `carbon-aware-sdk` folder, which should be located in the same directory where you cloned this project.
 
-4. **Run Startup Script:**
+3. **Run Startup Script:**
    - In the terminal that opens within your selected folder, start the necessary services by running:
     ```
      ./start.sh
