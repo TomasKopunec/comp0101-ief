@@ -27,7 +27,9 @@ else
     echo "Repository already exists locally."
 fi
 
-#cp comp0101-ief/Code/carbon-aware-webapi/start.sh carbon-aware-sdk/
+cp comp0101-ief/Code/carbon-aware-webapi/start.sh carbon-aware-sdk
+rm -f carbon-aware-sdk/src/CarbonAware.WebApi/src/appsettings.json
+cp comp0101-ief/Code/carbon-aware-webapi/appsettings.json carbon-aware-sdk/src/CarbonAware.WebApi/src/appsettings.json
 
 
 # Change directory into the repository

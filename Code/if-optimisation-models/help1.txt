@@ -1,0 +1,82 @@
+--manifest=examples/new_visualizer2.yml
+--output=results/new_visualizer2_2024-03-21-T20-51-18.yml
+[Running in Local Mode]
+
+> @grnsft/if-optimisation-models@0.1.0 install-and-exec:local
+> ./install2if.sh local && yarn ie --manifest examples/new_visualizer2.yml --output results/new_visualizer2_2024-03-21-T20-51-18.yml
+
+[Building Models]
+
+> @grnsft/if-optimisation-models@0.1.0 build
+> rm -rf build && tsc --project tsconfig.build.json
+
+Done.
+[Installing Models]
+Done.
+yarn run v1.22.21
+$ /home/jim/comp0101-ief/Code/if-optimisation-models/node_modules/.bin/ie --manifest examples/new_visualizer2.yml --output results/new_visualizer2_2024-03-21-T20-51-18.yml
+[2024-03-21 08:51:20.874 PM] [32minfo[39m: 	[32m[39m
+[32m[!important] Incubation Project[39m
+
+[32mThis project is an incubation project being run inside the Green Software Foundation; as such, we DON’T recommend using it in any critical use case. [39m
+[32mIncubation projects are experimental, offer no support guarantee, have minimal governance and process, and may be retired at any moment. This project may one day graduate, in which case this disclaimer will be removed.[39m
+
+{
+  "name": "plotter-demo2",
+  "description": "example impl invoking Plotter model",
+  "tags": null,
+  "initialize": {
+    "plugins": {
+      "plotter": {
+        "path": "@grnsft/if-plugins",
+        "method": "Shell",
+        "global-config": {
+          "command": "python3 ./src/lib/plotter/plotter"
+        }
+      }
+    }
+  },
+  "if-version": "v0.3.1",
+  "tree": {
+    "children": {
+      "child0": {
+        "defaults": {
+          "y-name": "graph.carbon",
+          "colour": "red",
+          "diagram-name": "diagrams/New_visualiser2",
+          "x-axis-name": "Date",
+          "y-axis-name": "Carbon",
+          "diagram-title": "Carbon Emission per Date for graph.carbon",
+          "graph-type": "scatter",
+          "csv-path": "csvs/helper2.csv"
+        },
+        "pipeline": [
+          "plotter"
+        ],
+        "inputs": [
+          {
+            "input": "inputs"
+          }
+        ],
+        "outputs": [
+          {
+            "input": "inputs",
+            "y-name": "graph.carbon",
+            "colour": "red",
+            "diagram-name": "diagrams/New_visualiser2",
+            "x-axis-name": "Date",
+            "y-axis-name": "Carbon",
+            "diagram-title": "Carbon Emission per Date for graph.carbon",
+            "graph-type": "scatter",
+            "csv-path": "csvs/helper2.csv",
+            "diagram": "/home/jim/comp0101-ief/Code/if-optimisation-models/diagrams/New_visualiser2.png"
+          }
+        ]
+      }
+    }
+  }
+}
+Done in 1.10s.
+[Output]
+[The output is saved in results/new_visualizer2_2024-03-21-T20-51-18.yml]
+Done

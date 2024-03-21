@@ -27,9 +27,9 @@ tree:
         - plotter
       defaults:
         x-name:  [location,time]
-        y-name: score
+        y-name: rating
         colour: green
-        diagram-name: demo
+        diagram-name: diagrams/New_visualizer3
         x-axis-name: Date and Location
         y-axis-name: Carbon score
         diagram-title: Carbon score in relation to time and location (ascending)

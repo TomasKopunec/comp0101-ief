@@ -86,6 +86,8 @@ Make sure you have Node.js version 18 installed
 
 ## Running the Dockerized Version
 
+  ### Tutorial video
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ZviLlhq5EFo/0.jpg)](https://www.youtube.com/watch?v=ZviLlhq5EFo)
 To use the Dockerized version of the application, follow these steps:
 
 1. **Run Docker Container:**
@@ -120,6 +122,8 @@ To use the Dockerized version of the application, follow these steps:
   ### Instruction how to Deploy it on localhost
   Detailed instructions on how to run the API on localhost can be found on the original WebAPI documentation [original WebAPI documentation for quickstart](https://if.greensoftware.foundation/major-concepts).
 
+  ### Tutorial video
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/RpT7CtQet1g/0.jpg)](https://www.youtube.com/watch?v=RpT7CtQet1g)
 
 
   ### Simpler approach 1 - using our method with container

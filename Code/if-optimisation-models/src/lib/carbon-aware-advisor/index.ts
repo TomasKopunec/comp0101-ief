@@ -213,7 +213,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
 
     // If we have sampling in the result we return the plotted points as well which have samples from different timeframe and locations
     if (hasSampling) {
-      results[0].plotted_points = plotted_points;
+      results[0]['plotted-points'] = plotted_points;
     }
     return results;
   }

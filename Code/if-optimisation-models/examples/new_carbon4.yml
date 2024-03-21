@@ -28,12 +28,12 @@ tree:
         - plotter
       defaults:
         x-name:  [location,time]
-        y-name: score
+        y-name: rating
         colour: yellow
-        diagram-name: demo
+        diagram-name: diagrams/New_carbon4
         x-axis-name: Date and Location
         y-axis-name: Carbon score
         diagram-title: Carbon score in relation to time and location (ascending)
         graph-type: bar # bar line or scatter
       inputs:
-        - time: '2022-06-20T00:00:00+00:00'
+        - input1: input1

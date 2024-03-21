@@ -14,13 +14,13 @@ tree:
       defaults:
         y-name: graph.carbon
         colour: red
-        diagram-name: ../Test_diagram2
+        diagram-name: diagrams/New_visualiser2
         x-axis-name: Date
         y-axis-name: Carbon
         diagram-title: Carbon Emission per Date for graph.carbon
         graph-type: scatter   
-        csv-path: 'helper2.csv'
+        csv-path: 'csvs/helper2.csv'
       pipeline:
         - plotter
       inputs: 
-      - 
+      - input: "inputs"

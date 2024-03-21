@@ -73,7 +73,7 @@ try:
     diagram_name = data.get('diagram-name', 'combinations_diagram')
     
     graph_type = data.get('graph-type', 'bar')
-   
+    
     #this case we are plotting from dictionary plotted-points founf in the impl file
     if 'plotted-points' in data:
         #if we are plotting from a dictionary we need to have the x_name key
@@ -86,13 +86,17 @@ try:
         for item in plot_dict:
             x_value = "_".join(str(item.get(label, '')) for label in x_labels).rstrip('_')
             #All the x_values must be present in the dictionary
+            
             if not x_value:
+                print(f"Missing one of the required x-name keys in plotted-points: {x_labels}")
                 raise KeyError(f"Missing one of the required x-name keys in plotted-points: {x_labels}")
             #get the y_value from the dictionary
             y_value = item.get(y_label)
             if y_value is None:
+                print(f"Missing the required y-name key in plotted-points: {y_label}")
                 raise KeyError(f"Missing the required y-name key in plotted-points: {y_label}")
             #x and y ara the lists we will use to plot the diagram
+            
             x.append(x_value)
             y.append(y_value)
     
@@ -119,7 +123,7 @@ try:
             # Raise an error if no such rows exist
             raise ValueError(f"No rows start with {y_label} in the first column.")
         
-       
+   
     diagram_title = data.get('diagram_title', f'{x_axis_name} vs {y_axis_name}')
     #plot the diagram
     plot_values(x, y, diagram_name, diagram_title, x_axis_name, y_axis_name, colour, graph_type)

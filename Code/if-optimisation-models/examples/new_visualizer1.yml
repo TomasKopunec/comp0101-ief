@@ -15,7 +15,7 @@ tree:
         x-name: ['time']
         y-name: energy
         colour: blue
-        diagram-name: New_diagram
+        diagram-name: diagrams/New_visualizer1
         x-axis-name: Time in hours minutes and second
         y-axis-name: Energy in KWh
         diagram-title: time and Energy comparison
