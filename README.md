@@ -29,10 +29,10 @@ The Carbon Advisor, Right-sizing, and Plotter models are intended to support org
 Here is the link to the resource: [Link](https://github.com/Green-Software-Foundation/if)
 
 ## Video Presentation for Requirements Phase Link
-https://youtu.be/YYdt-9RIYiU
+[View on youtube](https://youtu.be/YYdt-9RIYiU)
 
 ## Final Video Presentation for Implemented Project Link
-tbd
+[View on youtube TBD]()
 
 ## Models Implemented
 
@@ -87,7 +87,7 @@ Make sure you have Node.js version 18 installed
 ## Running the Dockerized Version
 
   ### Tutorial video
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ZviLlhq5EFo/0.jpg)](https://www.youtube.com/watch?v=ZviLlhq5EFo)
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ZviLlhq5EFo/maxresdefault.jpg)](https://www.youtube.com/watch?v=ZviLlhq5EFo)\
 To use the Dockerized version of the application, follow these steps:
 
 1. **Run Docker Container:**
@@ -120,10 +120,10 @@ To use the Dockerized version of the application, follow these steps:
   ## Starting the Carbon Aware SDK API
   The SDK API is necessary for the carbon-aware-advisor model
   ### Instruction how to Deploy it on localhost
-  Detailed instructions on how to run the API on localhost can be found on the original WebAPI documentation [original WebAPI documentation for quickstart](https://if.greensoftware.foundation/major-concepts).
+  Detailed instructions on how to run the API on localhost can be found on the [original WebAPI documentation for quickstart](https://if.greensoftware.foundation/major-concepts).
 
   ### Tutorial video
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/RpT7CtQet1g/0.jpg)](https://www.youtube.com/watch?v=RpT7CtQet1g)
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/RpT7CtQet1g/maxresdefault.jpg)](https://www.youtube.com/watch?v=RpT7CtQet1g)
 
 
   ### Simpler approach 1 - using our method with container
