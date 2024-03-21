@@ -82,7 +82,7 @@ Make sure you have Node.js version 18 installed
      ```
      ./run.sh new_carbon1
      ```
- - For instruction on how to write Impl files and the available model check the [official Impact Engine Framework documentation](https://if.greensoftware.foundation/major-concepts).
+ - For instruction on how to write Impl files and the available model check the [Official IEF documentation](https://if.greensoftware.foundation/major-concepts).
 
 ## Running the Dockerized Version
 
@@ -120,7 +120,7 @@ To use the Dockerized version of the application, follow these steps:
   ## Starting the Carbon Aware SDK API
   The SDK API is necessary for the carbon-aware-advisor model
   ### Instruction how to Deploy it on localhost
-  Detailed instructions on how to run the API on localhost can be found on the [original WebAPI documentation for quickstart](https://if.greensoftware.foundation/major-concepts).
+  Detailed instructions on how to run the API on localhost, check [original WebAPI documentation for quickstart](https://if.greensoftware.foundation/major-concepts).
 
   ### Tutorial video
   [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/RpT7CtQet1g/maxresdefault.jpg)](https://www.youtube.com/watch?v=RpT7CtQet1g)
@@ -152,8 +152,8 @@ To use the Dockerized version of the application, follow these steps:
 
 #### Prerequisites
 Make sure you have .NET Core 6.0 installed (Use ```dotnet --list-sdks``` to check,Prefer version **6.0.418**)
-- Simply install it with a single command (For example in Ubuntu ```sudo apt install dotnet-sdk-6.0```)
-- To install the specified version, please visit the [Microsoft .NET 6.0 Download website](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0) for more information 
+- Simply install it with a single command (For example in Ubuntu ```sudo apt install dotnet-sdk-6.0```).
+- To install the specified version, please visit the [Microsoft .NET 6.0 Download website](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0) for more information.
 
 #### Installation process
   - You may need to gain administrative or root access to execute the following code.
