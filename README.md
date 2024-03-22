@@ -101,6 +101,10 @@ To use the Dockerized version of the application, follow these steps:
      ```
      ./docker_run.sh
      ```
+   - If you're using a Mac, please run:
+     ```
+     ./docker_run_mac.sh
+     ```
    - This process might take up to 3 minutes as the Docker image is being built.
    
    **Alternatively build from Dockerfile**
@@ -111,7 +115,7 @@ To use the Dockerized version of the application, follow these steps:
     docker run -it --net=host --name ief_runner ief_image 
   ```
 
-2. **Using the Docker Environment:**
+1. **Using the Docker Environment:**
    - Once the Docker container is ready, you'll be automatically placed into the Docker environment's terminal.
    - To execute implementation files located in the `examples` folder, use the following command structure:
      ```
