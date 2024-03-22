@@ -25,7 +25,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
   /**
    * Route to the carbon-aware-sdk API. Localhost for now.
    */
-  const API_URL = "http://localhost:5073";
+  const API_URL = "http://host.docker.internal:5073";
 
   /**
    * Allowed location parameter that is passed in the config of the model.
