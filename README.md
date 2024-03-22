@@ -64,6 +64,12 @@ This model is typically used in a pipeline following data-enrichment models like
 ## Installation 
 ### Prerequisites
 Make sure you have Node.js version 18 installed
+  - Execute the following commands to install Node Version Manager and switch to version 18
+    ```
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    nvm install 18
+    nvm use 18
+    ```
 ### Install instructions
 . **Initiate the npm project:**
    - Execute the following commands
@@ -152,7 +158,7 @@ To use the Dockerized version of the application, follow these steps:
 
 #### Prerequisites
 Make sure you have .NET Core 6.0 installed (Use ```dotnet --list-sdks``` to check,Prefer version **6.0.418**)
-- Simply install it with a single command (For example in Ubuntu ```sudo apt install dotnet-sdk-6.0```).
+- Simply install it with a single command (For example in Ubuntu ```sudo apt install dotnet-sdk-6.0```). This might download version 6.0.127, if incompatible, proceed to the next step.
 - To install the specified version, please visit the [Microsoft .NET 6.0 Download website](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0) for more information.
 
 #### Installation process
