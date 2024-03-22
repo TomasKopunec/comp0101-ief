@@ -49,7 +49,7 @@ export const CarbonAwareAdvisor = (params: ConfigParams): PluginInterface => {
    */
   let supportedLocations: Set<string> = new Set();
   // Use for read from locations.json . We need to be careful when we commit to the impact framework dir for this path
-  let locationsFilePath = path.join(process.cwd(), 'src', 'lib', 'carbon-aware-advisor', 'locations.json');
+  let locationsFilePath = path.join(__dirname, 'locations.json');
 
 
   //flag to check if the model has sampling, the sampling value is originally set to 0

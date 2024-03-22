@@ -31,7 +31,10 @@
     "tsBuildInfoFile": "tsconfig.tsbuildinfo"
   },
   "include": [
-    "**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.json",
+    "src/**/*.d.ts",
+    "src/**/*.csv"
   ],
   "exclude": [
     "node_modules",

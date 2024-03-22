@@ -8,6 +8,7 @@ import { validate, atLeastOneDefined } from '../../util/validations';
 import { InstanceData, CombinationData, CurrentData, OriginalData } from '../../types/right-sizing';
 
 import { CPUDatabase, CloudInstance } from './CPUFamily';
+import * as path from 'path';
 
 /**
  * Implementation of the ModelPluginInterface for the Right Sizing model.
@@ -20,7 +21,7 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
 
     let database: CPUDatabase = new CPUDatabase();
     const Cache: Map<string, CPUDatabase> = new Map();
-    const builtinDataPath = './data';
+    const builtinDataPath = __dirname;
     const cpuMetrics = ['cpu-util', 'cloud-vendor', 'cloud-instance-type'];
 
     /**
@@ -63,9 +64,10 @@ export const RightSizingModel = (params: ConfigParams): PluginInterface => {
                     // If not cached, create a new database instance and load model data for the specific cloud vendor
                     const newDatabase = new CPUDatabase();
                     if (cloudVendor === 'aws') {
-                        await newDatabase.loadModelData(builtinDataPath + '/aws-instances.json');
+                        console.log("path: " + builtinDataPath);
+                        await newDatabase.loadModelData(path.resolve(builtinDataPath + '/aws-instances.json'));
                     } else if (cloudVendor === 'azure') {
-                        await newDatabase.loadModelData(builtinDataPath + '/azure-instances.json');
+                        await newDatabase.loadModelData(path.resolve(builtinDataPath + '/azure-instances.json'));
                     }
                     Cache.set(cloudVendor, newDatabase); // Cache the loaded database
                 }
