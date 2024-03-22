@@ -2,6 +2,8 @@ name: low-cpu-util
 description: example config file for low cpu utility
 tags: null
 initialize:
+  outputs:
+    - yaml
   plugins:
     right-sizing:
       path: "@grnsft/if-optimisation-models"

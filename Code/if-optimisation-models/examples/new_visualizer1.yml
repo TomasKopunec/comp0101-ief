@@ -2,6 +2,8 @@ name: Plotter_demo
 description: example impl invoking plotter model
 tags: null
 initialize:
+  outputs:
+    - yaml
   plugins:
     plotter:
       method: Shell
@@ -30,3 +32,4 @@ tree:
               energy: 3
             - time: 14:20:22
               energy: 8 
+      

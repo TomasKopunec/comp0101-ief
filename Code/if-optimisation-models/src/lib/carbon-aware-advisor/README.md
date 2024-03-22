@@ -90,23 +90,26 @@ description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
   plugins:
-    carbon-advisor:
+    carbon-aware-advisor:
+      path: '@grnsft/if-optimisation-models'
       method: CarbonAwareAdvisor
-      path: "@grnsft/if-optimisation-models"
       global-config:
-        allowed-locations:  ['northeurope','eastus','westus']
-        allowed-timeframes: [
-            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
-            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
-          ]
+        allowed-locations:
+          - northeurope
+          - eastus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+  outputs:
+    - yaml
+if-version: v0.3.1
 tree:
   children:
     child0:
       pipeline:
-        - carbon-advisor
+        - carbon-aware-advisor
       inputs:
-        - 
+        - null
 ```
 Ompl: 
 
@@ -116,39 +119,32 @@ description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
   plugins:
-    carbon-advisor:
+    carbon-aware-advisor:
       path: '@grnsft/if-optimisation-models'
       method: CarbonAwareAdvisor
+      global-config:
+        allowed-locations:
+          - northeurope
+          - eastus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+  outputs:
+    - yaml
+if-version: v0.3.1
 tree:
   children:
     child0:
       pipeline:
-        - carbon-advisor
-      defaults:
-        allowed-locations:
-          - northeurope
-          - eastus
-          - westus
-        allowed-timeframes:
-          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
-          - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
+        - carbon-aware-advisor
       inputs:
         - null
       outputs:
-        - allowed-locations:
-            - northeurope
-            - eastus
-            - westus
-          allowed-timeframes:
-            - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
-            - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
-            - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
-          suggestions:
-            - suggested-location: westus
-              suggested-timeframe: '2022-06-20T00:00:00+00:00'
-              suggested-score: 126
-
+        - suggestions:
+            - location: northeurope
+              time: '2024-08-03T17:00:00.000Z'
+              rating: 256.0375
+              duration: '01:00:00'
 ```
 
 ## Example configuration with sampling and plotter model to visualize the data
@@ -160,21 +156,26 @@ tags: null
 initialize:
   plugins:
     carbon-aware-advisor:
+      path: '@grnsft/if-optimisation-models'
       method: CarbonAwareAdvisor
-      path: "@grnsft/if-optimisation-models"
       global-config:
-        allowed-locations:  ['northeurope','eastus','westus']
-        allowed-timeframes: [
-            "2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z",
-            "2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z",
-            "2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z"
-          ]
+        allowed-locations:
+          - northeurope
+          - eastus
+          - westus
+        allowed-timeframes:
+          - 2022-06-19T14:00:00Z - 2022-06-21T19:00:00Z
+          - 2022-08-01T19:00:00Z - 2022-08-03T20:35:31Z
+          - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
         sampling: 10
     plotter:
+      path: '@grnsft/if-plugins'
       method: Shell
-      path: "@grnsft/if-models"
       global-config:
-        command: 'python3 ./src/lib/plotter/plotter'
+        command: python3 ./src/lib/plotter/plotter
+  outputs:
+    - yaml
+if-version: v0.3.1
 tree:
   children:
     child0:
@@ -182,16 +183,18 @@ tree:
         - carbon-aware-advisor
         - plotter
       defaults:
-        x_name:  [location,time]
-        y_name: score
+        x-name:
+          - location
+          - time
+        y-name: rating
         colour: yellow
-        diagram_name: demo
-        x_axis_name: Date and Location
-        y_axis_name: Carbon score
-        diagram_title: Carbon score in relation to time and location (ascending)
-        graph_type: bar # bar line or scatter
+        diagram-name: diagrams/New_carbon4
+        x-axis-name: Date and Location
+        y-axis-name: Carbon score
+        diagram-title: Carbon score in relation to time and location (ascending)
+        graph-type: bar
       inputs:
-        - 
+        - input1: input1
 ```
 Ompl:
 ```yaml
@@ -214,10 +217,13 @@ initialize:
           - 2024-08-01T19:00:00Z - 2024-08-03T20:35:31Z
         sampling: 10
     plotter:
-      path: '@grnsft/if-models'
+      path: '@grnsft/if-plugins'
       method: Shell
       global-config:
         command: python3 ./src/lib/plotter/plotter
+  outputs:
+    - yaml
+if-version: v0.3.1
 tree:
   children:
     child0:
@@ -225,65 +231,78 @@ tree:
         - carbon-aware-advisor
         - plotter
       defaults:
-        x_name:
+        x-name:
           - location
           - time
-        y_name: score
+        y-name: rating
         colour: yellow
-        diagram_name: demo
-        x_axis_name: Date and Location
-        y_axis_name: Carbon score
-        diagram_title: Carbon score in relation to time and location (ascending)
-        graph_type: bar
+        diagram-name: diagrams/New_carbon4
+        x-axis-name: Date and Location
+        y-axis-name: Carbon score
+        diagram-title: Carbon score in relation to time and location (ascending)
+        graph-type: bar
       inputs:
-        - null
+        - input1: input1
       outputs:
-        - x_name:
+        - input1: input1
+          x-name:
             - location
             - time
-          y_name: score
+          y-name: rating
           colour: yellow
-          diagram_name: demo
-          x_axis_name: Date and Location
-          y_axis_name: Carbon score
-          diagram_title: Carbon score in relation to time and location (ascending)
-          graph_type: bar
+          diagram-name: diagrams/New_carbon4
+          x-axis-name: Date and Location
+          y-axis-name: Carbon score
+          diagram-title: Carbon score in relation to time and location (ascending)
+          graph-type: bar
           suggestions:
-            - suggested-location: westus
-              suggested-timeframe: '2022-06-20T00:00:00+00:00'
-              suggested-score: 126
+            - location: westus
+              time: '2022-06-20T00:00:00+00:00'
+              rating: 126
+              duration: '01:00:00'
           plotted-points:
             - location: westus
               time: '2022-06-20T00:00:00+00:00'
-              score: 126
-            - location: eastus
-              time: '2022-06-20T10:00:00+00:00'
-              score: 402
+              rating: 126
+              duration: '01:00:00'
             - location: westus
-              time: '2022-06-21T12:00:00+00:00'
-              score: 286
+              time: '2022-06-21T15:00:00+00:00'
+              rating: 180
+              duration: '01:00:00'
             - location: eastus
-              time: '2022-06-19T21:00:00+00:00'
-              score: 409
+              time: '2022-06-21T06:00:00+00:00'
+              rating: 410
+              duration: '01:00:00'
+            - location: eastus
+              time: '2022-06-20T23:00:00+00:00'
+              rating: 457
+              duration: '01:00:00'
             - location: northeurope
               time: '2022-08-02T04:00:00+00:00'
-              score: 188
-            - location: eastus
-              time: '2022-08-02T11:00:00+00:00'
-              score: 468
+              rating: 188
+              duration: '01:00:00'
             - location: northeurope
-              time: '2022-08-03T12:00:00+00:00'
-              score: 416
+              time: '2022-08-03T08:00:00+00:00'
+              rating: 395
+              duration: '01:00:00'
+            - location: northeurope
+              time: '2022-08-02T13:00:00+00:00'
+              rating: 259
+              duration: '01:00:00'
             - location: westus
               time: '2024-08-03T19:00:00.000Z'
-              score: 196.47708333333333
-            - location: northeurope
-              time: '2024-08-02T10:00:00.000Z'
-              score: 268.9604166666667
+              rating: 186.68333333333334
+              duration: '01:00:00'
+            - location: eastus
+              time: '2024-08-02T16:00:00.000Z'
+              rating: 393.48125
+              duration: '01:00:00'
             - location: westus
-              time: '2024-08-02T11:00:00.000Z'
-              score: 279.9770833333333
-          diagram: /home/jim/comp0101-ief/Code/if-optimisation-models/demo.png
+              time: '2024-08-03T03:00:00.000Z'
+              rating: 255.68333333333334
+              duration: '01:00:00'
+          diagram: >-
+            /home/jim/comp0101-ief/Code/if-optimisation-models/diagrams/New_carbon4.png
 
 ```
 And we can see the following diagram being created:

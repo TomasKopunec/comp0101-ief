@@ -2,6 +2,8 @@ name: Carbon Advisor Demo
 description: Simple demo for invoking carbon-advisor model
 tags: null
 initialize:
+  outputs:
+    - yaml
   plugins:
     carbon-advisor:
       method: CarbonAwareAdvisor

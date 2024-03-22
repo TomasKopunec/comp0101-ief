@@ -2,6 +2,8 @@ name: plotter-demo2
 description: example impl invoking Plotter model
 tags: null
 initialize:
+  outputs:
+    - yaml
   plugins:
     plotter:
       method: Shell
