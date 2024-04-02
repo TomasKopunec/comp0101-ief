@@ -188,6 +188,16 @@ graph:
           price-change: Price decreased by 98%
           output-id: 2f37753f-5152-42af-8470-49f258b0cfed
 ```
+## Running the examples
+To run the examples in the example folder use the command :
+```bash
+./run.sh <example without the suffix>
+./run.sh low-util-aws #example run
+```
+## Available examples
+- low-util-aws: a simple right sizing demo with 2 aws instances
+- low-util-azure: a simple right sizing demo with 1 azure instance
+- low-util-target: a simple right sizing demo with 1 azure instance and target cpu util < 100
 
 ## Contributing
 
