@@ -32,7 +32,7 @@ Here is the link to the resource: [Link](https://github.com/Green-Software-Found
 [View on youtube](https://youtu.be/YYdt-9RIYiU)
 
 ## Final Video Presentation for Implemented Project Link
-[View on youtube TBD]()
+[View on youtube TBD](https://youtu.be/hAF5A3kfZes)
 
 ## Models Implemented
 
