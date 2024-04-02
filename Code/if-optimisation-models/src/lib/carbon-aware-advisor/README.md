@@ -321,6 +321,17 @@ The way the current algorith works is that the carbon of an unavaliable timefram
 
 ## Integrating with Plotter
 To visualize the carbon emission data, integrate the `CarbonAwareAdvisor` model with the `plotter` model in your pipeline. Provide the necessary configurations for both models as per your requirements. The plotter model will automatically go through the plotted-points to search for the data so the x_name should be defined as [location, time] and the y_name as score.
+# Running the examples
+To run the examples in the example folder use the command :
+```bash
+./run.sh <example without the suffix>
+./run.sh new_visualizer1 #example run
+```
+
+## Available examples
+- **new_visualizer1:** a simple plotter demo, creating a graph of points provided in the Impl file
+- **new_vizualizer2:** a plotter demo plotting data found in the helper2.csv in the csv folder
+- **new_visualizer3:** plotting the data produced by the carbon advisor earlier in the pipeline
 
 ## Contributing
 Contributions to the CarbonAwareAdvisor model are welcome. Please submit pull requests with any enhancements, bug fixes, or additional features you'd like to add.
