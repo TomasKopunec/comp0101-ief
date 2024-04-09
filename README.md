@@ -29,10 +29,10 @@ The Carbon Advisor, Right-sizing, and Plotter models are intended to support org
 Here is the link to the resource: [Link](https://github.com/Green-Software-Foundation/if)
 
 ## Video Presentation for Requirements Phase Link
-[View on youtube](https://youtu.be/YYdt-9RIYiU)
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YYdt-9RIYiU/maxresdefault.jpg)](https://www.youtube.com/watch?v=YYdt-9RIYiU)
 
 ## Final Video Presentation for Implemented Project Link
-[View on youtube TBD]([https://youtu.be/hAF5A3kfZes](https://youtu.be/D5cJoDqQ-xc))
+ [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/D5cJoDqQ-xc/maxresdefault.jpg)](https://www.youtube.com/watch?v=D5cJoDqQ-xc)
 
 ## Models Implemented
 
