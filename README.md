@@ -190,30 +190,34 @@ npm run test -- src/tests/models/carbon-advisor/CarbonAdvisorModelUnit.test.ts -
 ```
 
 ## Scenarios
-To run the whole test suite, run the following command from the if-optimization-models directory:
+To run the all the test suites in the whole project, run the following command from the if-optimization-models directory:
+```bash
+npm run test
 ```
+
+To run any specific tests, for example, the `CarbonAdvisorModelScenarios.test.ts` file, run the following command from the if-optimization-models directory:
+```bash
 npm run test -- src/tests/models/carbon-advisor/CarbonAdvisorModelScenarios.test.ts
 ```
 
-or to run specific tests:
-
-```
+or to run specific unit test in a specific test source file, for example, the `Scenario1` test in the `CarbonAdvisorModelScenarios.test.ts` file, run the following command from the if-optimization-models directory:
+```bash
 npm run test -- src/tests/models/carbon-advisor/CarbonAdvisorModelScenarios.test.ts --testNamePattern="CarbonAdvisorModel.Scenario1"
 ```
 
 ## Forecasting tests
 To run individual tests, run the following command from the if-optimization-models directory:
-```
+```bash
 npm run test -- src/tests/models/carbon-advisor/CarbonAdvisorModelForecasting.test.ts --testNamePattern="CarbonAdvisorModel.Forecasting.{Scenario}"
 ```
 replacing *{Scenario}* with the scenario number, for example:
-```
+```bash
 npm run test -- src/tests/models/carbon-advisor/CarbonAdvisorModelForecasting.test.ts --testNamePattern="CarbonAdvisorModel.Forecasting.Scenario1"
 ```
 which would run only the Scenario 1 test.
 
 Before running any scenario tests, the carbon-aware-sdk WebAPI must be running with the right data source configuration. Each scenario requires a different data input, which has to be adjusted in the **appsettings.json** file, as follows:
-```
+```json
 "DataSources": {
     "EmissionsDataSource": "test-json",
     "ForecastDataSource": "ElectricityMaps",
@@ -247,6 +251,66 @@ In the Table below, the requirements of individual scenarios can be found:
 | Scenario 4 | scenario3.json |
 | Scenario 5 | scenario3.json |
 | Scenario 6 | scenario3.json |
+
+## Right-sizing tests
+
+To run the whole test suite for the right-sizing plugin, run the following command from the if-optimization-models directory:
+```bash
+npm run test -- src/tests/models/right-sizing/RightSizingModel.test.ts
+```
+
+The test suite of the right-sizing plugin is divided into two parts: basic unit tests and scenario tests for algorithm correctness validation. The basic unit tests test the fundamental functionalities of the plugin, while the scenario tests are composed by a set of black-box tests that tests the algorithm by providing various combinations of input data and expecting specific output data. 
+
+All the scenarios are defined in the `src/tests/models/right-sizing/scenarios` directory as JSON files. For example, in scenario1.json you can find the content as follows:
+
+```json
+{
+    "INPUTS": [
+        {
+            "timestamp": "2023-11-02T10:35:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "custom",
+            "cpu-util": 75,
+            "mem-util": 75,
+            "location": "uksouth",
+            "cloud-instance-type": "Test1_16_32"
+        }
+    ],
+    "EXPECTED": [
+        {
+            "timestamp": "2023-11-02T10:35:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "custom",
+            "cpu-util": 100,
+            "location": "uksouth",
+            "cloud-instance-type": "Test1_8_16"
+        },
+        {
+            "timestamp": "2023-11-02T10:35:00.000Z",
+            "duration": 300,
+            "cloud-vendor": "custom",
+            "cpu-util": 100,
+            "location": "uksouth",
+            "cloud-instance-type": "Test1_4_8"
+        }
+    ]
+}
+```
+
+The input is an array of objects defined in `INPUTS` field that simulates the input from the manifest input (impl) file, and the expected output is defined in the `EXPECTED` field. The expected output is an array represents the expected output (ompl) as JSON format from the right-sizing plugin. In the algotithm testing section in `RightSizingModel.test.ts`, the plugin will be tested by providing the input data from the `INPUTS` field and comparing the output with the expected output from the `EXPECTED` field using the Jest testing framework.
+
+In algorithm scenario tests, each unit test is corresponding to one scenario defined in the `scenarios` directory. Here is a table of the unit test names and the corresponding scenario file names:
+
+| Unit Test Name | Scenario File Name |
+| -------------- | ------------------ |
+| Is the total number of vCPUs of the combination the fittest? (default cpu-target-util)     | scenario1.json     |
+| Is the total number of vCPUs in a valid range? (custom cpu-target-util) | scenario2.json     |
+| Instance combination RAM doesn't below the minimum required? | scenario3.json     |
+| When vCPU is fittest, Is the total RAM the fittest? | scenario4.json     |
+| When vCPU and RAM are fittest, Is the sum price the lowest available? | scenario5.json     |
+| Does the algorithm consider multiple identical instance in a combination? | scenario6.json     |
+
+
 
 <!-- ## Core Requirements
 - Development of a flexible measurement model for software environmental impact extending IEF.
